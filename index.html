@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automata and Theory of Computation</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Libre+Baskerville:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #142033;
+      --ink-soft: #2a3b53;
+      --paper: #f4efe6;
+      --paper-light: #fbf8f2;
+      --gold: #b88f4a;
+      --gold-soft: #d7c196;
+      --line: #d8d0c3;
+      --navy: #11263f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    .page-shell {
+      width: 100%;
+      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      background:
+        linear-gradient(rgba(244, 239, 230, 0.94), rgba(244, 239, 230, 0.94)),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 39px,
+          rgba(20, 32, 51, 0.035) 40px
+        );
+    }
+
+    .serif {
+      font-family: 'Libre Baskerville', serif;
+    }
+
+    .hero-pattern {
+      background:
+        radial-gradient(circle at 85% 18%, rgba(184, 143, 74, 0.18), transparent 0 16%, transparent 30%),
+        linear-gradient(135deg, rgba(255,255,255,0.02) 25%, transparent 25%) 0 0/22px 22px,
+        var(--navy);
+    }
+
+    .week-row {
+      transition: transform 220ms ease, background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+    }
+
+    .week-row:hover,
+    .week-row:focus-visible {
+      transform: translateX(6px);
+      background: #fffdfa;
+      border-color: var(--gold-soft);
+      outline: none;
+    }
+
+    .week-row:hover .week-arrow,
+    .week-row:focus-visible .week-arrow {
+      transform: translateX(4px);
+      color: var(--gold);
+    }
+
+    .week-arrow {
+      transition: transform 220ms ease, color 220ms ease;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 700ms ease forwards;
+    }
+
+    .delay-1 { animation-delay: 80ms; }
+    .delay-2 { animation-delay: 180ms; }
+    .delay-3 { animation-delay: 300ms; }
+    .delay-4 { animation-delay: 420ms; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ <script src="/_sdk/telemetry_sdk.js"></script></head>
+ <body data-template-id="__page-root" style="background: rgb(244, 239, 230);">
+  <div class="page-shell">
+   <div class="h-2 w-full bg-[#b88f4a]"></div>
+   <header data-template-id="hero-section" class="canva-section hero-pattern text-white" style="background: linear-gradient(135deg, rgb(17, 38, 63), rgb(27, 53, 84));">
+    <div class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-10 md:py-16 lg:py-20">
+     <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
+      <div class="max-w-4xl">
+       <p data-template-id="university-label" class="canva-text uppercase tracking-[0.28em] text-xs md:text-sm font-medium text-[#d7c196] fade-up" style="color: rgb(215, 193, 150); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.18rem;">University of Perpetual Help System DALTA • Las Piñas</p>
+       <div class="mt-6 flex items-center gap-3 fade-up delay-1">
+        <div class="h-px w-10 bg-[#b88f4a]"></div>
+        <p data-template-id="course-kicker" class="canva-text uppercase tracking-[0.22em] text-xs md:text-sm text-[#d9e0e9]" style="color: rgb(217, 224, 233); font-weight: 500; font-style: normal; font-size: 12px; letter-spacing: 0.16rem;">Course Index</p>
+       </div>
+       <h1 data-template-id="course-title" class="canva-text serif mt-5 max-w-4xl leading-tight fade-up delay-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 46px; line-height: 1.16;">Automata and Theory of Computation</h1>
+       <p data-template-id="instructor-line" class="canva-text mt-6 text-sm md:text-base text-[#dce4ee] fade-up delay-3" style="color: rgb(220, 228, 238); font-weight: 400; font-style: normal; font-size: 16px;">Instructor: MKDB</p>
+      </div>
+      <div class="hidden md:block fade-up delay-4">
+       <div class="w-36 h-36 lg:w-44 lg:h-44 border border-[#b88f4a] rounded-full flex items-center justify-center relative">
+        <div class="absolute inset-4 border border-[#d7c196] rounded-full opacity-70"></div>
+        <div class="text-center">
+         <div class="serif text-4xl lg:text-5xl text-[#e7d6ae]">
+          A
+         </div>
+         <div class="mt-2 text-[10px] tracking-[0.35em] uppercase text-[#d9e0e9]">
+          TOC
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </header>
+   <main class="w-full">
+    <section class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-12 md:py-16">
+     <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16">
+      <article class="fade-up delay-1">
+       <div class="flex items-center gap-3 mb-4"><span class="block h-px w-10 bg-[#b88f4a]"></span>
+        <p class="uppercase text-[11px] tracking-[0.25em] text-[#8c6a33] font-bold">Overview</p>
+       </div>
+       <h2 data-template-id="description-heading" class="canva-text serif text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 24px;">Course Description</h2>
+       <p data-template-id="description-text" class="canva-text mt-5 text-[#4d5a6b] leading-8 max-w-3xl" style="color: rgb(77, 90, 107); font-weight: 400; font-style: normal; font-size: 17px; line-height: 1.7;">This course introduces the mathematical foundations of computation. It covers finite automata, regular languages, context-free grammars, pushdown automata, Turing machines, computability, and complexity theory. Students analyze computational problems and understand the theoretical limits of computing systems.</p>
+      </article>
+      <aside class="fade-up delay-2">
+       <div class="bg-[#fbf8f2] border border-[#ded4c4] p-6 md:p-8 shadow-[0_8px_24px_rgba(20,32,51,0.04)]">
+        <div class="flex items-center justify-between gap-4 mb-5">
+         <h2 data-template-id="outcomes-heading" class="canva-text serif text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 24px;">Course Intended Learning Outcomes</h2><i data-lucide="target" class="w-6 h-6 text-[#b88f4a]"></i>
+        </div>
+        <ul class="space-y-4">
+         <li class="flex gap-3 items-start"><span class="mt-1.5 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span> <p data-template-id="outcome-1" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">Explain the fundamental concepts of automata and formal languages.</p></li>
+         <li class="flex gap-3 items-start"><span class="mt-1.5 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span> <p data-template-id="outcome-2" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">Design and analyze finite automata and grammars.</p></li>
+         <li class="flex gap-3 items-start"><span class="mt-1.5 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span> <p data-template-id="outcome-3" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">Evaluate computational problems using Turing machines.</p></li>
+         <li class="flex gap-3 items-start"><span class="mt-1.5 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span> <p data-template-id="outcome-4" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">Differentiate decidable and undecidable problems.</p></li>
+         <li class="flex gap-3 items-start"><span class="mt-1.5 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span> <p data-template-id="outcome-5" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">Apply complexity analysis to computational models.</p></li>
+        </ul>
+       </div>
+      </aside>
+     </div>
+    </section>
+    <section class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 pb-14 md:pb-20">
+     <div class="border-t border-[#d3c7b6] pt-8 md:pt-10">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+       <div>
+        <p data-template-id="outline-subheading" class="canva-text uppercase tracking-[0.23em] text-xs font-bold text-[#8c6a33]" style="color: rgb(140, 106, 51); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.14rem;">Semester Plan</p>
+        <h2 data-template-id="outline-heading" class="canva-text serif mt-2 text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 24px;">Course Outline</h2>
+       </div>
+       <div class="text-sm text-[#647184] flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4 text-[#b88f4a]"></i> <span>18-week learning path</span>
+       </div>
+      </div>
+      <div class="space-y-3"><a href="w1.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          01
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-1-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Introduction to Theory of Computation</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w2.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          02
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-2-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Mathematical Foundations and Proof Techniques</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w3.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          03
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-3-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Finite Automata</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w4.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          04
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-4-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Deterministic and Nondeterministic Finite Automata</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w5.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          05
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-5-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Regular Languages and Expressions</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w6.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          06
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-6-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Applications of Regular Languages</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w7.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          07
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-7-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Context-Free Grammars</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w8.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          08
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-8-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Pushdown Automata</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w9.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#d2c4ae] bg-[#efe6d7]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 bg-[#b88f4a] flex items-center justify-center text-sm font-bold text-white shrink-0">
+          09
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-9-title" class="canva-text font-semibold text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 700; font-style: normal; font-size: 16px;">Midterm Examination</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a6c3e]"></i>
+        </div></a> <a href="w10.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          10
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-10-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Context-Free Languages</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w11.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          11
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-11-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Turing Machines</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w12.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          12
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-12-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Variants of Turing Machines</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w13.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          13
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-13-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Decidability</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w14.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          14
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-14-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Undecidability Problems</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w15.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          15
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-15-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Complexity Theory</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w16.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          16
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-16-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">P vs NP Introduction</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w17.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#ddd3c4] bg-[#f9f5ed]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 border border-[#cfbd9d] flex items-center justify-center text-sm font-bold text-[#8c6a33] shrink-0">
+          17
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-17-title" class="canva-text font-medium text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 16px;">Student Presentations</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a96a6]"></i>
+        </div></a> <a href="w18.html" target="_blank" rel="noopener noreferrer" class="week-row block border border-[#d2c4ae] bg-[#efe6d7]">
+        <div class="flex items-center gap-4 px-4 md:px-6 py-4">
+         <div class="w-12 h-12 bg-[#b88f4a] flex items-center justify-center text-sm font-bold text-white shrink-0">
+          18
+         </div>
+         <div class="flex-1">
+          <p data-template-id="week-18-title" class="canva-text font-semibold text-[#22324a]" style="color: rgb(34, 50, 74); font-weight: 700; font-style: normal; font-size: 16px;">Final Examination</p>
+         </div><i data-lucide="arrow-up-right" class="week-arrow w-5 h-5 text-[#8a6c3e]"></i>
+        </div></a>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full bg-[#11263f] text-white">
+    <div class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-7 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+     <p data-template-id="footer-text" class="canva-text text-sm text-[#d8e0ea]" style="color: rgb(216, 224, 234); font-weight: 400; font-style: normal; font-size: 13px;">Automata and Theory of Computation • University of Perpetual Help System DALTA – Las Piñas</p>
+     <div class="flex items-center gap-2 text-[#d7c196] text-xs uppercase tracking-[0.18em]"><span class="w-6 h-px bg-[#b88f4a]"></span> <span>Course Index</span>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a06a971fae1bdd8b',t:'MTc4MDYxNDQxMA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body></html>
