@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 1 – Introduction to Theory of Computation</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Libre+Baskerville:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #142033;
+      --ink-soft: #2d4058;
+      --paper: #f4efe6;
+      --paper-light: #fbf8f2;
+      --gold: #b88f4a;
+      --gold-soft: #d9c49d;
+      --line: #d8d0c3;
+      --navy: #11263f;
+      --sage: #697c6d;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    .page-shell {
+      width: 100%;
+      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      background:
+        linear-gradient(rgba(244,239,230,0.96), rgba(244,239,230,0.96)),
+        repeating-linear-gradient(90deg, transparent 0, transparent 39px, rgba(20,32,51,.03) 40px);
+    }
+
+    .serif { font-family: 'Libre Baskerville', serif; }
+
+    .hero-pattern {
+      background:
+        radial-gradient(circle at 84% 22%, rgba(184,143,74,.16), transparent 0 14%, transparent 28%),
+        linear-gradient(135deg, rgba(255,255,255,.03) 25%, transparent 25%) 0 0/22px 22px,
+        linear-gradient(135deg, rgba(17,38,63,1), rgba(27,53,84,1));
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 700ms ease forwards;
+    }
+
+    .delay-1 { animation-delay: 80ms; }
+    .delay-2 { animation-delay: 180ms; }
+    .delay-3 { animation-delay: 300ms; }
+    .delay-4 { animation-delay: 420ms; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lesson-card {
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold-soft);
+      box-shadow: 0 12px 26px rgba(20,32,51,.08);
+    }
+
+    .soft-note {
+      background: linear-gradient(90deg, rgba(184,143,74,.14), rgba(184,143,74,.05));
+      border-left: 4px solid var(--gold);
+    }
+
+    .takeaway-row:not(:last-child) {
+      border-bottom: 1px solid #e0d5c3;
+    }
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ <script src="/_sdk/telemetry_sdk.js"></script></head>
+ <body data-template-id="__page-root" style="background: rgb(244, 239, 230);">
+  <div class="page-shell">
+   <div class="h-2 w-full bg-[#b88f4a]"></div>
+   <header data-template-id="hero-section" class="canva-section hero-pattern text-white" style="background: linear-gradient(135deg, rgb(17, 38, 63), rgb(27, 53, 84));">
+    <div class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-10 md:py-16">
+     <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
+      <div class="max-w-4xl">
+       <p data-template-id="university-label" class="canva-text uppercase tracking-[0.28em] text-xs md:text-sm font-medium text-[#d7c196] fade-up" style="color: rgb(215, 193, 150); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.18rem;">University of Perpetual Help System DALTA • Las Piñas</p>
+       <div class="mt-6 flex items-center gap-3 fade-up delay-1">
+        <div class="h-px w-10 bg-[#b88f4a]"></div>
+        <p data-template-id="course-kicker" class="canva-text uppercase tracking-[0.22em] text-xs md:text-sm text-[#d9e0e9]" style="color: rgb(217, 224, 233); font-weight: 500; font-style: normal; font-size: 12px; letter-spacing: 0.16rem;">Automata and Theory of Computation</p>
+       </div>
+       <h1 data-template-id="week-title" class="canva-text serif mt-5 max-w-4xl leading-tight fade-up delay-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 42px; line-height: 1.18;">Week 1 – Introduction to Theory of Computation</h1>
+       <p data-template-id="instructor-line" class="canva-text mt-6 text-sm md:text-base text-[#dce4ee] fade-up delay-3" style="color: rgb(220, 228, 238); font-weight: 400; font-style: normal; font-size: 15px;">Instructor: MKDB</p>
+      </div>
+      <div class="hidden md:block fade-up delay-4">
+       <div class="w-36 h-36 lg:w-44 lg:h-44 border border-[#b88f4a] rounded-full flex items-center justify-center relative">
+        <div class="absolute inset-4 border border-[#d7c196] rounded-full opacity-70"></div>
+        <div class="text-center">
+         <div class="serif text-4xl lg:text-5xl text-[#e7d6ae]">
+          01
+         </div>
+         <div class="mt-2 text-[10px] tracking-[0.35em] uppercase text-[#d9e0e9]">
+          Week
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </header>
+   <main class="w-full">
+    <section id="overview" class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 pb-14">
+     <div class="grid lg:grid-cols-[1.08fr_.92fr] gap-10 lg:gap-14">
+      <article class="fade-up delay-1">
+       <p data-template-id="overview-kicker" class="canva-text uppercase tracking-[0.24em] text-xs font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.14rem;">Lesson Overview</p>
+       <h2 data-template-id="overview-heading" class="canva-text serif mt-3 text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 26px;">Let’s begin with a simple question: how do machines make decisions?</h2>
+       <p data-template-id="overview-text" class="canva-text mt-5 text-[#4d5a6b] leading-8 max-w-3xl" style="color: rgb(77, 90, 107); font-weight: 400; font-style: normal; font-size: 17px; line-height: 1.7;">In this lesson, you will be introduced to one of the most important ideas in computer science: computation. At first, the word may sound technical, but the idea is actually very familiar. Every time a phone unlocks after reading your fingerprint, a traffic light changes color, or a search bar checks what you typed, a system is receiving information, following rules, and producing a result. Theory of Computation helps us understand these systems in a clearer and more organized way.</p>
+       <div class="mt-8 border-l-4 border-[#b88f4a] bg-[#fbf8f2] px-6 py-5">
+        <p data-template-id="big-idea-label" class="canva-text uppercase tracking-[0.2em] text-[11px] font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">Big Idea</p>
+        <p data-template-id="big-idea-text" class="canva-text serif mt-2 text-[#22324a] leading-7" style="color: rgb(34, 50, 74); font-weight: 400; font-style: normal; font-size: 19px; line-height: 1.5;">Even complicated digital systems can often be understood as a series of simple states, inputs, and responses.</p>
+       </div>
+      </article>
+      <aside class="fade-up delay-2">
+       <div data-template-id="objectives-panel" class="canva-panel bg-[#fbf8f2] border border-[#ded4c4] p-6 md:p-8 shadow-[0_8px_24px_rgba(20,32,51,0.04)]" style="background: rgb(251, 248, 242);">
+        <div class="flex items-center justify-between mb-5">
+         <h2 data-template-id="objectives-heading" class="canva-text serif text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 22px;">By the end of this lesson, you should be able to:</h2><i data-lucide="target" class="w-6 h-6 text-[#b88f4a]"></i>
+        </div>
+        <ul class="space-y-4">
+         <li class="flex gap-3 items-start"><span class="mt-2 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span><p data-template-id="objective-1" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">explain computation using simple everyday examples;</p></li>
+         <li class="flex gap-3 items-start"><span class="mt-2 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span><p data-template-id="objective-2" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">describe automata as simplified models of machines;</p></li>
+         <li class="flex gap-3 items-start"><span class="mt-2 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span><p data-template-id="objective-3" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">identify the meaning of state, transition, and acceptance;</p></li>
+         <li class="flex gap-3 items-start"><span class="mt-2 w-2 h-2 rounded-full bg-[#b88f4a] shrink-0"></span><p data-template-id="objective-4" class="canva-text text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.5;">connect these ideas to systems you already use every day.</p></li>
+        </ul>
+       </div>
+      </aside>
+     </div>
+    </section>
+    <section id="lesson" class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-10 border-t border-[#d8d0c3]">
+     <div class="max-w-5xl">
+      <p data-template-id="lesson-kicker" class="canva-text uppercase tracking-[0.24em] text-xs font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.14rem;">Core Lesson</p>
+      <h2 data-template-id="lesson-heading" class="canva-text serif mt-3 text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 26px;">The first steps into computation</h2>
+      <article class="mt-8">
+       <h3 data-template-id="section-1-heading" class="canva-text serif text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 22px;">1. What is computation?</h3>
+       <p data-template-id="section-1-text" class="canva-text mt-4 text-[#4d5a6b] leading-8" style="color: rgb(77, 90, 107); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.75;">Computation is the process of taking in information, following a set of rules, and producing an output. You can think of it as a decision-making process. For example, when you type your PIN into an ATM, the machine receives your input, checks whether it matches the stored record, and then decides whether to allow access or reject the attempt. The same basic pattern appears in many technologies around us: input, rules, and output.</p>
+       <div class="mt-5 bg-[#efe6d7] border border-[#ddceb8] p-5">
+        <div class="flex gap-3 items-start"><i data-lucide="traffic-cone" class="w-5 h-5 text-[#8b6834] mt-1"></i>
+         <div>
+          <p data-template-id="example-1-label" class="canva-text uppercase tracking-[0.18em] text-[11px] font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">Real-world scenario</p>
+          <p data-template-id="example-1-text" class="canva-text mt-2 text-[#46566a] leading-7" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">Imagine a pedestrian traffic light near a school crossing. When someone presses the button, the system does not randomly choose what to do. It follows a rule: wait for the correct time, then switch from STOP to WALK. That simple rule-following behavior is already a form of computation.</p>
+         </div>
+        </div>
+       </div>
+      </article>
+      <article class="mt-10">
+       <h3 data-template-id="section-2-heading" class="canva-text serif text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 22px;">2. Automata: simple models of how systems behave</h3>
+       <p data-template-id="section-2-text" class="canva-text mt-4 text-[#4d5a6b] leading-8" style="color: rgb(77, 90, 107); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.75;">An automaton is a simplified model of a machine or system. Instead of focusing on wires, screens, and physical parts, we focus on behavior. We ask: What condition is the system currently in? What input does it receive? What happens next? This makes complicated systems much easier to study. In computer science, simplifying a problem this way helps us understand how a machine behaves without getting lost in unnecessary details.</p>
+       <div class="grid md:grid-cols-3 gap-4 mt-6">
+        <div class="lesson-card border border-[#ded4c4] bg-[#fbf8f2] p-5">
+         <div class="w-10 h-10 rounded-full bg-[#11263f] text-white flex items-center justify-center"><i data-lucide="circle-dot" class="w-5 h-5"></i>
+         </div>
+         <h4 data-template-id="state-card-title" class="canva-text serif mt-4 text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 19px;">State</h4>
+         <p data-template-id="state-card-text" class="canva-text mt-2 text-[#5d6877] leading-6" style="color: rgb(93, 104, 119); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.5;">The current condition of the system. For example: LOCKED, UNLOCKED, WAITING, or PROCESSING.</p>
+        </div>
+        <div class="lesson-card border border-[#ded4c4] bg-[#fbf8f2] p-5">
+         <div class="w-10 h-10 rounded-full bg-[#11263f] text-white flex items-center justify-center"><i data-lucide="arrow-right-left" class="w-5 h-5"></i>
+         </div>
+         <h4 data-template-id="transition-card-title" class="canva-text serif mt-4 text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 19px;">Transition</h4>
+         <p data-template-id="transition-card-text" class="canva-text mt-2 text-[#5d6877] leading-6" style="color: rgb(93, 104, 119); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.5;">The movement from one state to another after an input or event happens.</p>
+        </div>
+        <div class="lesson-card border border-[#ded4c4] bg-[#fbf8f2] p-5">
+         <div class="w-10 h-10 rounded-full bg-[#11263f] text-white flex items-center justify-center"><i data-lucide="check-circle-2" class="w-5 h-5"></i>
+         </div>
+         <h4 data-template-id="accept-card-title" class="canva-text serif mt-4 text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 19px;">Acceptance</h4>
+         <p data-template-id="accept-card-text" class="canva-text mt-2 text-[#5d6877] leading-6" style="color: rgb(93, 104, 119); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.5;">The point where the machine decides that the input is valid, correct, or recognized.</p>
+        </div>
+       </div>
+       <div class="soft-note mt-6 p-5">
+        <div class="flex gap-3 items-start"><i data-lucide="lightbulb" class="w-5 h-5 text-[#8b6834] mt-1"></i>
+         <div>
+          <p data-template-id="pause-label" class="canva-text uppercase tracking-[0.18em] text-[11px] font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">Pause and think</p>
+          <p data-template-id="pause-text" class="canva-text mt-2 text-[#46566a] leading-7" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">Think about the screen lock on your phone. What are its possible states? What input causes it to change? In many cases, you are already describing an automaton without realizing it.</p>
+         </div>
+        </div>
+       </div>
+      </article>
+      <article class="mt-10">
+       <h3 data-template-id="section-3-heading" class="canva-text serif text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 22px;">3. Formal languages and recognizing patterns</h3>
+       <p data-template-id="section-3-text" class="canva-text mt-4 text-[#4d5a6b] leading-8" style="color: rgb(77, 90, 107); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.75;">In Theory of Computation, a language is not just something spoken like English or Filipino. A language is a set of valid strings that follow a pattern or rule. For example, a valid email address, a student ID number, or a password format all follow certain rules. Automata help us check whether an input belongs to the language or not. If the input follows the rule, it is accepted; if not, it is rejected.</p>
+       <div class="mt-5 border border-[#ded4c4] bg-[#fbf8f2]">
+        <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#ded4c4]">
+         <div class="p-5">
+          <p data-template-id="mini-1-title" class="canva-text uppercase tracking-[0.18em] text-[11px] font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">Alphabet</p>
+          <p data-template-id="mini-1-text" class="canva-text mt-2 text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.5;">The symbols we are allowed to use, such as letters, digits, or punctuation marks.</p>
+         </div>
+         <div class="p-5">
+          <p data-template-id="mini-2-title" class="canva-text uppercase tracking-[0.18em] text-[11px] font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">String</p>
+          <p data-template-id="mini-2-text" class="canva-text mt-2 text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.5;">A sequence of symbols, such as 1011, AB123, or hello.</p>
+         </div>
+         <div class="p-5">
+          <p data-template-id="mini-3-title" class="canva-text uppercase tracking-[0.18em] text-[11px] font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">Language</p>
+          <p data-template-id="mini-3-text" class="canva-text mt-2 text-[#46566a] leading-6" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.5;">A set of strings that satisfy a certain rule or pattern.</p>
+         </div>
+        </div>
+       </div>
+      </article>
+     </div>
+    </section>
+    <section id="applications" class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-14">
+     <p data-template-id="applications-kicker" class="canva-text uppercase tracking-[0.24em] text-xs font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.14rem;">Why it matters</p>
+     <h2 data-template-id="applications-heading" class="canva-text serif mt-3 text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 26px;">You already use these ideas every day</h2>
+     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-8">
+      <article class="lesson-card border border-[#ded4c4] bg-[#fbf8f2] p-5"><i data-lucide="code-2" class="w-6 h-6 text-[#b88f4a]"></i>
+       <h3 data-template-id="app-1-title" class="canva-text serif mt-4 text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 19px;">Compilers</h3>
+       <p data-template-id="app-1-text" class="canva-text mt-2 text-[#596575] leading-6" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.55;">When you write C code in GCC or Python in PyCharm, the compiler reads your code and checks: Does every opening bracket have a closing one? Is each variable declared before use? If a rule is broken, it rejects the code with an error message—automaton behavior: input (code) → rules check → output (accept or reject).</p>
+      </article>
+      <article class="lesson-card border border-[#ded4c4] bg-[#fbf8f2] p-5"><i data-lucide="message-circle" class="w-6 h-6 text-[#b88f4a]"></i>
+       <h3 data-template-id="app-2-title" class="canva-text serif mt-4 text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 19px;">Language Tools</h3>
+       <p data-template-id="app-2-text" class="canva-text mt-2 text-[#596575] leading-6" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.55;">When you type in Google Docs, Grammarly watches every sentence. It recognizes patterns: does this look like a run-on? Does the verb agree with the subject? These tools use automata-like rules to scan patterns and suggest corrections instantly.</p>
+      </article>
+      <article class="lesson-card border border-[#ded4c4] bg-[#fbf8f2] p-5"><i data-lucide="shield-check" class="w-6 h-6 text-[#b88f4a]"></i>
+       <h3 data-template-id="app-3-title" class="canva-text serif mt-4 text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 19px;">Cybersecurity</h3>
+       <p data-template-id="app-3-text" class="canva-text mt-2 text-[#596575] leading-6" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.55;">Bank firewalls use regex automata to block SQL injection attacks like' OR '1'='1. The system recognizes forbidden patterns and rejects the input before it reaches the database. Your bank's login page runs this check millions of times per day.</p>
+      </article>
+      <article class="lesson-card border border-[#ded4c4] bg-[#fbf8f2] p-5"><i data-lucide="bot" class="w-6 h-6 text-[#b88f4a]"></i>
+       <h3 data-template-id="app-4-title" class="canva-text serif mt-4 text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 19px;">Everyday Devices</h3>
+       <p data-template-id="app-4-text" class="canva-text mt-2 text-[#596575] leading-6" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.55;">An elevator in a mall receives button presses (input) and changes states: IDLE → MOVING-UP → STOPPED-AT-FLOOR-3 → MOVING-DOWN. A vending machine accepts coins, checks if you have enough money (state), then dispenses a snack. Both are automata in the real world.</p>
+      </article>
+     </div>
+    </section>
+    <section id="activities" class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-14 border-t border-[#d8d0c3]">
+     <div class="grid lg:grid-cols-2 gap-8">
+      <article data-template-id="group-panel" class="canva-panel bg-[#11263f] text-white p-6 md:p-8" style="background: rgb(17, 38, 63);">
+       <div class="flex items-center justify-between gap-4">
+        <div>
+         <p data-template-id="group-kicker" class="canva-text uppercase tracking-[0.22em] text-xs text-[#d7c196] font-bold" style="color: rgb(215, 193, 150); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.14rem;">Collaborative learning</p>
+         <h2 data-template-id="group-heading" class="canva-text serif mt-2 text-white" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 24px;">Group Activity: Model a Familiar System</h2>
+        </div><i data-lucide="users" class="w-7 h-7 text-[#d7c196]"></i>
+       </div>
+       <p data-template-id="group-text" class="canva-text mt-5 text-[#dce4ee] leading-7" style="color: rgb(220, 228, 238); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">Work with your group and choose one system you know well, such as an ATM, a rice cooker, a vending machine, or a school gate scanner. Talk about what the system can do, what inputs it receives, and how it changes from one condition to another.</p>
+       <div class="mt-6 border-t border-[#3a526f] pt-5">
+        <p data-template-id="group-task-label" class="canva-text uppercase tracking-[0.18em] text-[11px] text-[#d7c196] font-bold" style="color: rgb(215, 193, 150); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">Your output</p>
+        <p data-template-id="group-task-text" class="canva-text mt-2 text-[#eef3f8] leading-7" style="color: rgb(238, 243, 248); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">Create a simple state diagram or flow chart, then explain your system in your own words.</p>
+       </div>
+      </article>
+      <article data-template-id="individual-panel" class="canva-panel bg-[#fbf8f2] border border-[#ded4c4] p-6 md:p-8" style="background: rgb(251, 248, 242);">
+       <div class="flex items-center justify-between gap-4">
+        <div>
+         <p data-template-id="individual-kicker" class="canva-text uppercase tracking-[0.22em] text-xs text-[#8b6834] font-bold" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.14rem;">Personal reflection</p>
+         <h2 data-template-id="individual-heading" class="canva-text serif mt-2 text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 24px;">Individual Activity: Spot the Automaton</h2>
+        </div><i data-lucide="pencil-line" class="w-7 h-7 text-[#b88f4a]"></i>
+       </div>
+       <p data-template-id="individual-text" class="canva-text mt-5 text-[#596575] leading-7" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">Think of one digital or mechanical system you used today. It could be a phone lock screen, elevator, online form, or even a microwave oven. Try to describe it as a system that receives an input and makes a decision.</p>
+       <div class="mt-6 border-t border-[#ded4c4] pt-5">
+        <p data-template-id="individual-prompt-label" class="canva-text uppercase tracking-[0.18em] text-[11px] text-[#8b6834] font-bold" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">Guide question</p>
+        <p data-template-id="individual-prompt-text" class="canva-text mt-2 text-[#46566a] leading-7" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">What are its possible states? What event causes it to move from one state to another?</p>
+       </div>
+      </article>
+     </div>
+    </section>
+    <section id="takeaways" class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-14 border-t border-[#d8d0c3]">
+     <div class="grid lg:grid-cols-[.8fr_1.2fr] gap-8 items-start">
+      <div>
+       <p data-template-id="takeaways-kicker" class="canva-text uppercase tracking-[0.24em] text-xs font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.14rem;">Remember this</p>
+       <h2 data-template-id="takeaways-heading" class="canva-text serif mt-3 text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 26px;">Key takeaways before you move on</h2>
+       <p data-template-id="takeaways-intro" class="canva-text mt-4 text-[#596575] leading-7" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">If you remember these four ideas, you already have a strong starting point for the next lessons.</p>
+      </div>
+      <div data-template-id="takeaways-panel" class="canva-panel bg-[#fbf8f2] border border-[#ded4c4]" style="background: rgb(251, 248, 242);">
+       <div class="takeaway-row flex gap-4 p-5">
+        <div class="w-8 h-8 rounded-full bg-[#11263f] text-white flex items-center justify-center shrink-0">
+         <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <p data-template-id="takeaway-1" class="canva-text text-[#46566a] leading-7" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">Computation means receiving input, following rules, and producing an output.</p>
+       </div>
+       <div class="takeaway-row flex gap-4 p-5">
+        <div class="w-8 h-8 rounded-full bg-[#11263f] text-white flex items-center justify-center shrink-0">
+         <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <p data-template-id="takeaway-2" class="canva-text text-[#46566a] leading-7" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">An automaton is a simplified model used to study how a system behaves.</p>
+       </div>
+       <div class="takeaway-row flex gap-4 p-5">
+        <div class="w-8 h-8 rounded-full bg-[#11263f] text-white flex items-center justify-center shrink-0">
+         <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <p data-template-id="takeaway-3" class="canva-text text-[#46566a] leading-7" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">States and transitions help us describe how a system changes over time.</p>
+       </div>
+       <div class="takeaway-row flex gap-4 p-5">
+        <div class="w-8 h-8 rounded-full bg-[#11263f] text-white flex items-center justify-center shrink-0">
+         <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <p data-template-id="takeaway-4" class="canva-text text-[#46566a] leading-7" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">Formal languages are sets of valid strings that follow a rule or pattern.</p>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="quiz" class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-14 border-t border-[#d8d0c3]">
+     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div>
+       <p data-template-id="quiz-kicker" class="canva-text uppercase tracking-[0.24em] text-xs font-bold text-[#8b6834]" style="color: rgb(139, 104, 52); font-weight: 700; font-style: normal; font-size: 12px; letter-spacing: 0.14rem;">Check your understanding</p>
+       <h2 data-template-id="quiz-heading" class="canva-text serif mt-3 text-[#142033]" style="color: rgb(20, 32, 51); font-weight: 700; font-style: normal; font-size: 26px;">Sample Quiz</h2>
+      </div><button id="toggleAnswers" data-template-id="answers-button" class="canva-button px-4 py-2 bg-[#11263f] text-white text-sm hover:bg-[#1d3757] transition" style="background: rgb(17, 38, 63); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 14px;">Show Answer Key</button>
+     </div>
+     <div class="mt-8 grid lg:grid-cols-2 gap-5">
+      <div class="border border-[#ded4c4] bg-[#fbf8f2] p-5">
+       <p data-template-id="q1" class="canva-text font-medium text-[#22324a] leading-7" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 15px;">1. What best describes computation?</p>
+       <p data-template-id="q1-options" class="canva-text mt-3 text-[#596575] leading-7 whitespace-pre-line" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.6;">A. Drawing a picture
+B. Receiving input, following rules, and producing output
+C. Turning on a machine only
+D. Memorizing information</p>
+      </div>
+      <div class="border border-[#ded4c4] bg-[#fbf8f2] p-5">
+       <p data-template-id="q2" class="canva-text font-medium text-[#22324a] leading-7" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 15px;">2. In an automaton, what is a state?</p>
+       <p data-template-id="q2-options" class="canva-text mt-3 text-[#596575] leading-7 whitespace-pre-line" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.6;">A. The physical color of a machine
+B. The current condition of the system
+C. The brand of a computer
+D. The size of the input</p>
+      </div>
+      <div class="border border-[#ded4c4] bg-[#fbf8f2] p-5">
+       <p data-template-id="q3" class="canva-text font-medium text-[#22324a] leading-7" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 15px;">3. Which is a real-world example of language recognition?</p>
+       <p data-template-id="q3-options" class="canva-text mt-3 text-[#596575] leading-7 whitespace-pre-line" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.6;">A. A filter checking whether an email address is valid
+B. A chair holding a person
+C. A fan spinning
+D. A notebook being opened</p>
+      </div>
+      <div class="border border-[#ded4c4] bg-[#fbf8f2] p-5">
+       <p data-template-id="q4" class="canva-text font-medium text-[#22324a] leading-7" style="color: rgb(34, 50, 74); font-weight: 500; font-style: normal; font-size: 15px;">4. Why do we use automata models?</p>
+       <p data-template-id="q4-options" class="canva-text mt-3 text-[#596575] leading-7 whitespace-pre-line" style="color: rgb(89, 101, 117); font-weight: 400; font-style: normal; font-size: 14px; line-height: 1.6;">A. To make machines heavier
+B. To simplify and study system behavior clearly
+C. To replace all software
+D. To remove all inputs</p>
+      </div>
+     </div>
+     <div id="answerKey" class="hidden mt-6 bg-[#efe6d7] border border-[#ddceb8] p-5">
+      <p data-template-id="answer-key-heading" class="canva-text serif text-[#1d3049]" style="color: rgb(29, 48, 73); font-weight: 700; font-style: normal; font-size: 20px;">Answer Key</p>
+      <p data-template-id="answer-key-text" class="canva-text mt-3 text-[#46566a] leading-7" style="color: rgb(70, 86, 106); font-weight: 400; font-style: normal; font-size: 15px; line-height: 1.6;">1 – B   •   2 – B   •   3 – A   •   4 – B</p>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full bg-[#11263f] text-white">
+    <div class="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-7 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+     <p data-template-id="footer-text" class="canva-text text-sm text-[#d8e0ea]" style="color: rgb(216, 224, 234); font-weight: 400; font-style: normal; font-size: 13px;">Automata and Theory of Computation • Week 1 • University of Perpetual Help System DALTA – Las Piñas</p>
+     <div class="flex items-center gap-2 text-[#d7c196] text-xs uppercase tracking-[0.18em]"><span class="w-6 h-px bg-[#b88f4a]"></span> <span>Week 1 Lesson</span>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+
+      const button = document.getElementById('toggleAnswers');
+      const answerKey = document.getElementById('answerKey');
+
+      button.addEventListener('click', () => {
+        answerKey.classList.toggle('hidden');
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a06ab3599b24e2eb',t:'MTc4MDYxNTU2Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body></html>
