@@ -1,369 +1,498 @@
 <!doctype html>
-<html lang="en">
- <head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 2 – Mathematical Foundations and Proof Techniques</title>
+  <title>Week 2 Mathematical Foundations Lesson</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
   <style>
     :root{
-      --forest:#173b2f;
-      --forest-2:#214f40;
-      --cream:#f6f0e4;
-      --paper:#fffdf8;
-      --gold:#c49a4a;
-      --ink:#25322d;
-      --muted:#6d766f;
+      --navy:#0d223f;
+      --navy-2:#15345d;
+      --gold:#d8a94a;
+      --cream:#f8f5ef;
+      --paper:#fffdf9;
+      --ink:#18324d;
+      --muted:#64748b;
+      --line:#dce3ea;
+      --mint:#dfeee7;
     }
-    html { scroll-behavior: smooth; }
-    body { font-family:'DM Sans', sans-serif; color:var(--ink); }
-    .display { font-family:'Fraunces', serif; }
-    .mono { font-family:'Space Mono', monospace; }
-    .hero-overlay { background:linear-gradient(90deg, rgba(18,49,39,.96) 0%, rgba(18,49,39,.9) 47%, rgba(18,49,39,.42) 100%); }
-    .paper-card { background:rgba(255,253,248,.96); border:1px solid rgba(38,63,52,.12); box-shadow:0 14px 35px rgba(35,55,46,.08); }
-    .section-kicker::before{ content:""; display:inline-block; width:34px; height:2px; background:var(--gold); margin-right:.7rem; vertical-align:middle; }
-    .note-card { background:linear-gradient(135deg,#eef5ec,#f7fbf5); border-left:4px solid var(--forest-2); }
-    .formula { background:#eef2ea; border:1px solid #d8e1d4; color:#16392d; }
-    .nav-link { position:relative; }
-    .nav-link::after{ content:""; position:absolute; left:0; bottom:-6px; width:0; height:2px; background:var(--gold); transition:width .25s ease; }
-    .nav-link:hover::after,.nav-link:focus-visible::after{ width:100%; }
-    .section-toggle svg{ transition:transform .25s ease; }
-    .section-toggle.open svg{ transform:rotate(180deg); }
-    .lesson-group.collapsed .group-content{ display:none; }
-    .quiz-answer{ display:none; }
-    .quiz-answer.show{ display:block; }
-    .fade-up{ animation:fadeUp .7s ease both; }
-    @keyframes fadeUp{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
-    .timeline-line{ position:absolute; left:17px; top:34px; bottom:0; width:2px; background:#d8dfd5; }
-    @media (max-width:768px){ .hero-overlay{ background:linear-gradient(180deg, rgba(18,49,39,.92) 0%, rgba(18,49,39,.8) 100%); } }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:'DM Sans', sans-serif;
+      color:var(--ink);
+      background:var(--cream);
+    }
+    .serif{font-family:'Fraunces', serif}
+    .hero-pattern{
+      background-image:
+        linear-gradient(rgba(13,34,63,.88), rgba(13,34,63,.92)),
+        radial-gradient(circle at 20% 15%, rgba(216,169,74,.18), transparent 28%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,.08), transparent 24%);
+    }
+    .lesson-card{
+      transition:all .25s ease;
+    }
+    .lesson-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 40px rgba(13,34,63,.11);
+    }
+    .accordion-panel{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .35s ease;
+    }
+    .accordion-item.open .accordion-panel{
+      max-height:1200px;
+    }
+    .accordion-item.open .chev{
+      transform:rotate(180deg);
+    }
+    .chev{transition:transform .25s ease}
+    .answer{
+      display:none;
+    }
+    .answer.show{
+      display:block;
+    }
+    .focusable:focus-visible{
+      outline:3px solid rgba(216,169,74,.55);
+      outline-offset:3px;
+    }
+    .quiz-option.selected{
+      border-color:var(--gold);
+      background:#fff8e7;
+    }
   </style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
  <script src="/_sdk/telemetry_sdk.js"></script></head>
- <body data-template-id="__page-root" class="w-full">
-  <header class="w-full">
-   <div class="bg-[var(--forest)] text-white">
-    <div class="max-w-7xl mx-auto px-5 md:px-8 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-sm tracking-wide">
-     <p data-template-id="university-name" class="canva-text uppercase font-medium"></p>
-     <p data-template-id="course-label" class="canva-text text-[#d6e5dc]"></p>
+ <body data-template-id="__page-root" class="w-full" style="background: rgb(248, 245, 239);">
+  <header class="hero-pattern text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-12">
+    <div class="flex items-center justify-between gap-4 mb-10">
+     <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full border border-yellow-300/60 flex items-center justify-center text-yellow-200">
+       <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+      </div>
+      <div>
+       <p data-template-id="school-name" class="canva-text text-xs uppercase tracking-[0.22em] text-yellow-100/90 font-semibold" style="color: rgb(254, 243, 199); font-weight: 600; font-style: normal; font-size: 11px;">University of Perpetual Help System DALTA – Las Piñas</p>
+       <p data-template-id="instructor-name" class="canva-text text-sm text-white/75" style="color: rgb(255, 255, 255); font-weight: 400; font-style: normal; font-size: 14px;">Instructor: MKDB</p>
+      </div>
+     </div>
+     <div class="hidden md:flex items-center gap-2 text-xs text-white/70 border border-white/15 rounded-full px-4 py-2">
+      <i data-lucide="calendar-days" class="w-4 h-4"></i> <span>Discrete Structures • Week 2</span>
+     </div>
+    </div>
+    <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center">
+     <div>
+      <p data-template-id="hero-eyebrow" class="canva-text text-yellow-300 text-sm uppercase tracking-[0.28em] font-semibold mb-4" style="color: rgb(253, 230, 138); font-weight: 700; font-style: normal; font-size: 13px;">Week 2 Lesson</p>
+      <h1 data-template-id="hero-title" class="canva-text serif max-w-4xl leading-[1.05] mb-5" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 52px; line-height: 1.05;">Mathematical Foundations and Proof Techniques</h1>
+      <p data-template-id="hero-subtitle" class="canva-text max-w-2xl text-white/82 text-lg leading-8 mb-7" style="color: rgb(229, 237, 247); font-weight: 400; font-style: normal; font-size: 18px; line-height: 1.6;">Build the language of discrete mathematics: sets, logic, and the proof strategies that turn ideas into convincing arguments.</p>
+      <div class="flex flex-wrap gap-3">
+       <a href="#lesson-map" class="focusable inline-flex items-center gap-2 bg-yellow-400 text-slate-900 px-5 py-3 rounded-full font-semibold text-sm hover:bg-yellow-300 transition"> <i data-lucide="map" class="w-4 h-4"></i> Start Lesson </a> <a href="#activities" class="focusable inline-flex items-center gap-2 border border-white/25 text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-white/10 transition"> <i data-lucide="users" class="w-4 h-4"></i> View Activities </a>
+      </div>
+     </div>
+     <div class="relative">
+      <div class="absolute -top-4 -right-3 w-28 h-28 border border-yellow-200/30 rounded-full"></div>
+      <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-yellow-300/10 rounded-full"></div>
+      <div class="relative overflow-hidden rounded-[28px] border border-white/15 shadow-2xl">
+       <img data-template-id="hero-image" loading="lazy" class="canva-image w-full h-[330px] object-cover" src="https://images.pexels.com/photos/8197538/pexels-photo-8197538.jpeg" alt="Person writing complex mathematical equations on a blackboard, focusing on education and learning.">
+       <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent"></div>
+       <div class="absolute left-5 bottom-5 right-5">
+        <div class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-yellow-200 mb-2">
+         <span class="w-8 h-px bg-yellow-300"></span> Foundations before formulas
+        </div>
+        <p class="text-white/90 text-sm">A strong proof begins with precise language.</p>
+       </div>
+      </div>
+     </div>
     </div>
    </div>
-   <section class="relative min-h-[460px] md:min-h-[520px] overflow-hidden"><img data-template-id="hero-image" loading="lazy" class="canva-image absolute inset-0 w-full h-full object-cover">
-    <div class="hero-overlay absolute inset-0"></div>
-    <div class="relative max-w-7xl mx-auto px-5 md:px-8 py-16 md:py-20 h-full flex items-center">
-     <div class="max-w-3xl text-white fade-up">
-      <div data-template-id="week-label" class="canva-tag inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs uppercase tracking-[.18em] mb-5"></div>
-      <h1 data-template-id="main-title" class="canva-text display leading-[1.05] max-w-3xl"></h1>
-      <p data-template-id="hero-subtitle" class="canva-text mt-5 text-lg md:text-xl text-[#e9f1ec] max-w-2xl leading-8"></p>
-      <div class="mt-8 flex flex-wrap gap-4">
-       <div class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 backdrop-blur-sm">
-        <p data-template-id="instructor-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#bfd3c8]"></p>
-        <p data-template-id="instructor-name" class="canva-text mt-1 font-semibold text-lg"></p>
-       </div>
-       <div class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 backdrop-blur-sm">
-        <p data-template-id="lesson-theme-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#bfd3c8]"></p>
-        <p data-template-id="lesson-theme-text" class="canva-text mt-1 font-semibold text-lg"></p>
-       </div>
-      </div>
-     </div>
-    </div>
-   </section>
-   <nav data-template-id="lesson-nav" class="canva-menu bg-[#f8f4eb] border-b border-[#dfd7c8] sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-5 md:px-8 overflow-x-auto">
-     <div class="flex gap-8 min-w-max py-4 text-sm font-medium text-[#365346]"><a data-template-id="nav-overview" class="canva-link nav-link" href="#overview"></a> <a data-template-id="nav-foundations" class="canva-link nav-link" href="#foundations"></a> <a data-template-id="nav-proofs" class="canva-link nav-link" href="#proofs"></a> <a data-template-id="nav-activities" class="canva-link nav-link" href="#activities"></a> <a data-template-id="nav-quiz" class="canva-link nav-link" href="#quiz"></a>
-     </div>
-    </div>
-   </nav>
   </header>
-  <main class="w-full">
-   <section id="overview" class="max-w-7xl mx-auto px-5 md:px-8 py-14 md:py-20">
-    <div class="grid lg:grid-cols-[1.2fr_.8fr] gap-8 items-start">
-     <div>
-      <p data-template-id="overview-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
-      <h2 data-template-id="overview-title" class="canva-text display mt-4 leading-tight text-[#173b2f]"></h2>
-      <p data-template-id="overview-body" class="canva-text mt-5 text-lg leading-8 text-[#56635b] max-w-3xl"></p>
-      <div class="grid sm:grid-cols-3 gap-4 mt-8">
-       <div data-template-id="stat-card-1" class="canva-card paper-card rounded-2xl p-5">
-        <p data-template-id="stat-1-value" class="canva-text display text-[#173b2f]"></p>
-        <p data-template-id="stat-1-label" class="canva-text mt-1 text-sm text-[#6f7b73]"></p>
-       </div>
-       <div data-template-id="stat-card-2" class="canva-card paper-card rounded-2xl p-5">
-        <p data-template-id="stat-2-value" class="canva-text display text-[#173b2f]"></p>
-        <p data-template-id="stat-2-label" class="canva-text mt-1 text-sm text-[#6f7b73]"></p>
-       </div>
-       <div data-template-id="stat-card-3" class="canva-card paper-card rounded-2xl p-5">
-        <p data-template-id="stat-3-value" class="canva-text display text-[#173b2f]"></p>
-        <p data-template-id="stat-3-label" class="canva-text mt-1 text-sm text-[#6f7b73]"></p>
-       </div>
+  <main class="max-w-7xl mx-auto px-5 md:px-8 py-10 md:py-14">
+   <section id="outcomes" class="grid lg:grid-cols-[.9fr_1.1fr] gap-7 mb-14">
+    <div class="bg-[var(--navy)] text-white rounded-[26px] p-7 md:p-9 relative overflow-hidden">
+     <div class="absolute -right-12 -top-12 w-40 h-40 rounded-full border border-white/10"></div>
+     <p class="uppercase tracking-[0.24em] text-xs text-yellow-300 font-semibold mb-4">Week 2 Focus</p>
+     <h2 data-template-id="outcomes-title" class="canva-text serif mb-4" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 34px;">By the end of this lesson, you should be able to...</h2>
+     <p data-template-id="outcomes-intro" class="canva-text text-white/80 leading-7" style="color: rgb(219, 231, 243); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">This week focuses on the symbols, statements, and reasoning patterns that appear throughout computer science, mathematics, and programming.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4"><i data-lucide="shapes" class="w-5 h-5"></i>
       </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Understand structures</h3>
+      <p class="text-sm leading-6 text-slate-600">Use sets, relations, functions, strings, and alphabets to describe mathematical objects clearly.</p>
      </div>
-     <aside data-template-id="outcomes-panel" class="canva-panel paper-card rounded-3xl p-6 md:p-7">
-      <div class="flex items-center gap-3">
-       <div class="w-11 h-11 rounded-full bg-[#e3eddf] flex items-center justify-center text-[#1d4a3b]"><i data-lucide="target" class="w-5 h-5"></i>
-       </div>
-       <h2 data-template-id="outcomes-title" class="canva-text display text-[#173b2f]"></h2>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4"><i data-lucide="message-square-text" class="w-5 h-5"></i>
       </div>
-      <ul class="mt-5 space-y-4 text-[15px] leading-6">
-       <li class="flex gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 mt-0.5 text-[#2a6d54] shrink-0"></i><span data-template-id="outcome-1" class="canva-text"></span></li>
-       <li class="flex gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 mt-0.5 text-[#2a6d54] shrink-0"></i><span data-template-id="outcome-2" class="canva-text"></span></li>
-       <li class="flex gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 mt-0.5 text-[#2a6d54] shrink-0"></i><span data-template-id="outcome-3" class="canva-text"></span></li>
-       <li class="flex gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 mt-0.5 text-[#2a6d54] shrink-0"></i><span data-template-id="outcome-4" class="canva-text"></span></li>
-      </ul>
-      <div data-template-id="why-card" class="canva-card note-card rounded-2xl p-4 mt-6">
-       <p data-template-id="why-title" class="canva-text font-semibold text-[#1f4739]"></p>
-       <p data-template-id="why-body" class="canva-text mt-1 text-sm leading-6 text-[#506257]"></p>
+      <h3 class="font-semibold text-slate-900 mb-2">Translate statements</h3>
+      <p class="text-sm leading-6 text-slate-600">Convert everyday statements into logical expressions using propositions and predicates.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center mb-4"><i data-lucide="git-branch" class="w-5 h-5"></i>
       </div>
-     </aside>
-    </div>
-   </section>
-   <section id="foundations" class="max-w-7xl mx-auto px-5 md:px-8 pb-10">
-    <div class="flex items-end justify-between gap-4 mb-7">
-     <div>
-      <p data-template-id="foundations-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
-      <h2 data-template-id="foundations-title" class="canva-text display mt-4 text-[#173b2f]"></h2>
-     </div><button type="button" class="section-toggle open hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#cfd8cd] text-sm text-[#355446] bg-white hover:bg-[#f3f7f1] focus:outline-none focus:ring-2 focus:ring-[#173b2f]" data-target="foundations-group"> <span data-template-id="foundations-toggle" class="canva-text"></span> <i data-lucide="chevron-up" class="w-4 h-4"></i> </button>
-    </div>
-    <div id="foundations-group" class="lesson-group">
-     <div class="group-content grid lg:grid-cols-2 gap-6">
-      <article data-template-id="sets-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
-       <div class="flex items-center justify-between gap-4"><span data-template-id="sets-badge" class="canva-tag mono text-xs px-3 py-1 rounded-full bg-[#edf3e9] text-[#315342]"></span> <i data-lucide="braces" class="w-5 h-5 text-[#648271]"></i>
-       </div>
-       <h3 data-template-id="sets-title" class="canva-text display mt-5 text-[#173b2f]"></h3>
-       <p data-template-id="sets-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
-       <div data-template-id="sets-formula" class="canva-text formula mono rounded-xl px-4 py-3 mt-4 text-sm"></div>
-       <div class="mt-5">
-        <p data-template-id="sets-example-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#8b7a55] font-semibold"></p>
-        <p data-template-id="sets-example" class="canva-text mt-2 leading-7"></p>
-       </div>
-       <div data-template-id="sets-tip" class="canva-card note-card rounded-xl p-4 mt-5">
-        <p data-template-id="sets-tip-text" class="canva-text text-sm leading-6"></p>
-       </div>
-      </article>
-      <article data-template-id="relations-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
-       <div class="flex items-center justify-between gap-4"><span data-template-id="relations-badge" class="canva-tag mono text-xs px-3 py-1 rounded-full bg-[#edf3e9] text-[#315342]"></span> <i data-lucide="git-branch" class="w-5 h-5 text-[#648271]"></i>
-       </div>
-       <h3 data-template-id="relations-title" class="canva-text display mt-5 text-[#173b2f]"></h3>
-       <p data-template-id="relations-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
-       <div data-template-id="relations-formula" class="canva-text formula mono rounded-xl px-4 py-3 mt-4 text-sm"></div>
-       <div class="mt-5">
-        <p data-template-id="relations-example-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#8b7a55] font-semibold"></p>
-        <p data-template-id="relations-example" class="canva-text mt-2 leading-7"></p>
-       </div>
-       <div data-template-id="relations-tip" class="canva-card note-card rounded-xl p-4 mt-5">
-        <p data-template-id="relations-tip-text" class="canva-text text-sm leading-6"></p>
-       </div>
-      </article>
-      <article data-template-id="strings-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
-       <div class="flex items-center justify-between gap-4"><span data-template-id="strings-badge" class="canva-tag mono text-xs px-3 py-1 rounded-full bg-[#edf3e9] text-[#315342]"></span> <i data-lucide="binary" class="w-5 h-5 text-[#648271]"></i>
-       </div>
-       <h3 data-template-id="strings-title" class="canva-text display mt-5 text-[#173b2f]"></h3>
-       <p data-template-id="strings-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
-       <div data-template-id="strings-formula" class="canva-text formula mono rounded-xl px-4 py-3 mt-4 text-sm"></div>
-       <div class="mt-5">
-        <p data-template-id="strings-example-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#8b7a55] font-semibold"></p>
-        <p data-template-id="strings-example" class="canva-text mt-2 leading-7"></p>
-       </div>
-       <div data-template-id="strings-tip" class="canva-card note-card rounded-xl p-4 mt-5">
-        <p data-template-id="strings-tip-text" class="canva-text text-sm leading-6"></p>
-       </div>
-      </article>
-      <article data-template-id="logic-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
-       <div class="flex items-center justify-between gap-4"><span data-template-id="logic-badge" class="canva-tag mono text-xs px-3 py-1 rounded-full bg-[#edf3e9] text-[#315342]"></span> <i data-lucide="brain" class="w-5 h-5 text-[#648271]"></i>
-       </div>
-       <h3 data-template-id="logic-title" class="canva-text display mt-5 text-[#173b2f]"></h3>
-       <p data-template-id="logic-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
-       <div data-template-id="logic-formula" class="canva-text formula mono rounded-xl px-4 py-3 mt-4 text-sm"></div>
-       <div class="mt-5">
-        <p data-template-id="logic-example-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#8b7a55] font-semibold"></p>
-        <p data-template-id="logic-example" class="canva-text mt-2 leading-7"></p>
-       </div>
-       <div data-template-id="logic-tip" class="canva-card note-card rounded-xl p-4 mt-5">
-        <p data-template-id="logic-tip-text" class="canva-text text-sm leading-6"></p>
-       </div>
-      </article>
+      <h3 class="font-semibold text-slate-900 mb-2">Choose proof strategies</h3>
+      <p class="text-sm leading-6 text-slate-600">Recognize when to use direct proof, contrapositive, contradiction, or induction.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center mb-4"><i data-lucide="check-circle-2" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Justify answers</h3>
+      <p class="text-sm leading-6 text-slate-600">Explain not only what is true, but why it is true using organized reasoning.</p>
      </div>
     </div>
    </section>
-   <section id="proofs" class="max-w-7xl mx-auto px-5 md:px-8 py-12">
-    <div class="flex items-end justify-between gap-4 mb-7">
+   <section id="lesson-map" class="mb-14">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-6">
      <div>
-      <p data-template-id="proofs-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
-      <h2 data-template-id="proofs-title" class="canva-text display mt-4 text-[#173b2f]"></h2>
-     </div><button type="button" class="section-toggle open hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#cfd8cd] text-sm text-[#355446] bg-white hover:bg-[#f3f7f1] focus:outline-none focus:ring-2 focus:ring-[#173b2f]" data-target="proofs-group"> <span data-template-id="proofs-toggle" class="canva-text"></span> <i data-lucide="chevron-up" class="w-4 h-4"></i> </button>
-    </div>
-    <div id="proofs-group" class="lesson-group">
-     <div class="group-content grid md:grid-cols-2 gap-6">
-      <article data-template-id="direct-card" class="canva-card paper-card rounded-3xl p-6">
-       <p data-template-id="direct-label" class="canva-text mono text-xs text-[#8d7c55]"></p>
-       <h3 data-template-id="direct-title" class="canva-text display mt-3 text-[#173b2f]"></h3>
-       <p data-template-id="direct-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
-       <div data-template-id="direct-example" class="canva-text formula rounded-xl px-4 py-3 mt-4 text-sm leading-6"></div>
-      </article>
-      <article data-template-id="contra-card" class="canva-card paper-card rounded-3xl p-6">
-       <p data-template-id="contra-label" class="canva-text mono text-xs text-[#8d7c55]"></p>
-       <h3 data-template-id="contra-title" class="canva-text display mt-3 text-[#173b2f]"></h3>
-       <p data-template-id="contra-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
-       <div data-template-id="contra-example" class="canva-text formula rounded-xl px-4 py-3 mt-4 text-sm leading-6"></div>
-      </article>
-      <article data-template-id="contradiction-card" class="canva-card paper-card rounded-3xl p-6">
-       <p data-template-id="contradiction-label" class="canva-text mono text-xs text-[#8d7c55]"></p>
-       <h3 data-template-id="contradiction-title" class="canva-text display mt-3 text-[#173b2f]"></h3>
-       <p data-template-id="contradiction-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
-       <div data-template-id="contradiction-example" class="canva-text formula rounded-xl px-4 py-3 mt-4 text-sm leading-6"></div>
-      </article>
-      <article data-template-id="induction-card" class="canva-card paper-card rounded-3xl p-6">
-       <p data-template-id="induction-label" class="canva-text mono text-xs text-[#8d7c55]"></p>
-       <h3 data-template-id="induction-title" class="canva-text display mt-3 text-[#173b2f]"></h3>
-       <p data-template-id="induction-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
-       <div data-template-id="induction-example" class="canva-text formula rounded-xl px-4 py-3 mt-4 text-sm leading-6"></div>
-      </article>
+      <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Lesson Map</p>
+      <h2 class="serif text-3xl md:text-4xl text-[var(--navy)]">From language to proof</h2>
      </div>
+     <p class="text-sm text-slate-500 max-w-xl">Follow the lesson in sequence. Each idea supports the next one, like building blocks in mathematical reasoning.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-4">
+     <a href="#foundations" class="lesson-card block bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="flex items-center justify-between mb-5">
+       <span class="text-xs uppercase tracking-[0.2em] text-slate-400">01</span> <span class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center"><i data-lucide="boxes" class="w-4 h-4"></i></span>
+      </div><h3 class="font-semibold text-lg mb-2">Mathematical Foundations</h3><p class="text-sm text-slate-600 leading-6">Sets, relations, functions, strings, and alphabets.</p></a> <a href="#logic" class="lesson-card block bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="flex items-center justify-between mb-5">
+       <span class="text-xs uppercase tracking-[0.2em] text-slate-400">02</span> <span class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center"><i data-lucide="brain" class="w-4 h-4"></i></span>
+      </div><h3 class="font-semibold text-lg mb-2">Logic Language</h3><p class="text-sm text-slate-600 leading-6">Propositions, truth, variables, and quantified statements.</p></a> <a href="#proof" class="lesson-card block bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="flex items-center justify-between mb-5">
+       <span class="text-xs uppercase tracking-[0.2em] text-slate-400">03</span> <span class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center"><i data-lucide="route" class="w-4 h-4"></i></span>
+      </div><h3 class="font-semibold text-lg mb-2">Proof Techniques</h3><p class="text-sm text-slate-600 leading-6">Direct proof, contrapositive, contradiction, and induction.</p></a>
     </div>
    </section>
-   <section id="activities" class="max-w-7xl mx-auto px-5 md:px-8 py-12">
-    <div class="mb-8">
-     <p data-template-id="activities-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
-     <h2 data-template-id="activities-title" class="canva-text display mt-4 text-[#173b2f]"></h2>
+   <section id="foundations" class="mb-14">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Part I</p>
+     <h2 data-template-id="section-title-foundations" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Mathematical foundations</h2>
     </div>
-    <div class="grid lg:grid-cols-[.9fr_1.1fr] gap-7">
-     <aside data-template-id="classflow-card" class="canva-panel rounded-3xl bg-[#173b2f] text-white p-7">
-      <p data-template-id="classflow-kicker" class="canva-text text-xs uppercase tracking-[.18em] text-[#b9d0c3]"></p>
-      <h3 data-template-id="classflow-title" class="canva-text display mt-3"></h3>
-      <div class="relative mt-7 space-y-6">
-       <div class="timeline-line"></div>
-       <div class="relative flex gap-4">
-        <div class="w-9 h-9 rounded-full bg-[#d7e5db] text-[#173b2f] flex items-center justify-center shrink-0">
-         <i data-lucide="presentation" class="w-4 h-4"></i>
-        </div>
+    <div class="space-y-4">
+     <article class="accordion-item open bg-white border border-slate-200 rounded-2xl overflow-hidden">
+      <button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center"><i data-lucide="venetian-mask" class="w-5 h-5"></i></span>
         <div>
-         <p data-template-id="flow-1-title" class="canva-text font-semibold"></p>
-         <p data-template-id="flow-1-body" class="canva-text text-sm text-[#d7e6dd] mt-1 leading-6"></p>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 1</p>
+         <h3 class="font-semibold text-lg text-slate-900">Sets and Set Operations</h3>
         </div>
-       </div>
-       <div class="relative flex gap-4">
-        <div class="w-9 h-9 rounded-full bg-[#d7e5db] text-[#173b2f] flex items-center justify-center shrink-0">
-         <i data-lucide="pencil-ruler" class="w-4 h-4"></i>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4"><strong>A set</strong> is a well-defined collection of objects. The objects inside a set are called <strong>elements</strong>.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Realistic example</p>
+         <p class="text-sm leading-6 text-slate-700">Let <strong>J</strong> be the set of students who ride a jeepney to school and <strong>B</strong> be the set of students who ride a bus. If Ana rides both, then Ana belongs to <strong>J ∩ B</strong>, the intersection of the two sets.</p>
         </div>
-        <div>
-         <p data-template-id="flow-2-title" class="canva-text font-semibold"></p>
-         <p data-template-id="flow-2-body" class="canva-text text-sm text-[#d7e6dd] mt-1 leading-6"></p>
+        <div class="grid md:grid-cols-3 gap-3 mb-4 text-sm">
+         <div class="rounded-xl border border-slate-200 p-4"><strong>Union</strong><br><span class="text-slate-600">A ∪ B = in A or B or both</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4"><strong>Intersection</strong><br><span class="text-slate-600">A ∩ B = in both A and B</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4"><strong>Difference</strong><br><span class="text-slate-600">A − B = in A but not in B</span>
+         </div>
         </div>
-       </div>
-       <div class="relative flex gap-4">
-        <div class="w-9 h-9 rounded-full bg-[#d7e5db] text-[#173b2f] flex items-center justify-center shrink-0">
-         <i data-lucide="users" class="w-4 h-4"></i>
-        </div>
-        <div>
-         <p data-template-id="flow-3-title" class="canva-text font-semibold"></p>
-         <p data-template-id="flow-3-body" class="canva-text text-sm text-[#d7e6dd] mt-1 leading-6"></p>
+        <div class="bg-[#f8fbff] border-l-4 border-blue-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Quick check</p>
+         <p class="text-sm text-slate-700">If A = {1,2,3,4} and B = {3,4,5}, what is A ∩ B?</p><button class="show-answer focusable mt-3 text-sm font-semibold text-blue-700">Show answer</button>
+         <p class="answer mt-2 text-sm text-slate-700">A ∩ B = {3,4}</p>
         </div>
        </div>
       </div>
-     </aside>
+     </article>
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden">
+      <button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i data-lucide="git-fork" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 2</p>
+         <h3 class="font-semibold text-lg text-slate-900">Relations and Functions</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4"><strong>A relation</strong> describes a connection between elements of two sets. A <strong>function</strong> is a special relation where each input has exactly one output.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Realistic example</p>
+         <p class="text-sm leading-6 text-slate-700">Let each student be matched to one student number. This is a function because one student cannot have two official student numbers at the same time.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-3 mb-4 text-sm">
+         <div class="rounded-xl border border-slate-200 p-4"><strong>Relation:</strong><br><span class="text-slate-600">{(Ana, Math), (Ben, English), (Cara, Math)}</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4"><strong>Function:</strong><br><span class="text-slate-600">student → student number</span>
+         </div>
+        </div>
+        <div class="bg-[#f8fbff] border-l-4 border-emerald-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Quick check</p>
+         <p class="text-sm text-slate-700">Is “student → favorite subject” always a function?</p><button class="show-answer focusable mt-3 text-sm font-semibold text-emerald-700">Show answer</button>
+         <p class="answer mt-2 text-sm text-slate-700">Not always. If a student chooses more than one favorite subject, one input may have multiple outputs.</p>
+        </div>
+       </div>
+      </div>
+     </article>
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden">
+      <button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><i data-lucide="binary" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 3</p>
+         <h3 class="font-semibold text-lg text-slate-900">Strings and Alphabets</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">An <strong>alphabet</strong> is a finite set of symbols. A <strong>string</strong> is a finite sequence of symbols from that alphabet.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Realistic example</p>
+         <p class="text-sm leading-6 text-slate-700">For a school ID code, if the alphabet is Σ = {0,1,2,...,9}, then <strong>2026</strong> is a string over Σ.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-3 mb-4 text-sm">
+         <div class="rounded-xl border border-slate-200 p-4"><strong>Alphabet</strong><br><span class="text-slate-600">Σ = {a,b,c}</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4"><strong>String</strong><br><span class="text-slate-600">abca</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4"><strong>Length</strong><br><span class="text-slate-600">|abca| = 4</span>
+         </div>
+        </div>
+        <div class="bg-[#fffaf0] border-l-4 border-amber-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Quick check</p>
+         <p class="text-sm text-slate-700">If Σ = {0,1}, is 102 a string over Σ?</p><button class="show-answer focusable mt-3 text-sm font-semibold text-amber-700">Show answer</button>
+         <p class="answer mt-2 text-sm text-slate-700">No. The symbol 2 is not in the alphabet {0,1}.</p>
+        </div>
+       </div>
+      </div>
+     </article>
+    </div>
+   </section>
+   <section id="logic" class="mb-14">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Part II</p>
+     <h2 data-template-id="section-title-logic" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Logic: the language of reasoning</h2>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-5">
+     <article class="bg-white border border-slate-200 rounded-2xl p-6">
+      <div class="flex items-center gap-3 mb-4">
+       <span class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center"><i data-lucide="message-circle-question" class="w-5 h-5"></i></span>
+       <div>
+        <p class="text-xs uppercase tracking-[0.18em] text-slate-400">Topic 4</p>
+        <h3 class="font-semibold text-lg text-slate-900">Propositional Logic</h3>
+       </div>
+      </div>
+      <p class="leading-7 text-slate-700 mb-4">A <strong>proposition</strong> is a statement that is either true or false.</p>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Example</p>
+       <p class="text-sm leading-6 text-slate-700">p: “The classroom has a projector.”<br>
+         q: “The class can show slides.”<br><strong>p → q</strong>: If the classroom has a projector, then the class can show slides.</p>
+      </div>
+      <div class="text-sm leading-7 text-slate-700 mb-4">
+       <p><strong>¬p</strong> means “not p”</p>
+       <p><strong>p ∧ q</strong> means “p and q”</p>
+       <p><strong>p ∨ q</strong> means “p or q”</p>
+       <p><strong>p → q</strong> means “if p, then q”</p>
+      </div>
+      <div class="bg-[#f8f7ff] border-l-4 border-indigo-500 p-4 rounded-r-xl">
+       <p class="text-sm font-semibold mb-1">Quick check</p>
+       <p class="text-sm text-slate-700">What is the negation of “The exam is difficult”?</p><button class="show-answer focusable mt-3 text-sm font-semibold text-indigo-700">Show answer</button>
+       <p class="answer mt-2 text-sm text-slate-700">“The exam is not difficult.”</p>
+      </div>
+     </article>
+     <article class="bg-white border border-slate-200 rounded-2xl p-6">
+      <div class="flex items-center gap-3 mb-4">
+       <span class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center"><i data-lucide="list-tree" class="w-5 h-5"></i></span>
+       <div>
+        <p class="text-xs uppercase tracking-[0.18em] text-slate-400">Topic 5</p>
+        <h3 class="font-semibold text-lg text-slate-900">Predicate Logic</h3>
+       </div>
+      </div>
+      <p class="leading-7 text-slate-700 mb-4">Predicate logic extends propositional logic by using variables and quantifiers.</p>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Example</p>
+       <p class="text-sm leading-6 text-slate-700">Let P(x): “x submitted the assignment.”<br><strong>∀x P(x)</strong> means “Every student submitted the assignment.”<br><strong>∃x P(x)</strong> means “There exists a student who submitted the assignment.”</p>
+      </div>
+      <div class="text-sm leading-7 text-slate-700 mb-4">
+       <p><strong>∀</strong> = for all</p>
+       <p><strong>∃</strong> = there exists</p>
+      </div>
+      <div class="bg-[#fff7f8] border-l-4 border-rose-500 p-4 rounded-r-xl">
+       <p class="text-sm font-semibold mb-1">Quick check</p>
+       <p class="text-sm text-slate-700">Translate: “Some student is absent.”</p><button class="show-answer focusable mt-3 text-sm font-semibold text-rose-700">Show answer</button>
+       <p class="answer mt-2 text-sm text-slate-700">∃x A(x), where A(x): “x is absent.”</p>
+      </div>
+     </article>
+    </div>
+   </section>
+   <section id="proof" class="mb-14">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Part III</p>
+     <h2 data-template-id="section-title-proof" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Proof techniques</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+     <article class="bg-white border border-slate-200 rounded-2xl p-6">
+      <div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center"><i data-lucide="arrow-right" class="w-5 h-5"></i></span>
+       <h3 class="font-semibold text-lg">Direct Proof</h3>
+      </div>
+      <p class="text-sm leading-6 text-slate-700 mb-3">Start from the assumption and logically reach the conclusion.</p>
+      <div class="bg-slate-50 rounded-xl p-4 text-sm leading-6">
+       <strong>Example:</strong> Prove that if n is even, then n² is even.<br>
+        If n is even, n = 2k for some integer k.<br>
+        Then n² = (2k)² = 4k² = 2(2k²), so n² is even.
+      </div>
+     </article>
+     <article class="bg-white border border-slate-200 rounded-2xl p-6">
+      <div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-lime-100 text-lime-700 flex items-center justify-center"><i data-lucide="repeat-2" class="w-5 h-5"></i></span>
+       <h3 class="font-semibold text-lg">Contrapositive Proof</h3>
+      </div>
+      <p class="text-sm leading-6 text-slate-700 mb-3">To prove p → q, prove the equivalent statement ¬q → ¬p.</p>
+      <div class="bg-slate-50 rounded-xl p-4 text-sm leading-6">
+       <strong>Example:</strong> To prove “if n² is odd, then n is odd,” prove:<br>
+        If n is even, then n² is even.<br>
+        Since the contrapositive is true, the original statement is true.
+      </div>
+     </article>
+     <article class="bg-white border border-slate-200 rounded-2xl p-6">
+      <div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center"><i data-lucide="triangle-alert" class="w-5 h-5"></i></span>
+       <h3 class="font-semibold text-lg">Proof by Contradiction</h3>
+      </div>
+      <p class="text-sm leading-6 text-slate-700 mb-3">Assume the opposite of what you want to prove, then show that assumption leads to an impossibility.</p>
+      <div class="bg-slate-50 rounded-xl p-4 text-sm leading-6">
+       <strong>Example:</strong> To prove √2 is irrational, assume √2 is rational.<br>
+        This eventually gives a contradiction about even and odd numbers.
+      </div>
+     </article>
+     <article class="bg-white border border-slate-200 rounded-2xl p-6">
+      <div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center"><i data-lucide="stairs" class="w-5 h-5"></i></span>
+       <h3 class="font-semibold text-lg">Mathematical Induction</h3>
+      </div>
+      <p class="text-sm leading-6 text-slate-700 mb-3">Use two steps: prove the base case, then prove that if one case is true, the next case is also true.</p>
+      <div class="bg-slate-50 rounded-xl p-4 text-sm leading-6">
+       <strong>Example:</strong> Prove 1 + 2 + ... + n = n(n+1)/2.<br>
+        First prove n = 1. Then assume true for n = k and show true for k+1.
+      </div>
+     </article>
+    </div>
+   </section>
+   <section id="activities" class="mb-14">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Practice and Apply</p>
+     <h2 class="serif text-3xl md:text-4xl text-[var(--navy)]">Learning activities</h2>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-5">
+     <article class="bg-[var(--navy)] text-white rounded-[24px] p-6 md:p-7">
+      <div class="flex items-center gap-3 mb-4">
+       <span class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center"><i data-lucide="users" class="w-5 h-5"></i></span>
+       <h3 data-template-id="group-title" class="canva-text font-semibold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Group Activity</h3>
+      </div>
+      <p class="text-white/80 leading-7 mb-4">In groups of 4, create a “Campus Life Set Map.”</p>
+      <ol class="list-decimal pl-5 space-y-2 text-sm text-white/85 leading-6">
+       <li>Define three sets of students, such as students who commute, students who join clubs, and students who bring packed lunch.</li>
+       <li>Draw a Venn diagram showing intersections.</li>
+       <li>Create one relation and one function using your group members.</li>
+       <li>Present one conclusion using a logical statement.</li>
+      </ol>
+      <div class="mt-5 p-4 rounded-xl bg-white/10 text-sm text-white/80">
+       <strong>Output:</strong> 1 manila paper or 1 slide + 2-minute explanation
+      </div>
+     </article>
+     <article class="bg-white border border-slate-200 rounded-[24px] p-6 md:p-7">
+      <div class="flex items-center gap-3 mb-4">
+       <span class="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center"><i data-lucide="user-pen" class="w-5 h-5"></i></span>
+       <h3 data-template-id="individual-title" class="canva-text font-semibold text-xl text-slate-900" style="color: rgb(15, 23, 42); font-weight: 700; font-style: normal; font-size: 22px;">Individual Activity</h3>
+      </div>
+      <p class="text-slate-700 leading-7 mb-4">Answer the following in your notebook.</p>
+      <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700 leading-6">
+       <li>Let A = {1,2,3,4} and B = {2,4,6}. Find A ∪ B, A ∩ B, and A − B.</li>
+       <li>Give one real-life example of a function.</li>
+       <li>Negate the statement: “All students passed the quiz.”</li>
+       <li>Identify the best proof method for: “If n is odd, then n² is odd.”</li>
+      </ol>
+      <div class="mt-5 p-4 rounded-xl bg-yellow-50 text-sm text-slate-700 border border-yellow-100">
+       <strong>Reminder:</strong> Show complete reasoning, not just final answers.
+      </div>
+     </article>
+    </div>
+   </section>
+   <section id="quiz" class="mb-10">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Check Your Understanding</p>
+     <h2 data-template-id="quiz-title" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Sample Quiz</h2>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-[24px] p-5 md:p-7">
      <div class="space-y-6">
-      <article data-template-id="group-activity-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
-       <div class="flex flex-wrap items-center justify-between gap-3">
-        <div>
-         <p data-template-id="group-label" class="canva-text text-xs uppercase tracking-[.18em] text-[#8b7a55] font-semibold"></p>
-         <h3 data-template-id="group-title" class="canva-text display mt-2 text-[#173b2f]"></h3>
-        </div><span data-template-id="group-duration" class="canva-tag rounded-full px-3 py-1 text-xs bg-[#edf3e9] text-[#355544]"></span>
-       </div>
-       <p data-template-id="group-body" class="canva-text mt-4 leading-7 text-[#59675e]"></p>
-       <div data-template-id="group-task" class="canva-card bg-[#f8f6ef] border border-[#e5dece] rounded-2xl p-4 mt-5">
-        <p data-template-id="group-task-title" class="canva-text font-semibold text-[#244839]"></p>
-        <p data-template-id="group-task-body" class="canva-text mt-1 text-sm leading-6 text-[#5b675f]"></p>
-       </div>
-      </article>
-      <article data-template-id="individual-activity-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
-       <div class="flex flex-wrap items-center justify-between gap-3">
-        <div>
-         <p data-template-id="individual-label" class="canva-text text-xs uppercase tracking-[.18em] text-[#8b7a55] font-semibold"></p>
-         <h3 data-template-id="individual-title" class="canva-text display mt-2 text-[#173b2f]"></h3>
-        </div><span data-template-id="individual-duration" class="canva-tag rounded-full px-3 py-1 text-xs bg-[#edf3e9] text-[#355544]"></span>
-       </div>
-       <p data-template-id="individual-body" class="canva-text mt-4 leading-7 text-[#59675e]"></p>
-       <div data-template-id="individual-task" class="canva-card bg-[#f8f6ef] border border-[#e5dece] rounded-2xl p-4 mt-5">
-        <p data-template-id="individual-task-title" class="canva-text font-semibold text-[#244839]"></p>
-        <p data-template-id="individual-task-body" class="canva-text mt-1 text-sm leading-6 text-[#5b675f]"></p>
-       </div>
-      </article>
-     </div>
-    </div>
-   </section>
-   <section id="quiz" class="max-w-7xl mx-auto px-5 md:px-8 py-12 pb-20">
-    <div class="paper-card rounded-[2rem] p-6 md:p-9">
-     <div class="flex flex-wrap items-start justify-between gap-4">
-      <div>
-       <p data-template-id="quiz-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
-       <h2 data-template-id="quiz-title" class="canva-text display mt-4 text-[#173b2f]"></h2>
-       <p data-template-id="quiz-subtitle" class="canva-text mt-3 text-[#667269]"></p>
-      </div>
-      <div class="w-12 h-12 rounded-full bg-[#edf3e9] flex items-center justify-center text-[#315642]">
-       <i data-lucide="clipboard-check" class="w-5 h-5"></i>
-      </div>
-     </div>
-     <div class="grid lg:grid-cols-2 gap-6 mt-8">
-      <div class="space-y-5">
-       <div>
-        <p data-template-id="q1" class="canva-text font-semibold"></p>
-        <p data-template-id="q1-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
-       </div>
-       <div>
-        <p data-template-id="q2" class="canva-text font-semibold"></p>
-        <p data-template-id="q2-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
-       </div>
-       <div>
-        <p data-template-id="q3" class="canva-text font-semibold"></p>
-        <p data-template-id="q3-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">1. Which of the following is a function?</p>
+       <div class="grid md:grid-cols-2 gap-3">
+        <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">A student → favorite snacks</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">A student → student number</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">A student → clubs joined</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">A student → classmates</button>
        </div>
       </div>
-      <div class="space-y-5">
-       <div>
-        <p data-template-id="q4" class="canva-text font-semibold"></p>
-        <p data-template-id="q4-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
+      <div class="quiz-question" data-answer="c">
+       <p class="font-semibold mb-3">2. What does ∃x P(x) mean?</p>
+       <div class="grid md:grid-cols-2 gap-3">
+        <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">P is false for x</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">For all x, P(x)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">There exists an x such that P(x)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">x is not in P</button>
        </div>
-       <div>
-        <p data-template-id="q5" class="canva-text font-semibold"></p>
-        <p data-template-id="q5-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
+      </div>
+      <div class="quiz-question" data-answer="a">
+       <p class="font-semibold mb-3">3. Which proof technique assumes the opposite and reaches an impossibility?</p>
+       <div class="grid md:grid-cols-2 gap-3">
+        <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">Proof by contradiction</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">Direct proof</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">Induction</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">Relation proof</button>
        </div>
       </div>
      </div>
-     <div class="mt-8 pt-6 border-t border-[#e1dacd]"><button id="answerBtn" type="button" class="inline-flex items-center gap-2 rounded-full bg-[#173b2f] text-white px-5 py-3 text-sm font-semibold hover:bg-[#214d3d] transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#173b2f]"> <span data-template-id="answer-button" class="canva-text"></span> <i data-lucide="eye" class="w-4 h-4"></i> </button>
-      <div id="answerBox" class="quiz-answer mt-5 rounded-2xl bg-[#f5f7f1] border border-[#dfe7d9] p-4">
-       <p data-template-id="answer-title" class="canva-text font-semibold text-[#254939]"></p>
-       <p data-template-id="answer-body" class="canva-text mt-2 text-sm leading-6 text-[#59665d]"></p>
-      </div>
+     <div class="mt-7 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <button id="check-score" class="focusable inline-flex items-center gap-2 bg-[var(--navy)] text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-[var(--navy-2)] transition"> <i data-lucide="check-check" class="w-4 h-4"></i> Check score </button>
+      <p id="score-output" class="text-sm font-semibold text-slate-700" aria-live="polite"></p>
      </div>
     </div>
    </section>
   </main>
-  <footer data-template-id="footer-section" class="canva-footer bg-[#173b2f] text-white">
-   <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-    <p data-template-id="footer-left" class="canva-text text-sm text-[#d7e4dc]"></p>
-    <p data-template-id="footer-right" class="canva-text text-sm text-[#d7e4dc]"></p>
+  <footer class="bg-[var(--navy)] text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-7 flex flex-col md:flex-row justify-between gap-4">
+    <p data-template-id="footer-text" class="canva-text text-sm text-white/75" style="color: rgb(219, 231, 243); font-weight: 400; font-style: normal; font-size: 14px;">Discrete Structures • Week 2 Lesson • University of Perpetual Help System DALTA – Las Piñas</p>
+    <p class="text-sm text-white/55">Think clearly. Write precisely. Prove carefully.</p>
    </div>
   </footer>
   <script src="/_sdk/editing_sdk.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
+    lucide.createIcons();
 
-      document.querySelectorAll('.section-toggle').forEach(button => {
-        button.addEventListener('click', () => {
-          const target = document.getElementById(button.dataset.target);
-          target.classList.toggle('collapsed');
-          button.classList.toggle('open');
-        });
-      });
-
-      const answerBtn = document.getElementById('answerBtn');
-      const answerBox = document.getElementById('answerBox');
-      answerBtn.addEventListener('click', () => {
-        answerBox.classList.toggle('show');
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        button.closest('.accordion-item').classList.toggle('open');
       });
     });
+
+    document.querySelectorAll('.show-answer').forEach(button => {
+      button.addEventListener('click', () => {
+        const answer = button.nextElementSibling;
+        answer.classList.toggle('show');
+        button.textContent = answer.classList.contains('show') ? 'Hide answer' : 'Show answer';
+      });
+    });
+
+    document.querySelectorAll('.quiz-question').forEach(question => {
+      question.querySelectorAll('.quiz-option').forEach(option => {
+        option.addEventListener('click', () => {
+          question.querySelectorAll('.quiz-option').forEach(btn => btn.classList.remove('selected'));
+          option.classList.add('selected');
+          question.dataset.selected = option.dataset.choice;
+        });
+      });
+    });
+
+    document.getElementById('check-score').addEventListener('click', () => {
+      let score = 0;
+      const questions = document.querySelectorAll('.quiz-question');
+      questions.forEach(question => {
+        if (question.dataset.selected === question.dataset.answer) score++;
+      });
+      document.getElementById('score-output').textContent = `You scored ${score} out of ${questions.length}.`;
+    });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a06dc5b5f8b9ccbf',t:'MTc4MDY0Nzc3NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a06e0655db8d4bd7',t:'MTc4MDY1MDQyMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body></html>
