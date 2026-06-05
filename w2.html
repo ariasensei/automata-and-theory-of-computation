@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 2 – Mathematical Foundations and Proof Techniques</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --forest:#173b2f;
+      --forest-2:#214f40;
+      --cream:#f6f0e4;
+      --paper:#fffdf8;
+      --gold:#c49a4a;
+      --ink:#25322d;
+      --muted:#6d766f;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:'DM Sans', sans-serif; color:var(--ink); }
+    .display { font-family:'Fraunces', serif; }
+    .mono { font-family:'Space Mono', monospace; }
+    .hero-overlay { background:linear-gradient(90deg, rgba(18,49,39,.96) 0%, rgba(18,49,39,.9) 47%, rgba(18,49,39,.42) 100%); }
+    .paper-card { background:rgba(255,253,248,.96); border:1px solid rgba(38,63,52,.12); box-shadow:0 14px 35px rgba(35,55,46,.08); }
+    .section-kicker::before{ content:""; display:inline-block; width:34px; height:2px; background:var(--gold); margin-right:.7rem; vertical-align:middle; }
+    .note-card { background:linear-gradient(135deg,#eef5ec,#f7fbf5); border-left:4px solid var(--forest-2); }
+    .formula { background:#eef2ea; border:1px solid #d8e1d4; color:#16392d; }
+    .nav-link { position:relative; }
+    .nav-link::after{ content:""; position:absolute; left:0; bottom:-6px; width:0; height:2px; background:var(--gold); transition:width .25s ease; }
+    .nav-link:hover::after,.nav-link:focus-visible::after{ width:100%; }
+    .section-toggle svg{ transition:transform .25s ease; }
+    .section-toggle.open svg{ transform:rotate(180deg); }
+    .lesson-group.collapsed .group-content{ display:none; }
+    .quiz-answer{ display:none; }
+    .quiz-answer.show{ display:block; }
+    .fade-up{ animation:fadeUp .7s ease both; }
+    @keyframes fadeUp{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+    .timeline-line{ position:absolute; left:17px; top:34px; bottom:0; width:2px; background:#d8dfd5; }
+    @media (max-width:768px){ .hero-overlay{ background:linear-gradient(180deg, rgba(18,49,39,.92) 0%, rgba(18,49,39,.8) 100%); } }
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ <script src="/_sdk/telemetry_sdk.js"></script></head>
+ <body data-template-id="__page-root" class="w-full">
+  <header class="w-full">
+   <div class="bg-[var(--forest)] text-white">
+    <div class="max-w-7xl mx-auto px-5 md:px-8 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-sm tracking-wide">
+     <p data-template-id="university-name" class="canva-text uppercase font-medium"></p>
+     <p data-template-id="course-label" class="canva-text text-[#d6e5dc]"></p>
+    </div>
+   </div>
+   <section class="relative min-h-[460px] md:min-h-[520px] overflow-hidden"><img data-template-id="hero-image" loading="lazy" class="canva-image absolute inset-0 w-full h-full object-cover">
+    <div class="hero-overlay absolute inset-0"></div>
+    <div class="relative max-w-7xl mx-auto px-5 md:px-8 py-16 md:py-20 h-full flex items-center">
+     <div class="max-w-3xl text-white fade-up">
+      <div data-template-id="week-label" class="canva-tag inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs uppercase tracking-[.18em] mb-5"></div>
+      <h1 data-template-id="main-title" class="canva-text display leading-[1.05] max-w-3xl"></h1>
+      <p data-template-id="hero-subtitle" class="canva-text mt-5 text-lg md:text-xl text-[#e9f1ec] max-w-2xl leading-8"></p>
+      <div class="mt-8 flex flex-wrap gap-4">
+       <div class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 backdrop-blur-sm">
+        <p data-template-id="instructor-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#bfd3c8]"></p>
+        <p data-template-id="instructor-name" class="canva-text mt-1 font-semibold text-lg"></p>
+       </div>
+       <div class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 backdrop-blur-sm">
+        <p data-template-id="lesson-theme-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#bfd3c8]"></p>
+        <p data-template-id="lesson-theme-text" class="canva-text mt-1 font-semibold text-lg"></p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <nav data-template-id="lesson-nav" class="canva-menu bg-[#f8f4eb] border-b border-[#dfd7c8] sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-5 md:px-8 overflow-x-auto">
+     <div class="flex gap-8 min-w-max py-4 text-sm font-medium text-[#365346]"><a data-template-id="nav-overview" class="canva-link nav-link" href="#overview"></a> <a data-template-id="nav-foundations" class="canva-link nav-link" href="#foundations"></a> <a data-template-id="nav-proofs" class="canva-link nav-link" href="#proofs"></a> <a data-template-id="nav-activities" class="canva-link nav-link" href="#activities"></a> <a data-template-id="nav-quiz" class="canva-link nav-link" href="#quiz"></a>
+     </div>
+    </div>
+   </nav>
+  </header>
+  <main class="w-full">
+   <section id="overview" class="max-w-7xl mx-auto px-5 md:px-8 py-14 md:py-20">
+    <div class="grid lg:grid-cols-[1.2fr_.8fr] gap-8 items-start">
+     <div>
+      <p data-template-id="overview-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
+      <h2 data-template-id="overview-title" class="canva-text display mt-4 leading-tight text-[#173b2f]"></h2>
+      <p data-template-id="overview-body" class="canva-text mt-5 text-lg leading-8 text-[#56635b] max-w-3xl"></p>
+      <div class="grid sm:grid-cols-3 gap-4 mt-8">
+       <div data-template-id="stat-card-1" class="canva-card paper-card rounded-2xl p-5">
+        <p data-template-id="stat-1-value" class="canva-text display text-[#173b2f]"></p>
+        <p data-template-id="stat-1-label" class="canva-text mt-1 text-sm text-[#6f7b73]"></p>
+       </div>
+       <div data-template-id="stat-card-2" class="canva-card paper-card rounded-2xl p-5">
+        <p data-template-id="stat-2-value" class="canva-text display text-[#173b2f]"></p>
+        <p data-template-id="stat-2-label" class="canva-text mt-1 text-sm text-[#6f7b73]"></p>
+       </div>
+       <div data-template-id="stat-card-3" class="canva-card paper-card rounded-2xl p-5">
+        <p data-template-id="stat-3-value" class="canva-text display text-[#173b2f]"></p>
+        <p data-template-id="stat-3-label" class="canva-text mt-1 text-sm text-[#6f7b73]"></p>
+       </div>
+      </div>
+     </div>
+     <aside data-template-id="outcomes-panel" class="canva-panel paper-card rounded-3xl p-6 md:p-7">
+      <div class="flex items-center gap-3">
+       <div class="w-11 h-11 rounded-full bg-[#e3eddf] flex items-center justify-center text-[#1d4a3b]"><i data-lucide="target" class="w-5 h-5"></i>
+       </div>
+       <h2 data-template-id="outcomes-title" class="canva-text display text-[#173b2f]"></h2>
+      </div>
+      <ul class="mt-5 space-y-4 text-[15px] leading-6">
+       <li class="flex gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 mt-0.5 text-[#2a6d54] shrink-0"></i><span data-template-id="outcome-1" class="canva-text"></span></li>
+       <li class="flex gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 mt-0.5 text-[#2a6d54] shrink-0"></i><span data-template-id="outcome-2" class="canva-text"></span></li>
+       <li class="flex gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 mt-0.5 text-[#2a6d54] shrink-0"></i><span data-template-id="outcome-3" class="canva-text"></span></li>
+       <li class="flex gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 mt-0.5 text-[#2a6d54] shrink-0"></i><span data-template-id="outcome-4" class="canva-text"></span></li>
+      </ul>
+      <div data-template-id="why-card" class="canva-card note-card rounded-2xl p-4 mt-6">
+       <p data-template-id="why-title" class="canva-text font-semibold text-[#1f4739]"></p>
+       <p data-template-id="why-body" class="canva-text mt-1 text-sm leading-6 text-[#506257]"></p>
+      </div>
+     </aside>
+    </div>
+   </section>
+   <section id="foundations" class="max-w-7xl mx-auto px-5 md:px-8 pb-10">
+    <div class="flex items-end justify-between gap-4 mb-7">
+     <div>
+      <p data-template-id="foundations-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
+      <h2 data-template-id="foundations-title" class="canva-text display mt-4 text-[#173b2f]"></h2>
+     </div><button type="button" class="section-toggle open hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#cfd8cd] text-sm text-[#355446] bg-white hover:bg-[#f3f7f1] focus:outline-none focus:ring-2 focus:ring-[#173b2f]" data-target="foundations-group"> <span data-template-id="foundations-toggle" class="canva-text"></span> <i data-lucide="chevron-up" class="w-4 h-4"></i> </button>
+    </div>
+    <div id="foundations-group" class="lesson-group">
+     <div class="group-content grid lg:grid-cols-2 gap-6">
+      <article data-template-id="sets-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
+       <div class="flex items-center justify-between gap-4"><span data-template-id="sets-badge" class="canva-tag mono text-xs px-3 py-1 rounded-full bg-[#edf3e9] text-[#315342]"></span> <i data-lucide="braces" class="w-5 h-5 text-[#648271]"></i>
+       </div>
+       <h3 data-template-id="sets-title" class="canva-text display mt-5 text-[#173b2f]"></h3>
+       <p data-template-id="sets-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
+       <div data-template-id="sets-formula" class="canva-text formula mono rounded-xl px-4 py-3 mt-4 text-sm"></div>
+       <div class="mt-5">
+        <p data-template-id="sets-example-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#8b7a55] font-semibold"></p>
+        <p data-template-id="sets-example" class="canva-text mt-2 leading-7"></p>
+       </div>
+       <div data-template-id="sets-tip" class="canva-card note-card rounded-xl p-4 mt-5">
+        <p data-template-id="sets-tip-text" class="canva-text text-sm leading-6"></p>
+       </div>
+      </article>
+      <article data-template-id="relations-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
+       <div class="flex items-center justify-between gap-4"><span data-template-id="relations-badge" class="canva-tag mono text-xs px-3 py-1 rounded-full bg-[#edf3e9] text-[#315342]"></span> <i data-lucide="git-branch" class="w-5 h-5 text-[#648271]"></i>
+       </div>
+       <h3 data-template-id="relations-title" class="canva-text display mt-5 text-[#173b2f]"></h3>
+       <p data-template-id="relations-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
+       <div data-template-id="relations-formula" class="canva-text formula mono rounded-xl px-4 py-3 mt-4 text-sm"></div>
+       <div class="mt-5">
+        <p data-template-id="relations-example-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#8b7a55] font-semibold"></p>
+        <p data-template-id="relations-example" class="canva-text mt-2 leading-7"></p>
+       </div>
+       <div data-template-id="relations-tip" class="canva-card note-card rounded-xl p-4 mt-5">
+        <p data-template-id="relations-tip-text" class="canva-text text-sm leading-6"></p>
+       </div>
+      </article>
+      <article data-template-id="strings-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
+       <div class="flex items-center justify-between gap-4"><span data-template-id="strings-badge" class="canva-tag mono text-xs px-3 py-1 rounded-full bg-[#edf3e9] text-[#315342]"></span> <i data-lucide="binary" class="w-5 h-5 text-[#648271]"></i>
+       </div>
+       <h3 data-template-id="strings-title" class="canva-text display mt-5 text-[#173b2f]"></h3>
+       <p data-template-id="strings-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
+       <div data-template-id="strings-formula" class="canva-text formula mono rounded-xl px-4 py-3 mt-4 text-sm"></div>
+       <div class="mt-5">
+        <p data-template-id="strings-example-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#8b7a55] font-semibold"></p>
+        <p data-template-id="strings-example" class="canva-text mt-2 leading-7"></p>
+       </div>
+       <div data-template-id="strings-tip" class="canva-card note-card rounded-xl p-4 mt-5">
+        <p data-template-id="strings-tip-text" class="canva-text text-sm leading-6"></p>
+       </div>
+      </article>
+      <article data-template-id="logic-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
+       <div class="flex items-center justify-between gap-4"><span data-template-id="logic-badge" class="canva-tag mono text-xs px-3 py-1 rounded-full bg-[#edf3e9] text-[#315342]"></span> <i data-lucide="brain" class="w-5 h-5 text-[#648271]"></i>
+       </div>
+       <h3 data-template-id="logic-title" class="canva-text display mt-5 text-[#173b2f]"></h3>
+       <p data-template-id="logic-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
+       <div data-template-id="logic-formula" class="canva-text formula mono rounded-xl px-4 py-3 mt-4 text-sm"></div>
+       <div class="mt-5">
+        <p data-template-id="logic-example-label" class="canva-text text-xs uppercase tracking-[.16em] text-[#8b7a55] font-semibold"></p>
+        <p data-template-id="logic-example" class="canva-text mt-2 leading-7"></p>
+       </div>
+       <div data-template-id="logic-tip" class="canva-card note-card rounded-xl p-4 mt-5">
+        <p data-template-id="logic-tip-text" class="canva-text text-sm leading-6"></p>
+       </div>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section id="proofs" class="max-w-7xl mx-auto px-5 md:px-8 py-12">
+    <div class="flex items-end justify-between gap-4 mb-7">
+     <div>
+      <p data-template-id="proofs-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
+      <h2 data-template-id="proofs-title" class="canva-text display mt-4 text-[#173b2f]"></h2>
+     </div><button type="button" class="section-toggle open hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#cfd8cd] text-sm text-[#355446] bg-white hover:bg-[#f3f7f1] focus:outline-none focus:ring-2 focus:ring-[#173b2f]" data-target="proofs-group"> <span data-template-id="proofs-toggle" class="canva-text"></span> <i data-lucide="chevron-up" class="w-4 h-4"></i> </button>
+    </div>
+    <div id="proofs-group" class="lesson-group">
+     <div class="group-content grid md:grid-cols-2 gap-6">
+      <article data-template-id="direct-card" class="canva-card paper-card rounded-3xl p-6">
+       <p data-template-id="direct-label" class="canva-text mono text-xs text-[#8d7c55]"></p>
+       <h3 data-template-id="direct-title" class="canva-text display mt-3 text-[#173b2f]"></h3>
+       <p data-template-id="direct-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
+       <div data-template-id="direct-example" class="canva-text formula rounded-xl px-4 py-3 mt-4 text-sm leading-6"></div>
+      </article>
+      <article data-template-id="contra-card" class="canva-card paper-card rounded-3xl p-6">
+       <p data-template-id="contra-label" class="canva-text mono text-xs text-[#8d7c55]"></p>
+       <h3 data-template-id="contra-title" class="canva-text display mt-3 text-[#173b2f]"></h3>
+       <p data-template-id="contra-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
+       <div data-template-id="contra-example" class="canva-text formula rounded-xl px-4 py-3 mt-4 text-sm leading-6"></div>
+      </article>
+      <article data-template-id="contradiction-card" class="canva-card paper-card rounded-3xl p-6">
+       <p data-template-id="contradiction-label" class="canva-text mono text-xs text-[#8d7c55]"></p>
+       <h3 data-template-id="contradiction-title" class="canva-text display mt-3 text-[#173b2f]"></h3>
+       <p data-template-id="contradiction-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
+       <div data-template-id="contradiction-example" class="canva-text formula rounded-xl px-4 py-3 mt-4 text-sm leading-6"></div>
+      </article>
+      <article data-template-id="induction-card" class="canva-card paper-card rounded-3xl p-6">
+       <p data-template-id="induction-label" class="canva-text mono text-xs text-[#8d7c55]"></p>
+       <h3 data-template-id="induction-title" class="canva-text display mt-3 text-[#173b2f]"></h3>
+       <p data-template-id="induction-body" class="canva-text mt-3 leading-7 text-[#58665e]"></p>
+       <div data-template-id="induction-example" class="canva-text formula rounded-xl px-4 py-3 mt-4 text-sm leading-6"></div>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section id="activities" class="max-w-7xl mx-auto px-5 md:px-8 py-12">
+    <div class="mb-8">
+     <p data-template-id="activities-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
+     <h2 data-template-id="activities-title" class="canva-text display mt-4 text-[#173b2f]"></h2>
+    </div>
+    <div class="grid lg:grid-cols-[.9fr_1.1fr] gap-7">
+     <aside data-template-id="classflow-card" class="canva-panel rounded-3xl bg-[#173b2f] text-white p-7">
+      <p data-template-id="classflow-kicker" class="canva-text text-xs uppercase tracking-[.18em] text-[#b9d0c3]"></p>
+      <h3 data-template-id="classflow-title" class="canva-text display mt-3"></h3>
+      <div class="relative mt-7 space-y-6">
+       <div class="timeline-line"></div>
+       <div class="relative flex gap-4">
+        <div class="w-9 h-9 rounded-full bg-[#d7e5db] text-[#173b2f] flex items-center justify-center shrink-0">
+         <i data-lucide="presentation" class="w-4 h-4"></i>
+        </div>
+        <div>
+         <p data-template-id="flow-1-title" class="canva-text font-semibold"></p>
+         <p data-template-id="flow-1-body" class="canva-text text-sm text-[#d7e6dd] mt-1 leading-6"></p>
+        </div>
+       </div>
+       <div class="relative flex gap-4">
+        <div class="w-9 h-9 rounded-full bg-[#d7e5db] text-[#173b2f] flex items-center justify-center shrink-0">
+         <i data-lucide="pencil-ruler" class="w-4 h-4"></i>
+        </div>
+        <div>
+         <p data-template-id="flow-2-title" class="canva-text font-semibold"></p>
+         <p data-template-id="flow-2-body" class="canva-text text-sm text-[#d7e6dd] mt-1 leading-6"></p>
+        </div>
+       </div>
+       <div class="relative flex gap-4">
+        <div class="w-9 h-9 rounded-full bg-[#d7e5db] text-[#173b2f] flex items-center justify-center shrink-0">
+         <i data-lucide="users" class="w-4 h-4"></i>
+        </div>
+        <div>
+         <p data-template-id="flow-3-title" class="canva-text font-semibold"></p>
+         <p data-template-id="flow-3-body" class="canva-text text-sm text-[#d7e6dd] mt-1 leading-6"></p>
+        </div>
+       </div>
+      </div>
+     </aside>
+     <div class="space-y-6">
+      <article data-template-id="group-activity-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
+       <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+         <p data-template-id="group-label" class="canva-text text-xs uppercase tracking-[.18em] text-[#8b7a55] font-semibold"></p>
+         <h3 data-template-id="group-title" class="canva-text display mt-2 text-[#173b2f]"></h3>
+        </div><span data-template-id="group-duration" class="canva-tag rounded-full px-3 py-1 text-xs bg-[#edf3e9] text-[#355544]"></span>
+       </div>
+       <p data-template-id="group-body" class="canva-text mt-4 leading-7 text-[#59675e]"></p>
+       <div data-template-id="group-task" class="canva-card bg-[#f8f6ef] border border-[#e5dece] rounded-2xl p-4 mt-5">
+        <p data-template-id="group-task-title" class="canva-text font-semibold text-[#244839]"></p>
+        <p data-template-id="group-task-body" class="canva-text mt-1 text-sm leading-6 text-[#5b675f]"></p>
+       </div>
+      </article>
+      <article data-template-id="individual-activity-card" class="canva-card paper-card rounded-3xl p-6 md:p-7">
+       <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+         <p data-template-id="individual-label" class="canva-text text-xs uppercase tracking-[.18em] text-[#8b7a55] font-semibold"></p>
+         <h3 data-template-id="individual-title" class="canva-text display mt-2 text-[#173b2f]"></h3>
+        </div><span data-template-id="individual-duration" class="canva-tag rounded-full px-3 py-1 text-xs bg-[#edf3e9] text-[#355544]"></span>
+       </div>
+       <p data-template-id="individual-body" class="canva-text mt-4 leading-7 text-[#59675e]"></p>
+       <div data-template-id="individual-task" class="canva-card bg-[#f8f6ef] border border-[#e5dece] rounded-2xl p-4 mt-5">
+        <p data-template-id="individual-task-title" class="canva-text font-semibold text-[#244839]"></p>
+        <p data-template-id="individual-task-body" class="canva-text mt-1 text-sm leading-6 text-[#5b675f]"></p>
+       </div>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section id="quiz" class="max-w-7xl mx-auto px-5 md:px-8 py-12 pb-20">
+    <div class="paper-card rounded-[2rem] p-6 md:p-9">
+     <div class="flex flex-wrap items-start justify-between gap-4">
+      <div>
+       <p data-template-id="quiz-kicker" class="canva-text section-kicker text-sm uppercase tracking-[.18em] text-[#6f7c72] font-semibold"></p>
+       <h2 data-template-id="quiz-title" class="canva-text display mt-4 text-[#173b2f]"></h2>
+       <p data-template-id="quiz-subtitle" class="canva-text mt-3 text-[#667269]"></p>
+      </div>
+      <div class="w-12 h-12 rounded-full bg-[#edf3e9] flex items-center justify-center text-[#315642]">
+       <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+      </div>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-6 mt-8">
+      <div class="space-y-5">
+       <div>
+        <p data-template-id="q1" class="canva-text font-semibold"></p>
+        <p data-template-id="q1-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
+       </div>
+       <div>
+        <p data-template-id="q2" class="canva-text font-semibold"></p>
+        <p data-template-id="q2-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
+       </div>
+       <div>
+        <p data-template-id="q3" class="canva-text font-semibold"></p>
+        <p data-template-id="q3-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
+       </div>
+      </div>
+      <div class="space-y-5">
+       <div>
+        <p data-template-id="q4" class="canva-text font-semibold"></p>
+        <p data-template-id="q4-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
+       </div>
+       <div>
+        <p data-template-id="q5" class="canva-text font-semibold"></p>
+        <p data-template-id="q5-options" class="canva-text mt-2 text-sm leading-6 text-[#5f6c64]"></p>
+       </div>
+      </div>
+     </div>
+     <div class="mt-8 pt-6 border-t border-[#e1dacd]"><button id="answerBtn" type="button" class="inline-flex items-center gap-2 rounded-full bg-[#173b2f] text-white px-5 py-3 text-sm font-semibold hover:bg-[#214d3d] transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#173b2f]"> <span data-template-id="answer-button" class="canva-text"></span> <i data-lucide="eye" class="w-4 h-4"></i> </button>
+      <div id="answerBox" class="quiz-answer mt-5 rounded-2xl bg-[#f5f7f1] border border-[#dfe7d9] p-4">
+       <p data-template-id="answer-title" class="canva-text font-semibold text-[#254939]"></p>
+       <p data-template-id="answer-body" class="canva-text mt-2 text-sm leading-6 text-[#59665d]"></p>
+      </div>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer data-template-id="footer-section" class="canva-footer bg-[#173b2f] text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+    <p data-template-id="footer-left" class="canva-text text-sm text-[#d7e4dc]"></p>
+    <p data-template-id="footer-right" class="canva-text text-sm text-[#d7e4dc]"></p>
+   </div>
+  </footer>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+
+      document.querySelectorAll('.section-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+          const target = document.getElementById(button.dataset.target);
+          target.classList.toggle('collapsed');
+          button.classList.toggle('open');
+        });
+      });
+
+      const answerBtn = document.getElementById('answerBtn');
+      const answerBox = document.getElementById('answerBox');
+      answerBtn.addEventListener('click', () => {
+        answerBox.classList.toggle('show');
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a06dc5b5f8b9ccbf',t:'MTc4MDY0Nzc3NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
