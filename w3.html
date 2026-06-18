@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en"><head><script src="/_sdk/telemetry_sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 3 Finite Automata</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#0d223f;--navy-2:#15345d;--gold:#d8a94a;--cream:#f8f5ef;--ink:#18324d;--line:#dce3ea}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--cream)}
+    .serif{font-family:'Fraunces',serif}
+    .hero-pattern{background-image:linear-gradient(rgba(13,34,63,.88),rgba(13,34,63,.92)),radial-gradient(circle at 20% 15%,rgba(216,169,74,.18),transparent 28%),radial-gradient(circle at 80% 70%,rgba(255,255,255,.08),transparent 24%)}
+    .lesson-card{transition:all .25s ease}
+    .lesson-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(13,34,63,.11)}
+    .accordion-panel{max-height:0;overflow:hidden;transition:max-height .35s ease}
+    .accordion-item.open .accordion-panel{max-height:3000px}
+    .accordion-item.open .chev{transform:rotate(180deg)}
+    .chev{transition:transform .25s ease}
+    .answer{display:none}.answer.show{display:block}
+    .focusable:focus-visible{outline:3px solid rgba(216,169,74,.55);outline-offset:3px}
+    .quiz-option.selected{border-color:var(--gold);background:#fff8e7}
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root" class="w-full" style="background: rgb(248, 245, 239);">
+  <header class="hero-pattern text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-12">
+    <div class="flex items-center justify-between gap-4 mb-10">
+     <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full border border-yellow-300/60 flex items-center justify-center text-yellow-200">
+       <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+      </div>
+      <div>
+       <p data-template-id="school-name" class="canva-text text-xs uppercase tracking-[0.22em] text-yellow-100/90 font-semibold" style="color: rgb(254, 243, 199); font-weight: 600; font-style: normal; font-size: 11px;">University of Perpetual Help System DALTA – Las Piñas</p>
+       <p data-template-id="instructor-name" class="canva-text text-sm text-white/75" style="color: rgb(255, 255, 255); font-weight: 400; font-style: normal; font-size: 14px;">Instructor: MKDB</p>
+      </div>
+     </div>
+     <div class="hidden md:flex items-center gap-2 text-xs text-white/70 border border-white/15 rounded-full px-4 py-2">
+      <i data-lucide="calendar-days" class="w-4 h-4"></i><span>Automata &amp; Theory of Computation • Week 3</span>
+     </div>
+    </div>
+    <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center">
+     <div>
+      <p data-template-id="hero-eyebrow" class="canva-text text-yellow-300 text-sm uppercase tracking-[0.28em] font-semibold mb-4" style="color: rgb(253, 230, 138); font-weight: 700; font-style: normal; font-size: 13px;">Week 3 Lesson</p>
+      <h1 data-template-id="hero-title" class="canva-text serif max-w-4xl leading-[1.05] mb-5" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 52px; line-height: 1.05;">Finite Automata</h1>
+      <p data-template-id="hero-subtitle" class="canva-text max-w-2xl text-white/82 text-lg leading-8 mb-7" style="color: rgb(229, 237, 247); font-weight: 400; font-style: normal; font-size: 18px; line-height: 1.6;">Understand how machines with finite memory read input, follow transitions, and decide whether to accept or reject strings.</p>
+      <div class="flex flex-wrap gap-3"><a href="#lesson-content" class="focusable inline-flex items-center gap-2 bg-yellow-400 text-slate-900 px-5 py-3 rounded-full font-semibold text-sm hover:bg-yellow-300 transition"><i data-lucide="map" class="w-4 h-4"></i> Start Lesson</a> <a href="#activities" class="focusable inline-flex items-center gap-2 border border-white/25 text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-white/10 transition"><i data-lucide="users" class="w-4 h-4"></i> View Activities</a>
+      </div>
+     </div>
+     <div class="relative">
+      <div class="absolute -top-4 -right-3 w-28 h-28 border border-yellow-200/30 rounded-full"></div>
+      <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-yellow-300/10 rounded-full"></div>
+      <div class="relative overflow-hidden rounded-[28px] border border-white/15 shadow-2xl"><img data-template-id="hero-image" loading="lazy" class="canva-image w-full h-[330px] object-cover" src="https://images.pexels.com/photos/14314638/pexels-photo-14314638.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="Modern digital spheres interconnected by glowing lines, showcasing a futuristic network concept.">
+       <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent"></div>
+       <div class="absolute left-5 bottom-5 right-5">
+        <div class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-yellow-200 mb-2">
+         <span class="w-8 h-px bg-yellow-300"></span> States, inputs, acceptance
+        </div>
+        <p class="text-white/90 text-sm">Machines that decide which strings belong.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </header>
+  <main class="max-w-7xl mx-auto px-5 md:px-8 py-10 md:py-14"><!-- Outcomes -->
+   <section id="outcomes" class="grid lg:grid-cols-[.9fr_1.1fr] gap-7 mb-14">
+    <div class="bg-[var(--navy)] text-white rounded-[26px] p-7 md:p-9 relative overflow-hidden">
+     <div class="absolute -right-12 -top-12 w-40 h-40 rounded-full border border-white/10"></div>
+     <p class="uppercase tracking-[0.24em] text-xs text-yellow-300 font-semibold mb-4">Week 3 Focus</p>
+     <h2 data-template-id="outcomes-title" class="canva-text serif mb-4" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 34px;">By the end of this lesson, you should be able to...</h2>
+     <p data-template-id="outcomes-intro" class="canva-text text-white/80 leading-7" style="color: rgb(219, 231, 243); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">This lesson covers the fundamentals of finite automata — what they are, how they work, how to draw them, and how to design your own simple machines that accept or reject strings.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4">
+       <i data-lucide="circle-dot" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Define finite automata</h3>
+      <p class="text-sm leading-6 text-slate-600">Understand the formal definition and purpose of finite automata.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
+       <i data-lucide="list-checks" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Identify components</h3>
+      <p class="text-sm leading-6 text-slate-600">Enumerate the 5-tuple components of a finite automaton.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center mb-4">
+       <i data-lucide="git-branch" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Draw transition diagrams</h3>
+      <p class="text-sm leading-6 text-slate-600">Represent automata visually with states and arrows.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center mb-4">
+       <i data-lucide="check-circle" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Determine acceptance</h3>
+      <p class="text-sm leading-6 text-slate-600">Trace strings through an automaton to decide accept or reject.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center mb-4">
+       <i data-lucide="pencil-ruler" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Design simple automata</h3>
+      <p class="text-sm leading-6 text-slate-600">Construct DFAs for given language specifications.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center mb-4">
+       <i data-lucide="workflow" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Trace transitions</h3>
+      <p class="text-sm leading-6 text-slate-600">Follow input symbols step-by-step through state changes.</p>
+     </div>
+    </div>
+   </section><!-- Lesson Content -->
+   <section id="lesson-content" class="mb-14">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-6">
+     <div>
+      <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Lesson Content</p>
+      <h2 data-template-id="section-title-main" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Finite automata fundamentals</h2>
+     </div>
+    </div>
+    <div class="space-y-4"><!-- Topic 1: Definition -->
+     <article class="accordion-item open bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center"><i data-lucide="book-open" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 1</p>
+         <h3 class="font-semibold text-lg text-slate-900">Definition of Finite Automata</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">A <strong>Finite Automaton (FA)</strong> is the simplest model of computation. It is an abstract machine that has a fixed, finite number of states and moves between those states based on input symbols. Think of it as a machine that reads a string of characters one at a time, from left to right, and at the end decides whether to <strong>accept</strong> or <strong>reject</strong> the string.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Formal Definition</p>
+         <p class="text-sm leading-6 text-slate-700">A finite automaton is a 5-tuple <strong>M = (Q, Σ, δ, q₀, F)</strong> where:</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700 mt-2">
+          <li><strong>Q</strong> = a finite set of states</li>
+          <li><strong>Σ</strong> (sigma) = a finite set of input symbols (alphabet)</li>
+          <li><strong>δ</strong> (delta) = transition function (Q × Σ → Q)</li>
+          <li><strong>q₀</strong> = the start state (q₀ ∈ Q)</li>
+          <li><strong>F</strong> = set of accept/final states (F ⊆ Q)</li>
+         </ul>
+        </div>
+        <div class="bg-[#f8fbff] border-l-4 border-blue-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Real-world analogy: Turnstile gate</p>
+         <p class="text-sm text-slate-700">A subway turnstile has two states: <strong>Locked</strong> and <strong>Unlocked</strong>. Insert a coin → it moves to Unlocked. Push the bar → it moves to Locked. This is a finite automaton with 2 states and 2 input symbols.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 2: Components -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i data-lucide="puzzle" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 2</p>
+         <h3 class="font-semibold text-lg text-slate-900">Components of Finite Automata</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">Every finite automaton is made up of exactly five components. Let's explore each one with a concrete example.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: FA that accepts strings ending in "1" over alphabet {0, 1}</p>
+         <div class="grid md:grid-cols-2 gap-3 mt-3 text-sm">
+          <div class="rounded-xl border border-slate-200 p-3 bg-white">
+           <strong>Q = {q₀, q₁}</strong><br><span class="text-slate-600">Two states: q₀ (not ending in 1) and q₁ (ending in 1)</span>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-3 bg-white">
+           <strong>Σ = {0, 1}</strong><br><span class="text-slate-600">The input alphabet — only 0s and 1s allowed</span>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-3 bg-white">
+           <strong>q₀ = q₀</strong><br><span class="text-slate-600">We start in state q₀</span>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-3 bg-white">
+           <strong>F = {q₁}</strong><br><span class="text-slate-600">q₁ is the only accept state</span>
+          </div>
+         </div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Transition Function δ</p>
+         <table class="w-full text-sm mt-2 border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">State</th>
+            <th class="text-left p-2">Input 0</th>
+            <th class="text-left p-2">Input 1</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">q₀</td>
+            <td class="p-2">q₀</td>
+            <td class="p-2">q₁</td>
+           </tr>
+           <tr>
+            <td class="p-2">q₁</td>
+            <td class="p-2">q₀</td>
+            <td class="p-2">q₁</td>
+           </tr>
+          </tbody>
+         </table>
+        </div>
+        <div class="bg-[#f0fdf4] border-l-4 border-emerald-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Think of it this way</p>
+         <p class="text-sm text-slate-700">The <strong>transition function</strong> is like a rulebook: "If you're in state X and you read symbol Y, go to state Z." It tells the machine exactly what to do at every step.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 3: States and Transitions -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><i data-lucide="git-branch" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 3</p>
+         <h3 class="font-semibold text-lg text-slate-900">States and Transitions</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">A <strong>state</strong> represents a condition or situation the machine can be in at a given time. A <strong>transition</strong> is the movement from one state to another triggered by reading an input symbol.</p>
+        <div class="grid md:grid-cols-3 gap-3 mb-4 text-sm">
+         <div class="rounded-xl border border-slate-200 p-4 text-center">
+          <strong>Start State</strong><br><span class="text-slate-600">Where the machine begins (arrow pointing in)</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4 text-center">
+          <strong>Intermediate States</strong><br><span class="text-slate-600">States visited during processing</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4 text-center">
+          <strong>Accept States</strong><br><span class="text-slate-600">Double circle — machine accepts here</span>
+         </div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: Tracing the string "101" on our FA</p>
+         <div class="text-sm leading-7 text-slate-700">
+          <p>Start → <strong>q₀</strong></p>
+          <p>Read '1' → move to <strong>q₁</strong></p>
+          <p>Read '0' → move to <strong>q₀</strong></p>
+          <p>Read '1' → move to <strong>q₁</strong></p>
+          <p>End of string. Current state = q₁ ∈ F → <strong class="text-emerald-700">ACCEPTED ✓</strong></p>
+         </div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: Tracing "100"</p>
+         <div class="text-sm leading-7 text-slate-700">
+          <p>Start → q₀ → read '1' → q₁ → read '0' → q₀ → read '0' → q₀</p>
+          <p>End of string. Current state = q₀ ∉ F → <strong class="text-red-600">REJECTED ✗</strong></p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 4: Transition Diagrams -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center"><i data-lucide="share-2" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 4</p>
+         <h3 class="font-semibold text-lg text-slate-900">Transition Diagrams</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">A <strong>transition diagram</strong> (also called a state diagram) is a visual representation of a finite automaton using circles and arrows.</p>
+        <div class="grid md:grid-cols-2 gap-3 mb-4 text-sm">
+         <div class="rounded-xl border border-slate-200 p-4">
+          <strong>Circles</strong> = States<br><span class="text-slate-600">Each circle is labeled with the state name</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4">
+          <strong>Double circle</strong> = Accept state<br><span class="text-slate-600">Final/accepting states have a double border</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4">
+          <strong>Arrows</strong> = Transitions<br><span class="text-slate-600">Labeled with the input symbol that triggers them</span>
+         </div>
+         <div class="rounded-xl border border-slate-200 p-4">
+          <strong>Unlabeled arrow</strong> = Start<br><span class="text-slate-600">An arrow from nowhere points to the start state</span>
+         </div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-3">Diagram for "strings ending in 1"</p>
+         <div class="flex items-center justify-center gap-2 text-sm font-mono py-3"><span class="text-slate-500">→</span> <span class="inline-flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-700">q₀</span> <span class="text-slate-700 mx-2">—<sup>1</sup>→</span> <span class="inline-flex items-center justify-center w-10 h-10 rounded-full border-[3px] border-double border-slate-700">q₁</span>
+         </div>
+         <p class="text-center text-xs text-slate-500 mt-1">q₀ loops on '0', q₁ loops on '1', q₁→q₀ on '0', q₀→q₁ on '1'</p>
+        </div>
+        <div class="bg-[#f5f3ff] border-l-4 border-indigo-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Drawing tips</p>
+         <p class="text-sm text-slate-700">1) Draw all states as circles first. 2) Mark the start state with an incoming arrow. 3) Double-circle the accept states. 4) Add labeled arrows for every transition in your table.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 5: Language Acceptance -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center"><i data-lucide="check-circle" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 5</p>
+         <h3 class="font-semibold text-lg text-slate-900">Language Acceptance</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">A finite automaton <strong>accepts</strong> a string if, after reading all input symbols, the machine ends in an accept state. The <strong>language</strong> of an FA is the set of all strings it accepts.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example</p>
+         <p class="text-sm leading-6 text-slate-700">For our FA accepting strings ending in '1':</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700 mt-2">
+          <li><strong>L(M) = {1, 01, 11, 001, 011, 101, 111, ...}</strong></li>
+          <li>String "01" → ends in q₁ → <strong class="text-emerald-700">Accepted</strong></li>
+          <li>String "00" → ends in q₀ → <strong class="text-red-600">Rejected</strong></li>
+          <li>String "ε" (empty) → stays in q₀ → <strong class="text-red-600">Rejected</strong></li>
+         </ul>
+        </div>
+        <div class="bg-[#fef2f2] border-l-4 border-rose-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Key distinction</p>
+         <p class="text-sm text-slate-700"><strong>Accept</strong> = ends in a final state after all input is consumed. <strong>Reject</strong> = ends in a non-final state. The machine always reads the entire string — it never stops early.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 6: Designing Simple Automata -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center"><i data-lucide="pencil-ruler" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 6</p>
+         <h3 class="font-semibold text-lg text-slate-900">Designing Simple Automata</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">Designing an FA means figuring out what states you need to "remember" about the input so far. Follow this step-by-step process:</p>
+        <ol class="list-decimal pl-5 space-y-2 text-sm leading-7 text-slate-700 mb-4">
+         <li><strong>Understand the language</strong> — what strings should be accepted?</li>
+         <li><strong>Determine what to remember</strong> — what condition must hold at the end?</li>
+         <li><strong>Create states</strong> — each state represents one "memory condition"</li>
+         <li><strong>Define transitions</strong> — for each state and each input symbol, where do you go?</li>
+         <li><strong>Mark start and accept states</strong></li>
+         <li><strong>Test with example strings</strong></li>
+        </ol>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Design exercise: FA for strings containing "01" as a substring</p>
+         <p class="text-sm leading-6 text-slate-700 mb-2">Alphabet Σ = {0, 1}. Accept any string that has "01" somewhere in it.</p>
+         <p class="text-sm leading-6 text-slate-700"><strong>States needed:</strong></p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>q₀</strong>: Haven't seen anything useful yet</li>
+          <li><strong>q₁</strong>: Just saw a '0' (might be the start of "01")</li>
+          <li><strong>q₂</strong>: Have seen "01" — accept! (stay here forever)</li>
+         </ul>
+        </div>
+        <div class="bg-[#f0fdfa] border-l-4 border-cyan-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Pro tip</p>
+         <p class="text-sm text-slate-700">Always test your design with strings that <em>should</em> be accepted AND strings that should be rejected. If any test fails, revise your transitions.</p>
+        </div>
+       </div>
+      </div>
+     </article>
+    </div>
+   </section><!-- Activities -->
+   <section id="activities" class="mb-14">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Practice and Apply</p>
+     <h2 class="serif text-3xl md:text-4xl text-[var(--navy)]">Learning activities</h2>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-5 mb-5"><!-- Group Activity -->
+     <article class="bg-[var(--navy)] text-white rounded-[24px] p-6 md:p-7">
+      <div class="flex items-center gap-3 mb-4">
+       <span class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center"><i data-lucide="users" class="w-5 h-5"></i></span>
+       <h3 data-template-id="group-title" class="canva-text font-semibold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Group Activity</h3>
+      </div>
+      <p class="text-white/80 leading-7 mb-4">"Design and Present Your Own FA"</p>
+      <ol class="list-decimal pl-5 space-y-2 text-sm text-white/85 leading-6">
+       <li>Form groups of 4–5 members.</li>
+       <li>Each group is given a language specification (e.g., "strings starting with 0", "strings with even number of 1s").</li>
+       <li>Design the FA: list Q, Σ, δ, q₀, F.</li>
+       <li>Draw the transition diagram on paper or whiteboard.</li>
+       <li>Trace at least 3 strings (2 accepted, 1 rejected) to verify.</li>
+       <li>Present to the class (5 minutes).</li>
+      </ol>
+      <div class="mt-5 p-4 rounded-xl bg-white/10 text-sm text-white/80"><strong>Discussion points:</strong> Why did you choose those states? What does each state "remember"?
+      </div>
+     </article><!-- Individual Activity -->
+     <article class="bg-white border border-slate-200 rounded-[24px] p-6 md:p-7">
+      <div class="flex items-center gap-3 mb-4">
+       <span class="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center"><i data-lucide="user-pen" class="w-5 h-5"></i></span>
+       <h3 data-template-id="individual-title" class="canva-text font-semibold text-xl text-slate-900" style="color: rgb(15, 23, 42); font-weight: 700; font-style: normal; font-size: 22px;">Individual Activity</h3>
+      </div>
+      <p class="text-slate-700 leading-7 mb-4">"Trace and Decide"</p>
+      <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700 leading-6">
+       <li>Given the FA M = ({q₀, q₁, q₂}, {a, b}, δ, q₀, {q₂}) with transitions: δ(q₀,a)=q₁, δ(q₀,b)=q₀, δ(q₁,a)=q₂, δ(q₁,b)=q₀, δ(q₂,a)=q₂, δ(q₂,b)=q₂</li>
+       <li>Trace these strings: "aa", "aba", "baa", "bb", "aab"</li>
+       <li>For each string, show the full state sequence and write ACCEPT or REJECT.</li>
+       <li>Describe in one sentence what language this FA accepts.</li>
+      </ol>
+      <div class="mt-5 p-4 rounded-xl bg-yellow-50 text-sm text-slate-700 border border-yellow-100">
+       Rubric: Correct traces (60%), correct accept/reject (20%), language description (20%)
+      </div>
+     </article>
+    </div><!-- Laboratory Lesson -->
+    <article class="bg-white border border-slate-200 rounded-[24px] p-6 md:p-7 mb-5">
+     <div class="flex items-center gap-3 mb-4">
+      <span class="w-11 h-11 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center"><i data-lucide="flask-conical" class="w-5 h-5"></i></span>
+      <h3 data-template-id="lab-title" class="canva-text font-semibold text-xl text-slate-900" style="color: rgb(15, 23, 42); font-weight: 700; font-style: normal; font-size: 22px;">Laboratory Lesson</h3>
+     </div>
+     <p class="text-slate-700 leading-7 mb-4">"Building Finite Automata Step by Step"</p>
+     <div class="space-y-4">
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 1: Construct a DFA</p>
+       <p class="text-sm leading-6 text-slate-700">Design a DFA over Σ = {0, 1} that accepts all binary strings with an even number of 0s.</p>
+       <ul class="list-disc pl-5 text-sm leading-6 text-slate-600 mt-2">
+        <li>Write the 5-tuple formally</li>
+        <li>Draw the transition diagram</li>
+        <li>Fill out the transition table</li>
+        <li>Test with: "0", "00", "010", "1010", "111"</li>
+       </ul>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 2: Fix the broken FA</p>
+       <p class="text-sm leading-6 text-slate-700">The following FA is supposed to accept strings that start with "ab" over Σ = {a, b}. But it has errors. Find and fix them:</p>
+       <p class="text-sm leading-6 text-slate-600 mt-2 font-mono">Q={q₀,q₁,q₂}, F={q₂}, δ(q₀,a)=q₁, δ(q₀,b)=q₁, δ(q₁,a)=q₂, δ(q₁,b)=q₂, δ(q₂,a)=q₂, δ(q₂,b)=q₂</p>
+       <p class="text-sm leading-6 text-slate-600 mt-2"><em>Hint:</em> Test with "ba" — should it be accepted?</p>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 3: Design from scratch</p>
+       <p class="text-sm leading-6 text-slate-700">Design a DFA that accepts all strings over {a, b} that end with "ab". Show your complete work: 5-tuple, diagram, table, and 4 test traces.</p>
+      </div>
+     </div>
+    </article>
+   </section><!-- Quiz -->
+   <section id="quiz" class="mb-10">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Check Your Understanding</p>
+     <h2 data-template-id="quiz-title" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Sample Quiz</h2>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-[24px] p-5 md:p-7">
+     <div class="space-y-6">
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">1. A finite automaton is defined as a:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">3-tuple (Q, Σ, δ)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">5-tuple (Q, Σ, δ, q₀, F)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">4-tuple (Q, Σ, q₀, F)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">6-tuple (Q, Σ, δ, q₀, F, ε)</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="c">
+       <p class="font-semibold mb-3">2. In a transition diagram, an accept state is represented by:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">A square</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">A single circle</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">A double circle</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">A triangle</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="a">
+       <p class="font-semibold mb-3">3. The transition function δ maps:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">A state and input symbol to a next state</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">An input to an output</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">A state to a string</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">An alphabet to a language</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">4. A string is accepted by an FA if:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">It reaches any state after reading input</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">It ends in an accept state after all input is consumed</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">It passes through the start state twice</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">It has at least 3 characters</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="d">
+       <p class="font-semibold mb-3">5. Which of the following is NOT a component of a finite automaton?</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">Set of states Q</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">Input alphabet Σ</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">Start state q₀</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">Stack memory</button>
+       </div>
+      </div>
+     </div>
+     <div class="mt-7 flex flex-col sm:flex-row items-start sm:items-center gap-4"><button id="check-score" class="focusable inline-flex items-center gap-2 bg-[var(--navy)] text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-[var(--navy-2)] transition"><i data-lucide="check-check" class="w-4 h-4"></i> Check score</button>
+      <p id="score-output" class="text-sm font-semibold text-slate-700" aria-live="polite"></p>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer class="bg-[var(--navy)] text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-7 flex flex-col md:flex-row justify-between gap-4">
+    <p data-template-id="footer-text" class="canva-text text-sm text-white/75" style="color: rgb(219, 231, 243); font-weight: 400; font-style: normal; font-size: 14px;">Automata and Theory of Computation • Week 3 Lesson • University of Perpetual Help System DALTA – Las Piñas</p>
+    <p class="text-sm text-white/55">States, transitions, acceptance.</p>
+   </div>
+  </footer>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+  lucide.createIcons();
+
+  document.querySelectorAll('.accordion-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      button.closest('.accordion-item').classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.quiz-question').forEach(question => {
+    question.querySelectorAll('.quiz-option').forEach(option => {
+      option.addEventListener('click', () => {
+        question.querySelectorAll('.quiz-option').forEach(btn => btn.classList.remove('selected'));
+        option.classList.add('selected');
+        question.dataset.selected = option.dataset.choice;
+      });
+    });
+  });
+
+  document.getElementById('check-score').addEventListener('click', () => {
+    let score = 0;
+    const questions = document.querySelectorAll('.quiz-question');
+    questions.forEach(question => {
+      if (question.dataset.selected === question.dataset.answer) score++;
+    });
+    document.getElementById('score-output').textContent = `You scored ${score} out of ${questions.length}.`;
+  });
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0d7671da5e31fa3',t:'MTc4MTc1NTM5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body></html>
