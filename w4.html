@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en"><head><script src="/_sdk/telemetry_sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 4 DFA and NFA</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+  :root{--navy:#0d223f;--navy-2:#15345d;--gold:#d8a94a;--cream:#f8f5ef;--ink:#18324d}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--cream)}
+  .serif{font-family:'Fraunces',serif}
+  .hero-pattern{background-image:linear-gradient(rgba(13,34,63,.88),rgba(13,34,63,.92)),radial-gradient(circle at 20% 15%,rgba(216,169,74,.18),transparent 28%),radial-gradient(circle at 80% 70%,rgba(255,255,255,.08),transparent 24%)}
+  .accordion-panel{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .accordion-item.open .accordion-panel{max-height:5000px}
+  .accordion-item.open .chev{transform:rotate(180deg)}
+  .chev{transition:transform .25s ease}
+  .focusable:focus-visible{outline:3px solid rgba(216,169,74,.55);outline-offset:3px}
+  .quiz-option.selected{border-color:var(--gold);background:#fff8e7}
+ </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root" class="w-full" style="background: rgb(248, 245, 239);">
+  <header class="hero-pattern text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-12">
+    <div class="flex items-center justify-between gap-4 mb-10">
+     <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full border border-yellow-300/60 flex items-center justify-center text-yellow-200">
+       <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+      </div>
+      <div>
+       <p data-template-id="school-name" class="canva-text text-xs uppercase tracking-[0.22em] text-yellow-100/90 font-semibold" style="color: rgb(254, 243, 199); font-weight: 600; font-style: normal; font-size: 11px;">University of Perpetual Help System DALTA – Las Piñas</p>
+       <p data-template-id="instructor-name" class="canva-text text-sm text-white/75" style="color: rgb(255, 255, 255); font-weight: 400; font-style: normal; font-size: 14px;">Instructor: MKDB</p>
+      </div>
+     </div>
+     <div class="hidden md:flex items-center gap-2 text-xs text-white/70 border border-white/15 rounded-full px-4 py-2">
+      <i data-lucide="calendar-days" class="w-4 h-4"></i><span>Automata &amp; Theory of Computation • Week 4</span>
+     </div>
+    </div>
+    <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center">
+     <div>
+      <p data-template-id="hero-eyebrow" class="canva-text text-yellow-300 text-sm uppercase tracking-[0.28em] font-semibold mb-4" style="color: rgb(253, 230, 138); font-weight: 700; font-style: normal; font-size: 13px;">Week 4 Lesson</p>
+      <h1 data-template-id="hero-title" class="canva-text serif max-w-4xl leading-[1.05] mb-5" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 48px; line-height: 1.05;">Deterministic &amp; Nondeterministic Finite Automata</h1>
+      <p data-template-id="hero-subtitle" class="canva-text max-w-2xl text-white/82 text-lg leading-8 mb-7" style="color: rgb(229, 237, 247); font-weight: 400; font-style: normal; font-size: 18px; line-height: 1.6;">Explore the two flavors of finite automata — deterministic and nondeterministic — learn to design both, prove their equivalence, and master the subset construction algorithm.</p>
+      <div class="flex flex-wrap gap-3"><a href="#lesson-content" class="focusable inline-flex items-center gap-2 bg-yellow-400 text-slate-900 px-5 py-3 rounded-full font-semibold text-sm hover:bg-yellow-300 transition"><i data-lucide="map" class="w-4 h-4"></i> Start Lesson</a> <a href="#activities" class="focusable inline-flex items-center gap-2 border border-white/25 text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-white/10 transition"><i data-lucide="users" class="w-4 h-4"></i> View Activities</a>
+      </div>
+     </div>
+     <div class="relative">
+      <div class="absolute -top-4 -right-3 w-28 h-28 border border-yellow-200/30 rounded-full"></div>
+      <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-yellow-300/10 rounded-full"></div>
+      <div class="relative overflow-hidden rounded-[28px] border border-white/15 shadow-2xl"><img data-template-id="hero-image" loading="lazy" class="canva-image w-full h-[330px] object-cover" src="https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="Dynamic urban scene showcasing interconnected light trails representing digital communication networks.">
+       <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent"></div>
+       <div class="absolute left-5 bottom-5 right-5">
+        <div class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-yellow-200 mb-2">
+         <span class="w-8 h-px bg-yellow-300"></span> DFA &amp; NFA
+        </div>
+        <p class="text-white/90 text-sm">Deterministic vs. Nondeterministic paths through computation.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </header>
+  <main class="max-w-7xl mx-auto px-5 md:px-8 py-10 md:py-14"><!-- Outcomes -->
+   <section id="outcomes" class="grid lg:grid-cols-[.9fr_1.1fr] gap-7 mb-14">
+    <div class="bg-[var(--navy)] text-white rounded-[26px] p-7 md:p-9 relative overflow-hidden">
+     <div class="absolute -right-12 -top-12 w-40 h-40 rounded-full border border-white/10"></div>
+     <p class="uppercase tracking-[0.24em] text-xs text-yellow-300 font-semibold mb-4">Week 4 Focus</p>
+     <h2 data-template-id="outcomes-title" class="canva-text serif mb-4" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 34px;">By the end of this lesson, you should be able to...</h2>
+     <p data-template-id="outcomes-intro" class="canva-text text-white/80 leading-7" style="color: rgb(219, 231, 243); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">This lesson covers DFA and NFA — their formal definitions, design techniques, the theorem that proves their equivalence, and the subset construction algorithm for converting any NFA into a DFA.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4">
+       <i data-lucide="circle-dot" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Define DFA &amp; NFA</h3>
+      <p class="text-sm leading-6 text-slate-600">Understand the formal definitions and differences between DFA and NFA.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
+       <i data-lucide="git-branch" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Design DFAs</h3>
+      <p class="text-sm leading-6 text-slate-600">Construct deterministic finite automata for given language specifications.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center mb-4">
+       <i data-lucide="split" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Design NFAs</h3>
+      <p class="text-sm leading-6 text-slate-600">Construct nondeterministic automata using multiple transitions and ε-moves.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center mb-4">
+       <i data-lucide="equal" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Prove equivalence</h3>
+      <p class="text-sm leading-6 text-slate-600">Understand why DFA and NFA recognize the same class of languages.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center mb-4">
+       <i data-lucide="arrow-right-left" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Convert NFA to DFA</h3>
+      <p class="text-sm leading-6 text-slate-600">Apply the subset construction algorithm to convert any NFA into an equivalent DFA.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center mb-4">
+       <i data-lucide="workflow" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Trace state transitions</h3>
+      <p class="text-sm leading-6 text-slate-600">Follow inputs through both DFA and NFA, tracking all possible paths.</p>
+     </div>
+    </div>
+   </section><!-- Lesson Content -->
+   <section id="lesson-content" class="mb-14">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-6">
+     <div>
+      <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Lesson Content</p>
+      <h2 data-template-id="section-title-main" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">DFA and NFA fundamentals</h2>
+     </div>
+    </div>
+    <div class="space-y-4"><!-- Topic 1: DFA -->
+     <article class="accordion-item open bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4"><span class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center"><i data-lucide="target" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 1</p>
+         <h3 class="font-semibold text-lg text-slate-900">Deterministic Finite Automata (DFA)</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">A <strong>Deterministic Finite Automaton (DFA)</strong> is a finite automaton where, for every state and every input symbol, there is <strong>exactly one</strong> next state. There is no ambiguity — the machine always knows precisely where to go next.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Formal Definition</p>
+         <p class="text-sm leading-6 text-slate-700">A DFA is a 5-tuple <strong>M = (Q, Σ, δ, q₀, F)</strong> where:</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700 mt-2">
+          <li><strong>Q</strong> = finite set of states</li>
+          <li><strong>Σ</strong> = finite input alphabet</li>
+          <li><strong>δ : Q × Σ → Q</strong> = transition function (exactly one next state for each state-symbol pair)</li>
+          <li><strong>q₀ ∈ Q</strong> = start state</li>
+          <li><strong>F ⊆ Q</strong> = set of accept states</li>
+         </ul>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Key Property: Determinism</p>
+         <p class="text-sm leading-7 text-slate-700">"Deterministic" means the machine has <strong>no choice</strong>. Given the current state and the current input symbol, the next state is <em>uniquely determined</em>. There are no multiple options, no guessing, and no ε-transitions (moves without reading input).</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: DFA accepting binary strings that contain "01"</p>
+         <p class="text-sm leading-6 text-slate-700 mb-2">Σ = {0, 1}. Accept any string containing "01" as a substring.</p>
+         <p class="text-sm text-slate-700 mb-1"><strong>States:</strong></p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>q₀</strong>: Haven't seen a '0' yet (or last char was '1' and no "01" found)</li>
+          <li><strong>q₁</strong>: Just saw a '0', waiting for '1' to complete "01"</li>
+          <li><strong>q₂</strong>: Found "01" — accept! Stay here on any input.</li>
+         </ul>
+         <table class="w-full text-sm mt-3 border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">State</th>
+            <th class="text-left p-2">Input 0</th>
+            <th class="text-left p-2">Input 1</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">q₀</td>
+            <td class="p-2">q₁</td>
+            <td class="p-2">q₀</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">q₁</td>
+            <td class="p-2">q₁</td>
+            <td class="p-2">q₂</td>
+           </tr>
+           <tr>
+            <td class="p-2">q₂</td>
+            <td class="p-2">q₂</td>
+            <td class="p-2">q₂</td>
+           </tr>
+          </tbody>
+         </table>
+         <p class="text-sm text-slate-600 mt-2"><strong>F = {q₂}</strong>. Notice every cell has exactly one entry — that's what makes it deterministic.</p>
+        </div>
+        <div class="bg-[#f8fbff] border-l-4 border-blue-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Real-world analogy: Vending machine</p>
+         <p class="text-sm text-slate-700">A vending machine is deterministic: insert ₱5 → go to "₱5 inserted" state. Insert another ₱5 → go to "₱10 inserted" state. At no point does the machine wonder "should I go to state A or state B?" — there's always exactly one outcome per action.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 2: NFA -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4"><span class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i data-lucide="split" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 2</p>
+         <h3 class="font-semibold text-lg text-slate-900">Nondeterministic Finite Automata (NFA)</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">A <strong>Nondeterministic Finite Automaton (NFA)</strong> is like a DFA but with more flexibility. For a given state and input symbol, the machine can transition to <strong>zero, one, or multiple</strong> next states simultaneously. It can also make <strong>ε-transitions</strong> — moving to another state without reading any input.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Formal Definition</p>
+         <p class="text-sm leading-6 text-slate-700">An NFA is a 5-tuple <strong>M = (Q, Σ, δ, q₀, F)</strong> where:</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700 mt-2">
+          <li><strong>Q</strong> = finite set of states</li>
+          <li><strong>Σ</strong> = finite input alphabet</li>
+          <li><strong>δ : Q × (Σ ∪ {ε}) → P(Q)</strong> = transition function mapping to the <em>power set</em> of Q (a set of possible next states)</li>
+          <li><strong>q₀ ∈ Q</strong> = start state</li>
+          <li><strong>F ⊆ Q</strong> = set of accept states</li>
+         </ul>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Key Differences from DFA</p>
+         <div class="grid md:grid-cols-2 gap-3 mt-2 text-sm">
+          <div class="rounded-xl border border-slate-200 p-3 bg-white"><strong>DFA</strong><br><span class="text-slate-600">δ(q, a) = exactly one state</span>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-3 bg-white"><strong>NFA</strong><br><span class="text-slate-600">δ(q, a) = a set of states (can be empty, one, or many)</span>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-3 bg-white"><strong>DFA</strong><br><span class="text-slate-600">No ε-transitions allowed</span>
+          </div>
+          <div class="rounded-xl border border-slate-200 p-3 bg-white"><strong>NFA</strong><br><span class="text-slate-600">ε-transitions allowed (move without consuming input)</span>
+          </div>
+         </div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">How acceptance works in an NFA</p>
+         <p class="text-sm leading-7 text-slate-700">An NFA accepts a string if <strong>at least one</strong> possible path through the machine ends in an accept state. Think of it as the machine "guessing" the correct path. If any guess leads to acceptance, the string is accepted.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: NFA accepting strings ending in "01"</p>
+         <p class="text-sm text-slate-700 mb-2">Σ = {0, 1}. Accept strings whose last two characters are "01".</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>q₀</strong>: Start — loop on 0 and 1 (keep reading)</li>
+          <li><strong>q₁</strong>: Just "guessed" we're at the second-to-last position and saw '0'</li>
+          <li><strong>q₂</strong>: Saw '1' after q₁ — accept!</li>
+         </ul>
+         <table class="w-full text-sm mt-3 border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">State</th>
+            <th class="text-left p-2">Input 0</th>
+            <th class="text-left p-2">Input 1</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">q₀</td>
+            <td class="p-2">{q₀, q₁}</td>
+            <td class="p-2">{q₀}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">q₁</td>
+            <td class="p-2">∅</td>
+            <td class="p-2">{q₂}</td>
+           </tr>
+           <tr>
+            <td class="p-2">q₂</td>
+            <td class="p-2">∅</td>
+            <td class="p-2">∅</td>
+           </tr>
+          </tbody>
+         </table>
+         <p class="text-sm text-slate-600 mt-2"><strong>F = {q₂}</strong>. Notice q₀ on input '0' goes to TWO states — that's nondeterminism!</p>
+        </div>
+        <div class="bg-[#f0fdf4] border-l-4 border-emerald-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Real-world analogy: Multiple-choice maze</p>
+         <p class="text-sm text-slate-700">Imagine a maze where at some forks, you can clone yourself and explore all paths simultaneously. If <em>any</em> clone reaches the exit, you win. That's how an NFA processes a string — it explores all possible paths at once.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 3: DFA Design -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4"><span class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><i data-lucide="pencil-ruler" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 3</p>
+         <h3 class="font-semibold text-lg text-slate-900">DFA Design</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">Designing a DFA requires thinking about what information you need to "remember" about the input processed so far. Each state represents a distinct memory condition.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Step-by-step DFA design process</p>
+         <ol class="list-decimal pl-5 space-y-2 text-sm leading-7 text-slate-700">
+          <li><strong>Identify the language</strong> — What strings should be accepted?</li>
+          <li><strong>Determine what to remember</strong> — What condition distinguishes accepted strings?</li>
+          <li><strong>Create states</strong> — One state per distinct "memory condition"</li>
+          <li><strong>Define ALL transitions</strong> — Every state must have exactly one transition for EACH input symbol</li>
+          <li><strong>Mark start and accept states</strong></li>
+          <li><strong>Test thoroughly</strong> — Try accepted and rejected strings</li>
+         </ol>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: DFA for strings with an even number of 'a's</p>
+         <p class="text-sm text-slate-700 mb-2">Σ = {a, b}. Accept strings where the count of 'a' is even (0, 2, 4, ...).</p>
+         <p class="text-sm text-slate-700 mb-1"><strong>What to remember:</strong> Is the count of 'a's seen so far even or odd?</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>q₀</strong> (even count — start here, also accept state since 0 is even)</li>
+          <li><strong>q₁</strong> (odd count)</li>
+         </ul>
+         <table class="w-full text-sm mt-3 border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">State</th>
+            <th class="text-left p-2">Input a</th>
+            <th class="text-left p-2">Input b</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">q₀ (accept)</td>
+            <td class="p-2">q₁</td>
+            <td class="p-2">q₀</td>
+           </tr>
+           <tr>
+            <td class="p-2">q₁</td>
+            <td class="p-2">q₀</td>
+            <td class="p-2">q₁</td>
+           </tr>
+          </tbody>
+         </table>
+         <p class="text-sm text-slate-600 mt-3"><strong>Test:</strong> "aab" → q₀→q₁→q₀→q₀ → <strong class="text-emerald-700">ACCEPT ✓</strong> (2 a's = even)</p>
+         <p class="text-sm text-slate-600">"ab" → q₀→q₁→q₁ → <strong class="text-red-600">REJECT ✗</strong> (1 a = odd)</p>
+        </div>
+        <div class="bg-[#fffbeb] border-l-4 border-amber-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Common mistake</p>
+         <p class="text-sm text-slate-700">Forgetting to define transitions for EVERY state-symbol pair. In a DFA, if you leave a transition undefined, the machine is incomplete. Every state must handle every possible input symbol.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 4: NFA Design -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4"><span class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center"><i data-lucide="share-2" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 4</p>
+         <h3 class="font-semibold text-lg text-slate-900">NFA Design</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">NFAs are often <strong>easier to design</strong> than DFAs because you can "guess" the right path. You don't need to handle every transition — undefined transitions simply mean "this path dies."</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">NFA design strategies</p>
+         <ol class="list-decimal pl-5 space-y-2 text-sm leading-7 text-slate-700">
+          <li><strong>Pattern matching:</strong> Guess when the pattern starts, then verify it character by character</li>
+          <li><strong>ε-transitions for "free" moves:</strong> Use ε-transitions to jump between phases of recognition without consuming input</li>
+          <li><strong>Multiple initial paths:</strong> Let the start state branch into multiple possibilities</li>
+         </ol>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: NFA for strings containing "aba" OR "bab"</p>
+         <p class="text-sm text-slate-700 mb-2">Σ = {a, b}. Accept if the string contains "aba" or "bab" as a substring.</p>
+         <p class="text-sm text-slate-700 mb-2"><strong>Strategy:</strong> Use ε-transitions from start to two separate "pattern detector" branches.</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>q₀</strong>: Start — ε-transition to both branches, also loops on a,b</li>
+          <li><strong>Branch 1 (detect "aba"):</strong> q₁→q₂→q₃→q₄(accept)</li>
+          <li><strong>Branch 2 (detect "bab"):</strong> q₅→q₆→q₇→q₈(accept)</li>
+         </ul>
+         <p class="text-sm text-slate-600 mt-2">This would be much more complex as a DFA (many states needed to track both patterns). NFA makes it simple by exploring both possibilities in parallel.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: NFA with ε-transitions</p>
+         <p class="text-sm text-slate-700 mb-2">Accept strings that are either all a's (length ≥ 1) OR all b's (length ≥ 1).</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>q₀</strong>: Start — ε→q₁ and ε→q₃</li>
+          <li><strong>q₁</strong>: Read 'a' → q₂ (accept), loop on 'a'</li>
+          <li><strong>q₃</strong>: Read 'b' → q₄ (accept), loop on 'b'</li>
+         </ul>
+         <p class="text-sm text-slate-600 mt-2">The ε-transitions let the NFA "choose" which branch to follow without reading input.</p>
+        </div>
+        <div class="bg-[#f5f3ff] border-l-4 border-indigo-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">When to use NFA vs DFA</p>
+         <p class="text-sm text-slate-700">Use NFA for <em>design convenience</em> — they're simpler to create for pattern-matching problems. Use DFA for <em>implementation</em> — computers execute DFAs directly since there's only one path to follow.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 5: Equivalence -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4"><span class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center"><i data-lucide="equal" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 5</p>
+         <h3 class="font-semibold text-lg text-slate-900">Equivalence of DFA and NFA</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">One of the most important theorems in automata theory: <strong>DFAs and NFAs are equivalent in power</strong>. Every language that can be recognized by an NFA can also be recognized by a DFA, and vice versa.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">What "equivalent" means</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li>For every NFA, there exists a DFA that accepts exactly the same language</li>
+          <li>For every DFA, it is already an NFA (a DFA is a special case of NFA)</li>
+          <li>Both recognize exactly the class of <strong>regular languages</strong></li>
+         </ul>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Why this matters</p>
+         <p class="text-sm leading-7 text-slate-700">NFAs are <em>easier to design</em> (less states, more intuitive for pattern matching). DFAs are <em>easier to implement</em> (one path, fast execution). Since they're equivalent, you can design with NFA convenience and convert to DFA for execution.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">The trade-off</p>
+         <p class="text-sm leading-7 text-slate-700">The equivalent DFA may have <strong>exponentially more states</strong> than the original NFA. An NFA with n states can require up to 2ⁿ states in the equivalent DFA (though in practice it's often much less).</p>
+         <p class="text-sm leading-7 text-slate-700 mt-2"><strong>Example:</strong> An NFA with 3 states might convert to a DFA with up to 8 states (2³ = 8), though many of those states may be unreachable and can be removed.</p>
+        </div>
+        <div class="bg-[#fef2f2] border-l-4 border-rose-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Key takeaway</p>
+         <p class="text-sm text-slate-700">Nondeterminism does NOT add computational power to finite automata. It adds <em>convenience</em> — simpler designs with fewer states — but the resulting machine recognizes the same class of languages.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 6: NFA-to-DFA Conversion -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4"><span class="w-11 h-11 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center"><i data-lucide="arrow-right-left" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 6</p>
+         <h3 class="font-semibold text-lg text-slate-900">NFA-to-DFA Conversion (Subset Construction)</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">The <strong>subset construction</strong> (also called powerset construction) is a systematic algorithm to convert any NFA into an equivalent DFA. The idea: each DFA state represents a <em>set</em> of NFA states the machine could be in simultaneously.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Algorithm Steps</p>
+         <ol class="list-decimal pl-5 space-y-2 text-sm leading-7 text-slate-700">
+          <li><strong>Start state of DFA</strong> = ε-closure of NFA's start state (the set of all states reachable from q₀ via ε-transitions)</li>
+          <li><strong>For each DFA state (set S) and each input symbol a:</strong> Compute the set of NFA states reachable from any state in S on input a, then take the ε-closure. This becomes the next DFA state.</li>
+          <li><strong>Repeat</strong> until no new DFA states are generated.</li>
+          <li><strong>Accept states of DFA</strong> = any DFA state (set) that contains at least one NFA accept state.</li>
+         </ol>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Complete Example</p>
+         <p class="text-sm text-slate-700 mb-2">Convert this NFA (accepting strings ending in "01") to a DFA:</p>
+         <p class="text-sm text-slate-700 mb-1">NFA: Q = {q₀, q₁, q₂}, Σ = {0,1}, start = q₀, F = {q₂}</p>
+         <table class="w-full text-sm mt-2 mb-3 border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">NFA State</th>
+            <th class="text-left p-2">0</th>
+            <th class="text-left p-2">1</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">q₀</td>
+            <td class="p-2">{q₀, q₁}</td>
+            <td class="p-2">{q₀}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">q₁</td>
+            <td class="p-2">∅</td>
+            <td class="p-2">{q₂}</td>
+           </tr>
+           <tr>
+            <td class="p-2">q₂</td>
+            <td class="p-2">∅</td>
+            <td class="p-2">∅</td>
+           </tr>
+          </tbody>
+         </table>
+         <p class="text-sm font-semibold text-slate-900 mb-1">Subset Construction:</p>
+         <div class="text-sm leading-7 text-slate-700">
+          <p><strong>DFA start:</strong> {q₀} (no ε-transitions here)</p>
+          <p class="mt-1"><strong>{q₀}</strong> on 0 → {q₀, q₁} | on 1 → {q₀}</p>
+          <p><strong>{q₀, q₁}</strong> on 0 → {q₀, q₁} | on 1 → {q₀, q₂}</p>
+          <p><strong>{q₀, q₂}</strong> on 0 → {q₀, q₁} | on 1 → {q₀}</p>
+         </div>
+         <table class="w-full text-sm mt-3 border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">DFA State</th>
+            <th class="text-left p-2">0</th>
+            <th class="text-left p-2">1</th>
+            <th class="text-left p-2">Accept?</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">A = {q₀}</td>
+            <td class="p-2">B</td>
+            <td class="p-2">A</td>
+            <td class="p-2">No</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2">B = {q₀,q₁}</td>
+            <td class="p-2">B</td>
+            <td class="p-2">C</td>
+            <td class="p-2">No</td>
+           </tr>
+           <tr>
+            <td class="p-2">C = {q₀,q₂}</td>
+            <td class="p-2">B</td>
+            <td class="p-2">A</td>
+            <td class="p-2 text-emerald-700 font-semibold">Yes (contains q₂)</td>
+           </tr>
+          </tbody>
+         </table>
+         <p class="text-sm text-slate-600 mt-2">The resulting DFA has 3 states and accepts exactly the same language as the original NFA!</p>
+        </div>
+        <div class="bg-[#f0fdfa] border-l-4 border-cyan-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">ε-closure reminder</p>
+         <p class="text-sm text-slate-700">The ε-closure of a state q is the set of all states reachable from q by following zero or more ε-transitions. Always compute ε-closure after each transition step.</p>
+        </div>
+       </div>
+      </div>
+     </article>
+    </div>
+   </section><!-- Activities -->
+   <section id="activities" class="mb-14">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Practice and Apply</p>
+     <h2 class="serif text-3xl md:text-4xl text-[var(--navy)]">Learning Activities</h2>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-5 mb-5"><!-- Group Activity -->
+     <article class="bg-[var(--navy)] text-white rounded-[24px] p-6 md:p-7">
+      <div class="flex items-center gap-3 mb-4"><span class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center"><i data-lucide="users" class="w-5 h-5"></i></span>
+       <h3 data-template-id="group-title" class="canva-text font-semibold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Group Activity</h3>
+      </div>
+      <p class="text-white/80 leading-7 mb-4">"NFA vs DFA Design Challenge"</p>
+      <ol class="list-decimal pl-5 space-y-2 text-sm text-white/85 leading-6">
+       <li>Form groups of 4–5 members.</li>
+       <li>Each group receives a language specification (e.g., "strings containing '110'", "strings with at most two b's").</li>
+       <li>Design <strong>both</strong> an NFA and a DFA for the same language.</li>
+       <li>Compare: Which has fewer states? Which was easier to design?</li>
+       <li>Convert your NFA to a DFA using subset construction. Does it match your direct DFA?</li>
+       <li>Present findings to the class (7 minutes).</li>
+      </ol>
+      <div class="mt-5 p-4 rounded-xl bg-white/10 text-sm text-white/80"><strong>Discussion points:</strong> Why might the NFA have fewer states? When would you prefer DFA over NFA in practice?
+      </div>
+     </article><!-- Individual Activity -->
+     <article class="bg-white border border-slate-200 rounded-[24px] p-6 md:p-7">
+      <div class="flex items-center gap-3 mb-4"><span class="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center"><i data-lucide="user-pen" class="w-5 h-5"></i></span>
+       <h3 data-template-id="individual-title" class="canva-text font-semibold text-xl text-slate-900" style="color: rgb(15, 23, 42); font-weight: 700; font-style: normal; font-size: 22px;">Individual Activity</h3>
+      </div>
+      <p class="text-slate-700 leading-7 mb-4">"State Transition Tracing — DFA and NFA"</p>
+      <div class="space-y-4">
+       <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+        <p class="text-sm font-semibold text-slate-900 mb-2">Part A: DFA Tracing</p>
+        <p class="text-sm leading-6 text-slate-700">Given DFA M = ({q₀, q₁, q₂}, {a, b}, δ, q₀, {q₂}) with:</p>
+        <p class="text-sm font-mono text-slate-600 mt-1">δ(q₀,a)=q₁, δ(q₀,b)=q₀, δ(q₁,a)=q₂, δ(q₁,b)=q₀, δ(q₂,a)=q₂, δ(q₂,b)=q₂</p>
+        <p class="text-sm text-slate-700 mt-2">Trace: "aa", "aba", "baa", "aab", "bba"</p>
+       </div>
+       <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+        <p class="text-sm font-semibold text-slate-900 mb-2">Part B: NFA Tracing</p>
+        <p class="text-sm leading-6 text-slate-700">Given NFA N = ({p₀, p₁, p₂}, {0, 1}, δ, p₀, {p₂}) with:</p>
+        <p class="text-sm font-mono text-slate-600 mt-1">δ(p₀,0)={p₀,p₁}, δ(p₀,1)={p₀}, δ(p₁,0)=∅, δ(p₁,1)={p₂}, δ(p₂,0)=∅, δ(p₂,1)=∅</p>
+        <p class="text-sm text-slate-700 mt-2">Trace ALL possible paths for: "01", "001", "10", "0101"</p>
+        <p class="text-sm text-slate-700">State whether each is accepted or rejected.</p>
+       </div>
+      </div>
+      <div class="mt-5 p-4 rounded-xl bg-yellow-50 text-sm text-slate-700 border border-yellow-100">
+       Rubric: Correct DFA traces (30%), correct NFA paths with all branches (40%), correct accept/reject decisions (30%)
+      </div>
+     </article>
+    </div><!-- Laboratory Lesson -->
+    <article class="bg-white border border-slate-200 rounded-[24px] p-6 md:p-7 mb-5">
+     <div class="flex items-center gap-3 mb-4"><span class="w-11 h-11 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center"><i data-lucide="flask-conical" class="w-5 h-5"></i></span>
+      <h3 data-template-id="lab-title" class="canva-text font-semibold text-xl text-slate-900" style="color: rgb(15, 23, 42); font-weight: 700; font-style: normal; font-size: 22px;">Laboratory Lesson</h3>
+     </div>
+     <p class="text-slate-700 leading-7 mb-4">"NFA-to-DFA Conversion Workshop"</p>
+     <div class="space-y-4">
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 1: Convert NFA to DFA</p>
+       <p class="text-sm leading-6 text-slate-700">Given NFA over Σ = {a, b}:</p>
+       <p class="text-sm font-mono text-slate-600 mt-1">Q={q₀,q₁,q₂}, start=q₀, F={q₂}</p>
+       <p class="text-sm font-mono text-slate-600">δ(q₀,a)={q₀,q₁}, δ(q₀,b)={q₀}, δ(q₁,a)=∅, δ(q₁,b)={q₂}, δ(q₂,a)={q₂}, δ(q₂,b)={q₂}</p>
+       <ul class="list-disc pl-5 text-sm leading-6 text-slate-600 mt-2">
+        <li>Apply subset construction step by step</li>
+        <li>List all DFA states as subsets</li>
+        <li>Draw the resulting DFA transition diagram</li>
+        <li>Test with "ab", "aab", "ba", "abb"</li>
+       </ul>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 2: NFA with ε-transitions</p>
+       <p class="text-sm leading-6 text-slate-700">Convert this NFA-ε to DFA. Σ = {0, 1}:</p>
+       <p class="text-sm font-mono text-slate-600 mt-1">Q={s₀,s₁,s₂}, start=s₀, F={s₂}</p>
+       <p class="text-sm font-mono text-slate-600">δ(s₀,ε)={s₁}, δ(s₀,0)={s₀}, δ(s₁,1)={s₂}, δ(s₂,0)={s₂}, δ(s₂,1)={s₂}</p>
+       <ul class="list-disc pl-5 text-sm leading-6 text-slate-600 mt-2">
+        <li>Compute ε-closure of start state first</li>
+        <li>Show complete subset construction table</li>
+        <li>Identify accept states in resulting DFA</li>
+       </ul>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 3: Design from scratch + Convert</p>
+       <p class="text-sm leading-6 text-slate-700">Design an NFA (use as few states as possible) that accepts strings over {a, b} ending in "aba". Then convert it to a DFA using subset construction. Compare the state counts.</p>
+      </div>
+     </div>
+    </article>
+   </section><!-- Quiz -->
+   <section id="quiz" class="mb-10">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Check Your Understanding</p>
+     <h2 data-template-id="quiz-title" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Sample Quiz</h2>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-[24px] p-5 md:p-7">
+     <div class="space-y-6">
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">1. In a DFA, the transition function δ maps:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">Q × Σ → P(Q)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">Q × Σ → Q (exactly one state)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">Q × (Σ ∪ {ε}) → Q</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">Σ × Q → F</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="c">
+       <p class="font-semibold mb-3">2. Which is TRUE about NFAs?</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">NFAs can recognize more languages than DFAs</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">NFAs cannot have ε-transitions</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">NFAs accept a string if at least one path leads to an accept state</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">NFAs must have transitions defined for every state-symbol pair</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="a">
+       <p class="font-semibold mb-3">3. The subset construction algorithm converts:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">An NFA to an equivalent DFA</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">A DFA to an equivalent NFA</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">A regular expression to a DFA</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">A PDA to a finite automaton</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="d">
+       <p class="font-semibold mb-3">4. An NFA with n states can produce a DFA with at most:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">n states</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">n² states</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">n! states</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">2ⁿ states</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">5. A DFA state in the subset construction is an accept state if:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">All NFA states in the subset are accept states</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">At least one NFA state in the subset is an accept state</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">The subset contains the NFA start state</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">The subset has exactly one element</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="c">
+       <p class="font-semibold mb-3">6. An ε-transition allows the NFA to:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">Skip input symbols</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">Read two symbols at once</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">Change state without consuming any input</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">Return to a previous state</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="a">
+       <p class="font-semibold mb-3">7. Which statement correctly describes the relationship between DFA and NFA?</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">Every DFA is also a valid NFA</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">Every NFA is also a valid DFA</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">NFAs are more powerful than DFAs</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">DFAs always have fewer states than NFAs</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">8. In NFA transition table, δ(q₀, a) = {q₁, q₂} means:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">The machine must go to q₁ first, then q₂</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">The machine can go to either q₁ or q₂ (explores both)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">The machine alternates between q₁ and q₂</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">There is an error in the NFA</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="d">
+       <p class="font-semibold mb-3">9. The ε-closure of a state q includes:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">Only q itself</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">All states reachable by exactly one ε-transition</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">All states in Q</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">q itself plus all states reachable via zero or more ε-transitions</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="c">
+       <p class="font-semibold mb-3">10. What is the main advantage of using an NFA over a DFA in design?</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">NFAs run faster on computers</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">NFAs can recognize context-free languages</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">NFAs often require fewer states for the same language</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">NFAs don't need a start state</button>
+       </div>
+      </div>
+     </div>
+     <div class="mt-7 flex flex-col sm:flex-row items-start sm:items-center gap-4"><button id="check-score" class="focusable inline-flex items-center gap-2 bg-[var(--navy)] text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-[var(--navy-2)] transition"><i data-lucide="check-check" class="w-4 h-4"></i> Check Score</button>
+      <p id="score-output" class="text-sm font-semibold text-slate-700" aria-live="polite"></p>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer class="bg-[var(--navy)] text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-7 flex flex-col md:flex-row justify-between gap-4">
+    <p data-template-id="footer-text" class="canva-text text-sm text-white/75" style="color: rgb(219, 231, 243); font-weight: 400; font-style: normal; font-size: 14px;">Automata and Theory of Computation • Week 4 Lesson • University of Perpetual Help System DALTA – Las Piñas</p>
+    <p class="text-sm text-white/55">DFA, NFA, equivalence, conversion.</p>
+   </div>
+  </footer>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+  lucide.createIcons();
+
+  document.querySelectorAll('.accordion-toggle').forEach(button => {
+   button.addEventListener('click', () => {
+    button.closest('.accordion-item').classList.toggle('open');
+   });
+  });
+
+  document.querySelectorAll('.quiz-question').forEach(question => {
+   question.querySelectorAll('.quiz-option').forEach(option => {
+    option.addEventListener('click', () => {
+     question.querySelectorAll('.quiz-option').forEach(btn => btn.classList.remove('selected'));
+     option.classList.add('selected');
+     question.dataset.selected = option.dataset.choice;
+    });
+   });
+  });
+
+  document.getElementById('check-score').addEventListener('click', () => {
+   let score = 0;
+   const questions = document.querySelectorAll('.quiz-question');
+   questions.forEach(q => {
+    if (q.dataset.selected === q.dataset.answer) score++;
+   });
+   document.getElementById('score-output').textContent = `You scored ${score} out of ${questions.length}.`;
+  });
+ </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0d7741b363509e0',t:'MTc4MTc1NTkyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body></html>
