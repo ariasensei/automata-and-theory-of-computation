@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en"><head><script src="/_sdk/telemetry_sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 5 Regular Languages</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+ :root{--navy:#0d223f;--navy-2:#15345d;--gold:#d8a94a;--cream:#f8f5ef;--ink:#18324d}
+ *{box-sizing:border-box}
+ html{scroll-behavior:smooth}
+ body{margin:0;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--cream)}
+ .serif{font-family:'Fraunces',serif}
+ .hero-pattern{background-image:linear-gradient(rgba(13,34,63,.88),rgba(13,34,63,.92)),radial-gradient(circle at 20% 15%,rgba(216,169,74,.18),transparent 28%),radial-gradient(circle at 80% 70%,rgba(255,255,255,.08),transparent 24%)}
+ .accordion-panel{max-height:0;overflow:hidden;transition:max-height .35s ease}
+ .accordion-item.open .accordion-panel{max-height:8000px}
+ .accordion-item.open .chev{transform:rotate(180deg)}
+ .chev{transition:transform .25s ease}
+ .focusable:focus-visible{outline:3px solid rgba(216,169,74,.55);outline-offset:3px}
+ .quiz-option.selected{border-color:var(--gold);background:#fff8e7}
+ </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root" class="w-full" style="background: rgb(248, 245, 239);">
+  <header class="hero-pattern text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-12">
+    <div class="flex items-center justify-between gap-4 mb-10">
+     <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full border border-yellow-300/60 flex items-center justify-center text-yellow-200">
+       <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+      </div>
+      <div>
+       <p data-template-id="school-name" class="canva-text text-xs uppercase tracking-[0.22em] text-yellow-100/90 font-semibold" style="color: rgb(254, 243, 199); font-weight: 600; font-style: normal; font-size: 11px;">University of Perpetual Help System DALTA – Las Piñas</p>
+       <p data-template-id="instructor-name" class="canva-text text-sm text-white/75" style="color: rgb(255, 255, 255); font-weight: 400; font-style: normal; font-size: 14px;">Instructor: MKDB</p>
+      </div>
+     </div>
+     <div class="hidden md:flex items-center gap-2 text-xs text-white/70 border border-white/15 rounded-full px-4 py-2">
+      <i data-lucide="calendar-days" class="w-4 h-4"></i><span>Automata &amp; Theory of Computation • Week 5</span>
+     </div>
+    </div>
+    <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center">
+     <div>
+      <p data-template-id="hero-eyebrow" class="canva-text text-yellow-300 text-sm uppercase tracking-[0.28em] font-semibold mb-4" style="color: rgb(253, 230, 138); font-weight: 700; font-style: normal; font-size: 13px;">Week 5 Lesson</p>
+      <h1 data-template-id="hero-title" class="canva-text serif max-w-4xl leading-[1.05] mb-5" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 48px; line-height: 1.05;">Regular Languages &amp; Regular Expressions</h1>
+      <p data-template-id="hero-subtitle" class="canva-text max-w-2xl text-white/82 text-lg leading-8 mb-7" style="color: rgb(229, 237, 247); font-weight: 400; font-style: normal; font-size: 18px; line-height: 1.6;">Master the compact notation for describing patterns — learn union, concatenation, and Kleene star to build and analyze regular languages.</p>
+      <div class="flex flex-wrap gap-3">
+       <a href="#lesson-content" class="focusable inline-flex items-center gap-2 bg-yellow-400 text-slate-900 px-5 py-3 rounded-full font-semibold text-sm hover:bg-yellow-300 transition"><i data-lucide="map" class="w-4 h-4"></i> Start Lesson</a> <a href="#activities" class="focusable inline-flex items-center gap-2 border border-white/25 text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-white/10 transition"><i data-lucide="users" class="w-4 h-4"></i> View Activities</a>
+      </div>
+     </div>
+     <div class="relative">
+      <div class="absolute -top-4 -right-3 w-28 h-28 border border-yellow-200/30 rounded-full"></div>
+      <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-yellow-300/10 rounded-full"></div>
+      <div class="relative overflow-hidden rounded-[28px] border border-white/15 shadow-2xl">
+       <img data-template-id="hero-image" loading="lazy" class="canva-image w-full h-[330px] object-cover" src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="A woman with digital code projections on her face, representing technology and future concepts.">
+       <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent"></div>
+       <div class="absolute left-5 bottom-5 right-5">
+        <div class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-yellow-200 mb-2">
+         <span class="w-8 h-px bg-yellow-300"></span> Regular Languages
+        </div>
+        <p class="text-white/90 text-sm">Patterns, expressions, and the languages they generate.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </header>
+  <main class="max-w-7xl mx-auto px-5 md:px-8 py-10 md:py-14"><!-- Outcomes -->
+   <section id="outcomes" class="grid lg:grid-cols-[.9fr_1.1fr] gap-7 mb-14">
+    <div class="bg-[var(--navy)] text-white rounded-[26px] p-7 md:p-9 relative overflow-hidden">
+     <div class="absolute -right-12 -top-12 w-40 h-40 rounded-full border border-white/10"></div>
+     <p class="uppercase tracking-[0.24em] text-xs text-yellow-300 font-semibold mb-4">Week 5 Focus</p>
+     <h2 data-template-id="outcomes-title" class="canva-text serif mb-4" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 34px;">By the end of this lesson, you should be able to...</h2>
+     <p data-template-id="outcomes-intro" class="canva-text text-white/80 leading-7" style="color: rgb(219, 231, 243); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">This lesson introduces regular languages and regular expressions — the algebraic way to describe patterns. You will learn to construct regex using union, concatenation, and Kleene star, generate languages from expressions, and represent patterns formally.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4">
+       <i data-lucide="book-open" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Define Regular Languages</h3>
+      <p class="text-sm leading-6 text-slate-600">Understand the formal definition and properties of regular languages.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
+       <i data-lucide="regex" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Write Regular Expressions</h3>
+      <p class="text-sm leading-6 text-slate-600">Construct regular expressions using union, concatenation, and Kleene star.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center mb-4">
+       <i data-lucide="layers" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Generate Languages</h3>
+      <p class="text-sm leading-6 text-slate-600">List strings generated by a given regular expression.</p>
+     </div>
+     <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center mb-4">
+       <i data-lucide="scan-search" class="w-5 h-5"></i>
+      </div>
+      <h3 class="font-semibold text-slate-900 mb-2">Represent Patterns</h3>
+      <p class="text-sm leading-6 text-slate-600">Express language patterns using regular expressions and vice versa.</p>
+     </div>
+    </div>
+   </section><!-- Lesson Content -->
+   <section id="lesson-content" class="mb-14">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-6">
+     <div>
+      <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Lesson Content</p>
+      <h2 data-template-id="section-title-main" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Regular Languages &amp; Regular Expressions</h2>
+     </div>
+    </div>
+    <div class="space-y-4"><!-- Topic 1: Regular Languages -->
+     <article class="accordion-item open bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center"><i data-lucide="book-open" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 1</p>
+         <h3 class="font-semibold text-lg text-slate-900">Definition of Regular Languages</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">A <strong>regular language</strong> is any language that can be recognized by a finite automaton (DFA or NFA). Equivalently, it is any language that can be described by a <strong>regular expression</strong>. Regular languages form the simplest class in the Chomsky hierarchy of formal languages.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Formal Definition</p>
+         <p class="text-sm leading-6 text-slate-700">A language L over alphabet Σ is <strong>regular</strong> if and only if at least one of the following holds:</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700 mt-2">
+          <li><strong>L = ∅</strong> (the empty language)</li>
+          <li><strong>L = {ε}</strong> (the language containing only the empty string)</li>
+          <li><strong>L = {a}</strong> for some symbol a ∈ Σ (a single-character language)</li>
+          <li><strong>L = L₁ ∪ L₂</strong> where L₁ and L₂ are regular (union)</li>
+          <li><strong>L = L₁ · L₂</strong> where L₁ and L₂ are regular (concatenation)</li>
+          <li><strong>L = L₁*</strong> where L₁ is regular (Kleene star)</li>
+         </ul>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Three Equivalent Descriptions</p>
+         <p class="text-sm leading-7 text-slate-700">A language is regular if and only if it can be:</p>
+         <ol class="list-decimal pl-5 text-sm leading-7 text-slate-700 mt-2">
+          <li>Recognized by a <strong>DFA</strong></li>
+          <li>Recognized by an <strong>NFA</strong></li>
+          <li>Described by a <strong>regular expression</strong></li>
+         </ol>
+         <p class="text-sm leading-7 text-slate-700 mt-2">This is a fundamental result — all three formalisms have equal expressive power for defining languages.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Examples of Regular Languages</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li>All binary strings ending in 0: We can build a DFA for this → regular</li>
+          <li>All strings over {a, b} with even length → regular</li>
+          <li>All email addresses matching a fixed pattern → regular</li>
+          <li>The set of all valid Philippine mobile numbers (09XX-XXX-XXXX) → regular</li>
+         </ul>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Examples of NON-Regular Languages</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>L = {aⁿbⁿ | n ≥ 0}</strong> — requires "counting" unboundedly → NOT regular</li>
+          <li><strong>L = {ww | w ∈ {a,b}*}</strong> — requires remembering an entire string → NOT regular</li>
+          <li>Balanced parentheses — requires counting depth → NOT regular</li>
+         </ul>
+         <p class="text-sm text-slate-600 mt-2">These need memory beyond what finite states can provide.</p>
+        </div>
+        <div class="bg-[#f8fbff] border-l-4 border-blue-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Real-world analogy: Security guard with a clipboard</p>
+         <p class="text-sm text-slate-700">A security guard checking license plates can verify patterns (e.g., "starts with ABC, followed by 4 digits") — that's a regular language. But if the guard needs to check that "the first half of the plate is the reverse of the second half," they'd need to remember the whole first half — finite automata can't do that.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 2: Regular Expressions -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i data-lucide="regex" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 2</p>
+         <h3 class="font-semibold text-lg text-slate-900">Regular Expressions — Overview</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">A <strong>regular expression</strong> (regex) is a compact notation for describing regular languages. Instead of drawing an automaton, you write a short expression that generates exactly the strings in the language.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Building Blocks (Base Cases)</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>∅</strong> — represents the empty language (no strings at all)</li>
+          <li><strong>ε</strong> — represents the language {ε} containing only the empty string</li>
+          <li><strong>a</strong> (for any symbol a ∈ Σ) — represents the language {a}</li>
+         </ul>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Operations (Recursive Cases)</p>
+         <p class="text-sm leading-7 text-slate-700">If R and S are regular expressions, then:</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700 mt-2">
+          <li><strong>(R + S)</strong> or <strong>(R | S)</strong> — Union: strings in R OR in S</li>
+          <li><strong>(RS)</strong> — Concatenation: a string from R followed by a string from S</li>
+          <li><strong>(R*)</strong> — Kleene Star: zero or more repetitions of strings from R</li>
+         </ul>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Operator Precedence (highest to lowest)</p>
+         <ol class="list-decimal pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>Kleene Star (*)</strong> — applied first</li>
+          <li><strong>Concatenation (·)</strong> — applied second</li>
+          <li><strong>Union (+)</strong> — applied last</li>
+         </ol>
+         <p class="text-sm text-slate-600 mt-2">So <code>ab* + c</code> means <code>(a(b*)) + c</code>, NOT <code>a(b* + c)</code> or <code>(ab)* + c</code>.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Quick Examples</p>
+         <table class="w-full text-sm border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">Regex</th>
+            <th class="text-left p-2">Language</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">0</td>
+            <td class="p-2">{0}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">0 + 1</td>
+            <td class="p-2">{0, 1}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">01</td>
+            <td class="p-2">{01}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">0*</td>
+            <td class="p-2">{ε, 0, 00, 000, ...}</td>
+           </tr>
+           <tr>
+            <td class="p-2 font-mono">(0 + 1)*</td>
+            <td class="p-2">All binary strings (including ε)</td>
+           </tr>
+          </tbody>
+         </table>
+        </div>
+        <div class="bg-[#f0fdf4] border-l-4 border-emerald-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Real-world analogy: Recipe instructions</p>
+         <p class="text-sm text-slate-700">Think of a regex as a recipe: "rice + noodles" means you can have either. "rice · ulam" means rice followed by ulam. "rice*" means zero or more servings of rice — from no rice to unlimited rice!</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 3: Union -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><i data-lucide="merge" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 3</p>
+         <h3 class="font-semibold text-lg text-slate-900">Union (R + S)</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">The <strong>union</strong> of two languages L₁ and L₂ is the set of all strings that belong to L₁ OR L₂ (or both). In regex notation, we write <strong>R + S</strong> (some textbooks use R | S).</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Formal Definition</p>
+         <p class="text-sm leading-7 text-slate-700"><strong>L(R + S) = L(R) ∪ L(S)</strong></p>
+         <p class="text-sm leading-7 text-slate-700 mt-1">A string w is in L(R + S) if w ∈ L(R) or w ∈ L(S).</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Worked Examples</p>
+         <table class="w-full text-sm border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">Expression</th>
+            <th class="text-left p-2">Language Generated</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">a + b</td>
+            <td class="p-2">{a, b}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">ab + cd</td>
+            <td class="p-2">{ab, cd}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">a + b + c</td>
+            <td class="p-2">{a, b, c}</td>
+           </tr>
+           <tr>
+            <td class="p-2 font-mono">01 + 10 + 00 + 11</td>
+            <td class="p-2">{01, 10, 00, 11} — all binary strings of length 2</td>
+           </tr>
+          </tbody>
+         </table>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Realistic Example: Jeepney routes</p>
+         <p class="text-sm leading-7 text-slate-700">Imagine routes encoded as strings. Let R = "LRT" and S = "MRT". The expression <strong>R + S</strong> = "LRT + MRT" generates {LRT, MRT} — you can take either route. This is union: choose one option OR the other.</p>
+        </div>
+        <div class="bg-[#fffbeb] border-l-4 border-amber-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Key property</p>
+         <p class="text-sm text-slate-700">Union is commutative: R + S = S + R. It's also associative: (R + S) + T = R + (S + T). And R + ∅ = R (adding the empty language changes nothing).</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 4: Concatenation -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center"><i data-lucide="link" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 4</p>
+         <h3 class="font-semibold text-lg text-slate-900">Concatenation (RS)</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4"><strong>Concatenation</strong> joins two languages by taking every string from the first and appending every string from the second. In regex, we simply write them next to each other: <strong>RS</strong>.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Formal Definition</p>
+         <p class="text-sm leading-7 text-slate-700"><strong>L(RS) = {xy | x ∈ L(R) and y ∈ L(S)}</strong></p>
+         <p class="text-sm leading-7 text-slate-700 mt-1">Take one string from R, one string from S, glue them together.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Worked Examples</p>
+         <table class="w-full text-sm border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">R</th>
+            <th class="text-left p-2">S</th>
+            <th class="text-left p-2">RS</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">{a, b}</td>
+            <td class="p-2 font-mono">{0, 1}</td>
+            <td class="p-2">{a0, a1, b0, b1}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">{ab}</td>
+            <td class="p-2 font-mono">{c, d}</td>
+            <td class="p-2">{abc, abd}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">{ε, a}</td>
+            <td class="p-2 font-mono">{b}</td>
+            <td class="p-2">{b, ab}</td>
+           </tr>
+           <tr>
+            <td class="p-2 font-mono">{a}</td>
+            <td class="p-2 font-mono">∅</td>
+            <td class="p-2">∅ (anything concatenated with ∅ is ∅)</td>
+           </tr>
+          </tbody>
+         </table>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Realistic Example: Student ID format</p>
+         <p class="text-sm leading-7 text-slate-700">At UPH, student IDs might follow the pattern: year prefix + dash + number. If we define:</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li>R = (2+3)(0+1+2+3+4+5+6+7+8+9) — represents year digits like "20", "24", "25"</li>
+          <li>S = -(0+1+2+3+4+5+6+7+8+9)(0+1+2+3+4+5+6+7+8+9)(0+1+2+3+4+5+6+7+8+9)(0+1+2+3+4+5+6+7+8+9) — dash plus 4 digits</li>
+         </ul>
+         <p class="text-sm leading-7 text-slate-700 mt-1">Then RS generates strings like "20-1234", "25-5678". Concatenation builds structure by joining parts in sequence.</p>
+        </div>
+        <div class="bg-[#f5f3ff] border-l-4 border-indigo-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Key properties</p>
+         <p class="text-sm text-slate-700">Concatenation is associative: (RS)T = R(ST). It is NOT commutative: RS ≠ SR in general. Also: Rε = εR = R (ε is the identity for concatenation), and R∅ = ∅R = ∅.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 5: Kleene Star -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center"><i data-lucide="repeat" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 5</p>
+         <h3 class="font-semibold text-lg text-slate-900">Kleene Star (R*)</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4">The <strong>Kleene star</strong> (named after Stephen Kleene) applied to a language L produces the set of all strings formed by concatenating <strong>zero or more</strong> strings from L. This is the most powerful regex operation — it introduces infinite languages from finite descriptions.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Formal Definition</p>
+         <p class="text-sm leading-7 text-slate-700"><strong>L* = L⁰ ∪ L¹ ∪ L² ∪ L³ ∪ ...</strong></p>
+         <p class="text-sm leading-7 text-slate-700 mt-1">Where L⁰ = {ε}, L¹ = L, L² = LL, L³ = LLL, etc.</p>
+         <p class="text-sm leading-7 text-slate-700 mt-1"><strong>Important:</strong> L* always includes ε (the empty string) because L⁰ = {ε}.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Worked Examples</p>
+         <table class="w-full text-sm border-collapse">
+          <thead>
+           <tr class="border-b border-slate-200">
+            <th class="text-left p-2">Expression</th>
+            <th class="text-left p-2">Language Generated</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">a*</td>
+            <td class="p-2">{ε, a, aa, aaa, aaaa, ...}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">(ab)*</td>
+            <td class="p-2">{ε, ab, abab, ababab, ...}</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">(a + b)*</td>
+            <td class="p-2">All strings over {a, b} including ε</td>
+           </tr>
+           <tr class="border-b border-slate-100">
+            <td class="p-2 font-mono">0*1*</td>
+            <td class="p-2">{ε, 0, 1, 00, 01, 11, 000, 001, 011, 111, ...} — zeros then ones</td>
+           </tr>
+           <tr>
+            <td class="p-2 font-mono">∅*</td>
+            <td class="p-2">{ε} — even the empty language starred gives {ε}</td>
+           </tr>
+          </tbody>
+         </table>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Kleene Plus (R⁺) — a useful shorthand</p>
+         <p class="text-sm leading-7 text-slate-700"><strong>R⁺ = RR* = R* − {ε}</strong> (one or more repetitions, NOT including empty string)</p>
+         <p class="text-sm leading-7 text-slate-700 mt-1">Example: a⁺ = {a, aa, aaa, ...} — at least one 'a'.</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Realistic Example: Wi-Fi password patterns</p>
+         <p class="text-sm leading-7 text-slate-700">A café sets passwords like: uppercase letter followed by any number of digits. Regex: <strong>(A+B+...+Z)(0+1+...+9)*</strong>. This generates: "A", "B5", "C123", "Z999999"... The star lets the digit portion be any length (including zero digits).</p>
+        </div>
+        <div class="bg-[#fef2f2] border-l-4 border-rose-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Common mistake</p>
+         <p class="text-sm text-slate-700">Students often forget that R* includes ε. The "zero repetitions" case always produces the empty string. So a* includes ε, (01)* includes ε, even (abc)* includes ε.</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 6: Language Generation -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center"><i data-lucide="list-tree" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 6</p>
+         <h3 class="font-semibold text-lg text-slate-900">Language Generation from Regular Expressions</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4"><strong>Language generation</strong> is the process of listing (or describing) all strings that a regular expression produces. Given a regex, you systematically enumerate its language.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Systematic Approach</p>
+         <ol class="list-decimal pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>Identify the operation structure</strong> — break the regex into its operations</li>
+          <li><strong>Start with shortest strings</strong> — begin with ε (if applicable), then length 1, then length 2...</li>
+          <li><strong>Apply each operation</strong> — for union list both sides; for concatenation combine; for star expand powers</li>
+          <li><strong>Describe the pattern</strong> — if infinite, state the general form</li>
+         </ol>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Detailed Example: L(a(a + b)*b)</p>
+         <p class="text-sm leading-7 text-slate-700 mb-2">Let's break this down:</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li>Must start with 'a' (the leading a)</li>
+          <li>Middle part: (a + b)* = any combination of a's and b's, any length (including empty)</li>
+          <li>Must end with 'b' (the trailing b)</li>
+         </ul>
+         <p class="text-sm leading-7 text-slate-700 mt-2"><strong>Generated strings (by length):</strong></p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li>Length 2: ab</li>
+          <li>Length 3: aab, abb</li>
+          <li>Length 4: aaab, aabb, abab, abbb</li>
+          <li>General: Any string that starts with 'a' and ends with 'b'</li>
+         </ul>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Example: L((0+1)*00)</p>
+         <p class="text-sm leading-7 text-slate-700 mb-1"><strong>Description:</strong> All binary strings ending in "00"</p>
+         <ul class="list-disc pl-5 text-sm leading-7 text-slate-700">
+          <li>Length 2: 00</li>
+          <li>Length 3: 000, 100</li>
+          <li>Length 4: 0000, 0100, 1000, 1100</li>
+          <li>Pattern: Any binary prefix, then mandatory "00" at the end</li>
+         </ul>
+        </div>
+        <div class="bg-[#f0fdfa] border-l-4 border-cyan-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Tip for exams</p>
+         <p class="text-sm text-slate-700">When asked to "list the first 5 strings," always order by length first, then lexicographically within the same length. Start by checking if ε is in the language (it is if the entire regex can produce the empty string).</p>
+        </div>
+       </div>
+      </div>
+     </article><!-- Topic 7: Pattern Representation -->
+     <article class="accordion-item bg-white border border-slate-200 rounded-2xl overflow-hidden"><button class="accordion-toggle focusable w-full flex items-center justify-between text-left p-5 md:p-6">
+       <div class="flex items-center gap-4">
+        <span class="w-11 h-11 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center"><i data-lucide="file-code" class="w-5 h-5"></i></span>
+        <div>
+         <p class="text-xs uppercase tracking-[0.18em] text-slate-400 mb-1">Topic 7</p>
+         <h3 class="font-semibold text-lg text-slate-900">Pattern Representation</h3>
+        </div>
+       </div><i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500"></i> </button>
+      <div class="accordion-panel">
+       <div class="px-5 md:px-6 pb-6 border-t border-slate-100 pt-5">
+        <p class="leading-7 text-slate-700 mb-4"><strong>Pattern representation</strong> is the reverse skill: given a language description in English (or as a set), write the regular expression that represents it. This is a crucial exam skill.</p>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Strategy for Writing Regex from Description</p>
+         <ol class="list-decimal pl-5 text-sm leading-7 text-slate-700">
+          <li><strong>Identify the alphabet Σ</strong></li>
+          <li><strong>Identify constraints:</strong> Must start with? End with? Contain? Avoid?</li>
+          <li><strong>Build piece by piece:</strong> Fixed prefix + variable middle + fixed suffix</li>
+          <li><strong>Use (a+b)* for "anything"</strong> over alphabet {a,b}</li>
+          <li><strong>Verify</strong> — test with examples that should be accepted AND rejected</li>
+         </ol>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+         <p class="text-sm font-semibold text-slate-900 mb-2">Practice Problems with Solutions</p>
+         <div class="space-y-3 mt-2">
+          <div class="border border-slate-200 rounded-lg p-3 bg-white">
+           <p class="text-sm text-slate-700"><strong>Problem:</strong> All binary strings starting with 1</p>
+           <p class="text-sm font-mono text-indigo-700 mt-1"><strong>Answer:</strong> 1(0 + 1)*</p>
+           <p class="text-xs text-slate-500 mt-1">Start with 1, then anything.</p>
+          </div>
+          <div class="border border-slate-200 rounded-lg p-3 bg-white">
+           <p class="text-sm text-slate-700"><strong>Problem:</strong> All strings over {a,b} with exactly one 'a'</p>
+           <p class="text-sm font-mono text-indigo-700 mt-1"><strong>Answer:</strong> b*ab*</p>
+           <p class="text-xs text-slate-500 mt-1">Any b's, then exactly one a, then any b's.</p>
+          </div>
+          <div class="border border-slate-200 rounded-lg p-3 bg-white">
+           <p class="text-sm text-slate-700"><strong>Problem:</strong> Binary strings of length exactly 3</p>
+           <p class="text-sm font-mono text-indigo-700 mt-1"><strong>Answer:</strong> (0+1)(0+1)(0+1)</p>
+           <p class="text-xs text-slate-500 mt-1">Three symbols, each either 0 or 1.</p>
+          </div>
+          <div class="border border-slate-200 rounded-lg p-3 bg-white">
+           <p class="text-sm text-slate-700"><strong>Problem:</strong> All strings over {0,1} containing "110" as substring</p>
+           <p class="text-sm font-mono text-indigo-700 mt-1"><strong>Answer:</strong> (0+1)*110(0+1)*</p>
+           <p class="text-xs text-slate-500 mt-1">Anything, then 110, then anything.</p>
+          </div>
+          <div class="border border-slate-200 rounded-lg p-3 bg-white">
+           <p class="text-sm text-slate-700"><strong>Problem:</strong> All strings over {a,b} that begin and end with the same symbol</p>
+           <p class="text-sm font-mono text-indigo-700 mt-1"><strong>Answer:</strong> a(a+b)*a + b(a+b)*b + a + b</p>
+           <p class="text-xs text-slate-500 mt-1">Start &amp; end with 'a' OR start &amp; end with 'b'. Single chars also count.</p>
+          </div>
+         </div>
+        </div>
+        <div class="bg-[#f5f3ff] border-l-4 border-violet-500 p-4 rounded-r-xl">
+         <p class="text-sm font-semibold mb-1">Real-world application: Input validation</p>
+         <p class="text-sm text-slate-700">Regular expressions are used everywhere in programming: validating email formats, phone numbers, passwords, search patterns. When your phone autocorrects or a website says "invalid email format" — that's regex at work!</p>
+        </div>
+       </div>
+      </div>
+     </article>
+    </div>
+   </section><!-- Activities -->
+   <section id="activities" class="mb-14">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Practice and Apply</p>
+     <h2 class="serif text-3xl md:text-4xl text-[var(--navy)]">Learning Activities</h2>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-5 mb-5"><!-- Group Activity -->
+     <article class="bg-[var(--navy)] text-white rounded-[24px] p-6 md:p-7">
+      <div class="flex items-center gap-3 mb-4">
+       <span class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center"><i data-lucide="users" class="w-5 h-5"></i></span>
+       <h3 data-template-id="group-title" class="canva-text font-semibold text-xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 22px;">Group Activity</h3>
+      </div>
+      <p class="text-white/80 leading-7 mb-4">"Regex Language Builders"</p>
+      <ol class="list-decimal pl-5 space-y-2 text-sm text-white/85 leading-6">
+       <li>Form groups of 4–5 members.</li>
+       <li>Each group receives 3 language descriptions (e.g., "all binary strings with at least two 0's", "strings over {a,b} ending in 'ab'").</li>
+       <li>Write the regular expression for each language.</li>
+       <li>List the first 5 shortest strings generated by each regex.</li>
+       <li>Exchange your regex with another group — they must describe the language your regex generates (without seeing your description).</li>
+       <li>Compare: Did they get the correct language description? Discuss any differences.</li>
+       <li>Present one challenging regex to the class (5 minutes per group).</li>
+      </ol>
+      <div class="mt-5 p-4 rounded-xl bg-white/10 text-sm text-white/80"><strong>Sample languages to assign:</strong><br>
+        • All strings over {0,1} with length ≤ 3<br>
+        • All strings over {a,b} containing "ba"<br>
+        • All strings over {x,y} that start and end with 'x'
+      </div>
+     </article><!-- Individual Activity -->
+     <article class="bg-white border border-slate-200 rounded-[24px] p-6 md:p-7">
+      <div class="flex items-center gap-3 mb-4">
+       <span class="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center"><i data-lucide="user-pen" class="w-5 h-5"></i></span>
+       <h3 data-template-id="individual-title" class="canva-text font-semibold text-xl text-slate-900" style="color: rgb(15, 23, 42); font-weight: 700; font-style: normal; font-size: 22px;">Individual Activity</h3>
+      </div>
+      <p class="text-slate-700 leading-7 mb-4">"Regex Mastery Worksheet"</p>
+      <div class="space-y-4">
+       <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+        <p class="text-sm font-semibold text-slate-900 mb-2">Part A: Language Generation (list first 5 strings)</p>
+        <ol class="list-decimal pl-5 text-sm leading-7 text-slate-700">
+         <li><code>(a + b)*a</code></li>
+         <li><code>0*10*</code></li>
+         <li><code>(01 + 10)*</code></li>
+         <li><code>a(ba)*</code></li>
+         <li><code>(0 + 1)*11(0 + 1)*</code></li>
+        </ol>
+       </div>
+       <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+        <p class="text-sm font-semibold text-slate-900 mb-2">Part B: Pattern Representation (write the regex)</p>
+        <ol class="list-decimal pl-5 text-sm leading-7 text-slate-700">
+         <li>All binary strings of even length</li>
+         <li>All strings over {a,b} with no two consecutive a's</li>
+         <li>All binary strings that do NOT end in '0'</li>
+         <li>All strings over {a,b,c} that contain exactly one 'c'</li>
+         <li>All binary strings with at most one '1'</li>
+        </ol>
+       </div>
+       <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+        <p class="text-sm font-semibold text-slate-900 mb-2">Part C: True or False (explain briefly)</p>
+        <ol class="list-decimal pl-5 text-sm leading-7 text-slate-700">
+         <li>L(a*) is finite.</li>
+         <li>ε ∈ L((ab)*)</li>
+         <li>L(a + b) = L(b + a)</li>
+         <li>L(ab) = L(ba)</li>
+         <li>L(∅*) = ∅</li>
+        </ol>
+       </div>
+      </div>
+      <div class="mt-5 p-4 rounded-xl bg-yellow-50 text-sm text-slate-700 border border-yellow-100">
+       Rubric: Correct string enumeration (30%), correct regex writing (40%), correct T/F with justification (30%)
+      </div>
+     </article>
+    </div><!-- Laboratory Lesson -->
+    <article class="bg-white border border-slate-200 rounded-[24px] p-6 md:p-7 mb-5">
+     <div class="flex items-center gap-3 mb-4">
+      <span class="w-11 h-11 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center"><i data-lucide="flask-conical" class="w-5 h-5"></i></span>
+      <h3 data-template-id="lab-title" class="canva-text font-semibold text-xl text-slate-900" style="color: rgb(15, 23, 42); font-weight: 700; font-style: normal; font-size: 22px;">Laboratory Lesson</h3>
+     </div>
+     <p class="text-slate-700 leading-7 mb-4">"Regular Expression to NFA Construction"</p>
+     <div class="space-y-4">
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 1: Regex → Language</p>
+       <p class="text-sm leading-6 text-slate-700">For each regex, list ALL strings of length ≤ 4 in the language:</p>
+       <ol class="list-alpha pl-5 text-sm leading-7 text-slate-700 mt-1" style="list-style-type:lower-alpha">
+        <li><code>(ab + a)*</code></li>
+        <li><code>(a + b)(a + b)*</code></li>
+        <li><code>a*b*a*</code></li>
+       </ol>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 2: Language Description → Regex</p>
+       <p class="text-sm leading-6 text-slate-700">Write a regex for each. Σ = {0, 1}:</p>
+       <ol class="list-alpha pl-5 text-sm leading-7 text-slate-700 mt-1" style="list-style-type:lower-alpha">
+        <li>Strings that begin with '0' and end with '1'</li>
+        <li>Strings with an even number of symbols</li>
+        <li>Strings containing neither "00" nor "11" (alternating)</li>
+        <li>Strings of length at least 2 where the first and last symbols are different</li>
+       </ol>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+       <p class="text-sm font-semibold text-slate-900 mb-2">Exercise 3: Construct NFA from Regex</p>
+       <p class="text-sm leading-6 text-slate-700">Using Thompson's construction method, build an NFA for:</p>
+       <ol class="list-alpha pl-5 text-sm leading-7 text-slate-700 mt-1" style="list-style-type:lower-alpha">
+        <li><code>(a + b)*abb</code></li>
+        <li><code>01* + 1</code></li>
+       </ol>
+       <p class="text-sm leading-6 text-slate-700 mt-2">Draw the state diagram. Label all transitions including ε-transitions. Verify by tracing two accepted and two rejected strings.</p>
+      </div>
+     </div>
+    </article>
+   </section><!-- Quiz -->
+   <section id="quiz" class="mb-10">
+    <div class="mb-6">
+     <p class="uppercase tracking-[0.22em] text-xs text-[var(--gold)] font-semibold mb-2">Check Your Understanding</p>
+     <h2 data-template-id="quiz-title" class="canva-text serif text-[var(--navy)]" style="color: rgb(13, 34, 63); font-weight: 700; font-style: normal; font-size: 38px;">Sample Quiz</h2>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-[24px] p-5 md:p-7">
+     <div class="space-y-6">
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">1. Which of the following is NOT a regular language?</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">All binary strings ending in '0'</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">{aⁿbⁿ | n ≥ 0}</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">All strings over {a,b} with even length</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">All strings containing "01"</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="c">
+       <p class="font-semibold mb-3">2. The language generated by the regex a*b* is:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">Only strings of the form "aaa...bbb..."</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">All strings over {a,b}</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">Zero or more a's followed by zero or more b's (including ε)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">At least one 'a' followed by at least one 'b'</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="a">
+       <p class="font-semibold mb-3">3. Which string is in the language of (01 + 10)*?</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">0110</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">0101</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">011</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">1</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="d">
+       <p class="font-semibold mb-3">4. The Kleene star R* always includes:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">At least one string from R</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">All strings over the alphabet</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">Only infinite strings</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">The empty string ε</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">5. The correct operator precedence (highest first) for regex is:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">Union, Concatenation, Star</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">Star, Concatenation, Union</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">Concatenation, Star, Union</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">Star, Union, Concatenation</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="c">
+       <p class="font-semibold mb-3">6. L(∅*) equals:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">∅ (the empty language)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">All strings over Σ</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">{ε}</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">Undefined</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="a">
+       <p class="font-semibold mb-3">7. A regex for "all binary strings starting with 1" is:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">1(0 + 1)*</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">(0 + 1)*1</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">1*0*</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">(1 + 0)1*</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="d">
+       <p class="font-semibold mb-3">8. The concatenation of L₁ = {a, b} and L₂ = {1, 2} produces:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">{a, b, 1, 2}</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">{a1, b2}</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">{ab, 12}</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">{a1, a2, b1, b2}</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="b">
+       <p class="font-semibold mb-3">9. Which is true about union in regex?</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">R + S means R followed by S</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">R + S = S + R (commutative)</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">R + ∅ = ∅</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">R + R = R²</button>
+       </div>
+      </div>
+      <div class="quiz-question" data-answer="c">
+       <p class="font-semibold mb-3">10. A language is regular if and only if:</p>
+       <div class="grid md:grid-cols-2 gap-3"><button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="a">It contains a finite number of strings</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="b">It can be described by a context-free grammar</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="c">It can be recognized by a finite automaton</button> <button class="quiz-option focusable text-left border border-slate-200 rounded-xl p-3" data-choice="d">It uses only binary alphabet</button>
+       </div>
+      </div>
+     </div>
+     <div class="mt-7 flex flex-col sm:flex-row items-start sm:items-center gap-4"><button id="check-score" class="focusable inline-flex items-center gap-2 bg-[var(--navy)] text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-[var(--navy-2)] transition"><i data-lucide="check-check" class="w-4 h-4"></i> Check Score</button>
+      <p id="score-output" class="text-sm font-semibold text-slate-700" aria-live="polite"></p>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer class="bg-[var(--navy)] text-white">
+   <div class="max-w-7xl mx-auto px-5 md:px-8 py-7 flex flex-col md:flex-row justify-between gap-4">
+    <p data-template-id="footer-text" class="canva-text text-sm text-white/75" style="color: rgb(219, 231, 243); font-weight: 400; font-style: normal; font-size: 14px;">Automata and Theory of Computation • Week 5 Lesson • University of Perpetual Help System DALTA – Las Piñas</p>
+    <p class="text-sm text-white/55">Regular languages, regex, union, concatenation, Kleene star.</p>
+   </div>
+  </footer>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+ lucide.createIcons();
+
+ document.querySelectorAll('.accordion-toggle').forEach(button => {
+  button.addEventListener('click', () => {
+   button.closest('.accordion-item').classList.toggle('open');
+  });
+ });
+
+ document.querySelectorAll('.quiz-question').forEach(question => {
+  question.querySelectorAll('.quiz-option').forEach(option => {
+   option.addEventListener('click', () => {
+    question.querySelectorAll('.quiz-option').forEach(btn => btn.classList.remove('selected'));
+    option.classList.add('selected');
+    question.dataset.selected = option.dataset.choice;
+   });
+  });
+ });
+
+ document.getElementById('check-score').addEventListener('click', () => {
+  let score = 0;
+  const questions = document.querySelectorAll('.quiz-question');
+  questions.forEach(q => {
+   if (q.dataset.selected === q.dataset.answer) score++;
+  });
+  document.getElementById('score-output').textContent = `You scored ${score} out of ${questions.length}.`;
+ });
+ </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0d77e733754095e',t:'MTc4MTc1NjM0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body></html>
