@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Automata and Formal Languages — Application of Regular Languages</title>
+<style>
+  :root{
+    --bg:#07111f;
+    --panel:#0d1b2a;
+    --panel2:#10243a;
+    --text:#eef6ff;
+    --muted:#b8c8da;
+    --accent:#63d3ff;
+    --accent2:#9d7bff;
+    --good:#70e1a1;
+    --bad:#ff8a8a;
+    --warn:#ffd36c;
+    --line:rgba(255,255,255,.14);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);overflow:hidden}
+  body{background:radial-gradient(circle at 85% 10%, rgba(99,211,255,.11), transparent 28%),radial-gradient(circle at 10% 90%, rgba(157,123,255,.12), transparent 32%),var(--bg)}
+  .deck{height:100vh;width:100vw;position:relative}
+  .slide{display:none;height:100vh;width:100vw;padding:54px 72px 76px;position:absolute;inset:0;overflow:auto}
+  .slide.active{display:flex;flex-direction:column;animation:fade .24s ease}
+  @keyframes fade{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .kicker{font-size:16px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:10px}
+  h1{font-size:50px;line-height:1.06;margin:0 0 18px;max-width:1000px}
+  h2{font-size:38px;line-height:1.12;margin:0 0 22px}
+  h3{font-size:25px;margin:16px 0 10px;color:var(--accent)}
+  p,li{font-size:22px;line-height:1.48;color:var(--muted)}
+  ul,ol{margin:4px 0 0 24px}
+  li{margin:7px 0}
+  strong{color:var(--text)}
+  .hero{justify-content:center}
+  .hero h1{font-size:64px;max-width:1100px}
+  .subtitle{font-size:28px;color:var(--muted);max-width:920px}
+  .chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+  .chip{padding:10px 14px;border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:999px;font-size:16px;color:#dff7ff}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.16)}
+  .card h3{margin-top:0}
+  .big{font-size:30px;line-height:1.35}
+  .center{text-align:center}
+  .flow{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:22px 0}
+  .node{padding:16px 22px;border-radius:16px;border:1px solid rgba(99,211,255,.35);background:rgba(99,211,255,.08);font-size:22px;font-weight:700}
+  .arrow{font-size:32px;color:var(--accent)}
+  pre{white-space:pre-wrap;background:#06101c;border:1px solid var(--line);padding:18px 20px;border-radius:16px;font-size:21px;line-height:1.45;color:#d8f2ff;margin:12px 0}
+  code{font-family:Consolas,Monaco,monospace;color:#d8f2ff}
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:18px}
+  th,td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top}
+  th{background:rgba(99,211,255,.09);color:var(--text)}
+  td{color:var(--muted)}
+  .good{color:var(--good);font-weight:800}.bad{color:var(--bad);font-weight:800}.warn{color:var(--warn);font-weight:800}
+  .quote{font-size:33px;line-height:1.35;color:var(--text);padding:24px 28px;border-left:5px solid var(--accent);background:rgba(99,211,255,.05);border-radius:0 18px 18px 0}
+  .activity{border:1px solid rgba(255,211,108,.35);background:linear-gradient(180deg,rgba(255,211,108,.09),rgba(255,255,255,.025))}
+  .activity .kicker{color:var(--warn)}
+  .answer{border:1px solid rgba(112,225,161,.3);background:rgba(112,225,161,.06)}
+  .mini{font-size:17px;color:#9fb2c7}
+  .footer{position:fixed;left:0;right:0;bottom:0;height:54px;background:rgba(3,8,15,.78);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;z-index:10}
+  .controls{display:flex;gap:8px}
+  button{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 14px;font-size:15px;cursor:pointer}
+  button:hover{background:rgba(99,211,255,.12)}
+  .progress-wrap{width:34vw;height:7px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+  .progress{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s ease}
+  .counter{font-size:14px;color:var(--muted);min-width:70px;text-align:right}
+  .two-col-list{columns:2;column-gap:42px}
+  .tag{display:inline-block;padding:3px 8px;border-radius:7px;background:rgba(157,123,255,.12);border:1px solid rgba(157,123,255,.25);color:#e2d8ff;font-size:.9em}
+  .spacer{flex:1}
+  @media(max-width:900px){
+    .slide{padding:34px 30px 72px}.hero h1{font-size:46px}h1{font-size:40px}h2{font-size:32px}p,li{font-size:19px}.grid,.grid3{grid-template-columns:1fr}.progress-wrap{width:25vw}.two-col-list{columns:1}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<section class="slide hero active">
+  <div class="kicker">Automata and Formal Languages · Midterm</div>
+  <h1>Application of Regular Languages</h1>
+  <p class="subtitle">A 3-hour logic-centered lesson on patterns, validation, searching, programming, games, networks, and security — without difficult computation.</p>
+  <div class="chips"><span class="chip">Logic Thinking</span><span class="chip">No Difficult Computation</span><span class="chip">Individual Activity</span><span class="chip">Group Activity</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Learning Outcomes</div>
+  <h2>What should you be able to do after this lesson?</h2>
+  <div class="grid">
+    <div class="card"><ul><li>Explain <strong>regular languages</strong> in simple terms.</li><li>Connect <strong>Regex, DFA, NFA</strong>, and regular languages.</li><li>Recognize regular-language patterns in real systems.</li><li>Classify inputs as <strong>valid or invalid</strong>.</li></ul></div>
+    <div class="card"><ul><li>Explain applications in validation, search, programming, games, and security.</li><li>Design simple logical input rules.</li><li>Collaboratively build a small validator concept.</li><li>Explain why an input is <strong>accepted or rejected</strong>.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">3-Hour Flow</div>
+  <h2>Lesson Roadmap</h2>
+  <table><tr><th>Time</th><th>Topic / Activity</th></tr>
+    <tr><td>0:00–0:15</td><td>Review: DFA, NFA, Regex, Regular Language</td></tr>
+    <tr><td>0:15–0:35</td><td>What is a Regular Language?</td></tr>
+    <tr><td>0:35–1:00</td><td>Application 1: Input & Form Validation</td></tr>
+    <tr><td>1:00–1:20</td><td>Application 2: Search & Text Processing</td></tr>
+    <tr><td>1:20–1:35</td><td><strong>Individual Activity</strong></td></tr>
+    <tr><td>1:35–1:45</td><td>Break</td></tr>
+    <tr><td>1:45–2:25</td><td>Programming, Compilers, Games, Networks & Security</td></tr>
+    <tr><td>2:25–2:50</td><td><strong>Group Activity</strong></td></tr>
+    <tr><td>2:50–3:00</td><td>Presentation, Summary & Exit Ticket</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <div class="kicker">Review</div>
+  <h2>From Patterns to Regular Languages</h2>
+  <div class="flow"><div class="node">Regular Expression<br><span class="mini">describes the rule</span></div><div class="arrow">→</div><div class="node">DFA / NFA<br><span class="mini">checks the rule</span></div><div class="arrow">→</div><div class="node">Regular Language<br><span class="mini">all accepted strings</span></div></div>
+  <div class="quote">Regex describes. Automata recognize. A regular language contains the strings that are accepted.</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Example</div>
+  <h2>A simple student-code rule</h2>
+  <p class="big">Rule: A valid code starts with <strong>S</strong> followed by exactly <strong>3 digits</strong>.</p>
+  <div class="grid">
+    <div class="card answer"><h3>Accepted</h3><pre>S123
+S001
+S999</pre></div>
+    <div class="card"><h3>Rejected</h3><pre>S12
+ST12
+A123
+123</pre></div>
+  </div>
+  <p>The <strong>pattern</strong> can be described by Regex, and a DFA/NFA can be designed to recognize it.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Jargon Made Easy</div>
+  <h2>Important words you need to understand</h2>
+  <table><tr><th>Term</th><th>Easy Meaning</th></tr>
+    <tr><td>Alphabet</td><td>Allowed symbols</td></tr><tr><td>Symbol</td><td>One character</td></tr><tr><td>String</td><td>A sequence of symbols</td></tr><tr><td>Language</td><td>A collection of valid strings</td></tr><tr><td>Pattern</td><td>A rule describing acceptable strings</td></tr><tr><td>State</td><td>The machine's current condition</td></tr><tr><td>Transition</td><td>Movement from one state to another</td></tr><tr><td>Accept State</td><td>A state showing that the input is valid</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <div class="kicker">Jargon Made Easy</div>
+  <h2>Regular Language, Regex, DFA, NFA</h2>
+  <div class="grid">
+    <div class="card"><h3>Regular Language</h3><p>A collection of strings that follow a pattern simple enough to be recognized by a finite automaton.</p></div>
+    <div class="card"><h3>Regular Expression</h3><p>A compact way to <strong>describe a text pattern</strong>.</p></div>
+    <div class="card"><h3>DFA</h3><p>A machine with <strong>one clear next choice</strong> for every input symbol.</p></div>
+    <div class="card"><h3>NFA</h3><p>A machine that may have <strong>several possible next choices</strong>.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Easy Analogy</div>
+  <h2>Think of a security guard</h2>
+  <div class="quote">Rule: Only students wearing a valid school ID may enter.</div>
+  <div class="flow"><div class="node">Student Arrives</div><div class="arrow">→</div><div class="node">Check ID</div><div class="arrow">→</div><div class="node">Valid?</div></div>
+  <div class="grid"><div class="card answer center"><h3>YES</h3><p><strong>ACCEPT</strong></p></div><div class="card center"><h3>NO</h3><p><strong>REJECT</strong></p></div></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Core Concept</div>
+  <h2>What is a Regular Language?</h2>
+  <p class="big">A <strong>regular language</strong> is a set of strings that follow a recognizable pattern and can be checked using a finite automaton.</p>
+  <div class="card"><p><strong>Important:</strong> “Language” here does not mean English, Filipino, or Japanese. In computer science, it means a <strong>collection of strings</strong>.</p></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Logic Challenge</div>
+  <h2>Discover the secret language</h2>
+  <div class="grid"><div class="card answer"><h3>Accepted</h3><pre>CAT1
+DOG2
+CAT3
+DOG8
+CAT9</pre></div><div class="card"><h3>Rejected</h3><pre>BIRD1
+CAT
+DOGA
+1CAT</pre></div></div>
+  <p class="big"><strong>Question:</strong> What do you think the rule is?</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Application Overview</div>
+  <h2>Where do we use regular-language ideas?</h2>
+  <div class="grid3">
+    <div class="card"><h3>Validation</h3><p>Email, username, passwords, IDs, phone numbers.</p></div>
+    <div class="card"><h3>Search</h3><p>Find text, filter logs, find patterns in files.</p></div>
+    <div class="card"><h3>Programming</h3><p>Tokens, lexical analysis, syntax highlighting.</p></div>
+    <div class="card"><h3>Games</h3><p>Commands, player names, cheat-code sequences.</p></div>
+    <div class="card"><h3>Data</h3><p>Cleaning and validating structured values.</p></div>
+    <div class="card"><h3>Security</h3><p>Log filtering and pattern-based rules.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Application 1</div>
+  <h2>Input and Form Validation</h2>
+  <p class="big">When a user enters data, the system often asks one simple question:</p>
+  <div class="quote">Does this input follow the required pattern?</div>
+  <div class="flow"><div class="node">Username</div><div class="node">Password</div><div class="node">Email</div><div class="node">Student ID</div></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Class Check</div>
+  <h2>Student Number Validation</h2>
+  <p>Fictional rule: <strong>CCS-</strong> + 4 digits + <strong>-</strong> + 3 digits.</p>
+  <pre>CCS-2026-001
+CCS2026-001
+CCS-26-001
+CCS-2026-999
+IT-2026-001</pre>
+  <p class="big">Which inputs should be <span class="good">ACCEPTED</span>?</p>
+</section>
+
+<section class="slide answer">
+  <div class="kicker">Answer</div>
+  <h2>Student Number Validation</h2>
+  <pre><span class="good">CCS-2026-001  → ACCEPT</span>
+<span class="bad">CCS2026-001   → REJECT</span>
+<span class="bad">CCS-26-001    → REJECT</span>
+<span class="good">CCS-2026-999  → ACCEPT</span>
+<span class="bad">IT-2026-001   → REJECT</span></pre>
+  <p>No calculation is needed. You are simply applying the pattern rules.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Regex</div>
+  <h2>Describing the pattern</h2>
+  <pre>CCS-[0-9]{4}-[0-9]{3}</pre>
+  <div class="grid">
+    <div class="card"><h3>[0-9]</h3><p>Any digit from 0 through 9.</p></div>
+    <div class="card"><h3>{4}</h3><p>Repeat the previous pattern exactly four times.</p></div>
+  </div>
+  <p class="mini">Focus on understanding the meaning of the pattern, not memorizing difficult syntax.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Validation Example</div>
+  <h2>Username Rules</h2>
+  <p>Rule: Username must <strong>begin with a letter</strong> and may contain letters and numbers afterward.</p>
+  <div class="grid"><div class="card answer"><h3>Valid</h3><pre>maria123
+student1
+aria
+gamePlayer99</pre></div><div class="card"><h3>Invalid</h3><pre>123maria
+@student
+#player</pre></div></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Quick Check</div>
+  <h2>Phone Number Pattern</h2>
+  <p>For this activity, accept only the format <strong>09XXXXXXXXX</strong>.</p>
+  <pre>09171234567
+09181234567
+9171234567
+0917-123-4567
+ABC09171234</pre>
+  <p><strong>Think:</strong> Which match the specified format exactly?</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Application 2</div>
+  <h2>Search and Text Processing</h2>
+  <p class="big">Searching is another form of pattern matching.</p>
+  <pre>The student logged into the system.
+Another student submitted an activity.
+The instructor checked the student records.</pre>
+  <p>Search for: <span class="tag">student</span></p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Search</div>
+  <h2>Searching by a stronger pattern</h2>
+  <pre>BSCS2026
+BSIT2026
+BSCS2025
+BSIT2025
+BSCrim2026</pre>
+  <div class="quote">Find all codes that begin with <strong>BSCS</strong>.</div>
+  <p>Expected matches: <strong>BSCS2026</strong> and <strong>BSCS2025</strong>.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Text Processing</div>
+  <h2>Find and Replace</h2>
+  <pre>Student: Maria
+Student: John
+Student: Ana
+Student: Mark</pre>
+  <p>Find: <span class="tag">Student:</span> &nbsp; Replace with: <span class="tag">Learner:</span></p>
+  <p>Pattern matching helps software find each occurrence efficiently.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Data Cleaning</div>
+  <h2>Regular patterns help detect messy data</h2>
+  <pre>09171234567
+09181234567
+N/A
+UNKNOWN
+abc
+09991234567</pre>
+  <p>Suppose only values matching <strong>09 + nine more digits</strong> are allowed.</p>
+  <div class="quote">Pattern matching can identify values that do not follow the expected structure.</div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Individual Activity · 15 Minutes</div>
+  <h2>YOU ARE THE AUTOMATON</h2>
+  <p>On a clean sheet of paper, write <strong>ACCEPT</strong> or <strong>REJECT</strong> for each item, then give a one-sentence reason.</p>
+  <div class="card"><h3>Scenario 1 — Game Username</h3><p>Rule: Must start with <strong>P</strong> and end with a number.</p><pre>Player1   Pika2   gamer3   Player   P123</pre></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Individual Activity</div>
+  <h2>Scenario 2 — Product Code</h2>
+  <p>Rule: <strong>IT-</strong> followed by exactly 3 digits.</p>
+  <pre>IT-001
+IT-999
+CS-001
+IT-12
+IT-ABC</pre>
+  <p>Classify each as <strong>ACCEPT</strong> or <strong>REJECT</strong>.</p>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Individual Activity</div>
+  <h2>Scenario 3 — Game Command</h2>
+  <p>Valid commands:</p><pre>/jump
+/run
+/attack
+/defend</pre>
+  <p>Classify:</p><pre>/jump   /Attack   /run   jump   /heal   /defend</pre>
+  <div class="quote">Why should <strong>/heal</strong> be rejected even if it sounds like a reasonable command?</div>
+</section>
+
+<section class="slide hero center">
+  <div class="kicker">Break</div>
+  <h1>10-Minute Break</h1>
+  <p class="subtitle">When we return: programming, compilers, games, networks, and security.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Application 3</div>
+  <h2>Programming and Compilers</h2>
+  <p>Consider:</p><pre>score = 100;</pre>
+  <p>A human sees one statement. A language-processing tool can recognize pieces:</p>
+  <div class="flow"><div class="node">score</div><div class="node">=</div><div class="node">100</div><div class="node">;</div></div>
+  <p>These meaningful pieces are called <strong>tokens</strong>.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Jargon Explained</div>
+  <h2>What is a Token?</h2>
+  <p>A <strong>token</strong> is a meaningful unit recognized in program code.</p>
+  <table><tr><th>Code Piece</th><th>Token Type</th></tr><tr><td>total</td><td>identifier</td></tr><tr><td>=</td><td>operator</td></tr><tr><td>price</td><td>identifier</td></tr><tr><td>+</td><td>operator</td></tr><tr><td>10</td><td>number</td></tr><tr><td>;</td><td>separator</td></tr></table>
+</section>
+
+<section class="slide">
+  <div class="kicker">Jargon Explained</div>
+  <h2>Lexical Analysis</h2>
+  <p class="big"><strong>Lexical analysis</strong> is the process of breaking program code into recognizable pieces or tokens.</p>
+  <div class="flow"><div class="node">Source Code</div><div class="arrow">→</div><div class="node">Lexer / Lexical Analyzer</div><div class="arrow">→</div><div class="node">Tokens</div></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Human Lexer Challenge</div>
+  <h2>Identify the tokens</h2>
+  <pre>if (score >= 100) {
+    level = 2;
+}</pre>
+  <div class="grid"><div class="card"><h3>Find</h3><ul><li>Keyword</li><li>Identifiers</li><li>Numbers</li><li>Operators</li></ul></div><div class="card"><h3>Think</h3><p>How can a code editor recognize that these pieces have different meanings?</p></div></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Application</div>
+  <h2>Syntax Highlighting</h2>
+  <pre>if ($score > 100) {
+    echo "Winner";
+}</pre>
+  <table><tr><th>Piece</th><th>Category</th></tr><tr><td>if</td><td>keyword</td></tr><tr><td>$score</td><td>variable</td></tr><tr><td>100</td><td>number</td></tr><tr><td>echo</td><td>keyword</td></tr><tr><td>"Winner"</td><td>string</td></tr></table>
+</section>
+
+<section class="slide">
+  <div class="kicker">Application 4</div>
+  <h2>Regular Languages in Games</h2>
+  <p>Imagine a game console that accepts:</p><pre>/give player sword
+/kick player
+/teleport player
+/help</pre>
+  <p>If a player enters:</p><pre>/kick Maria</pre>
+  <div class="flow"><div class="node">/kick</div><div class="arrow">+</div><div class="node">Maria</div></div>
+  <p>The system can recognize a <strong>command</strong> plus an <strong>argument</strong>.</p>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Game Logic</div>
+  <h2>Cheat-Code Pattern Recognition</h2>
+  <p>Suppose a game recognizes only these sequences:</p><pre>UUDDLR
+LLRRAB
+START99</pre>
+  <div class="flow"><div class="node">Player Input</div><div class="arrow">→</div><div class="node">Matches?</div><div class="arrow">→</div><div class="node">Activate / Reject</div></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Game Validation</div>
+  <h2>Character Name Rules</h2>
+  <p>Rule: Names may contain letters and numbers but no spaces or special symbols.</p>
+  <div class="grid"><div class="card answer"><h3>Valid</h3><pre>Aria
+Aria99
+Knight007
+Player1</pre></div><div class="card"><h3>Invalid</h3><pre>Aria Basa
+@Knight
+Player!</pre></div></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Networks & Security</div>
+  <h2>Log File Analysis</h2>
+  <pre>LOGIN SUCCESS: user01
+LOGIN FAILED: admin
+LOGIN FAILED: guest
+LOGIN SUCCESS: maria
+LOGIN FAILED: admin</pre>
+  <p>Search pattern: <span class="tag">LOGIN FAILED</span></p>
+  <p>Pattern matching helps with monitoring, troubleshooting, and identifying events of interest.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Networks & Security</div>
+  <h2>Pattern-Based Rules</h2>
+  <div class="flow"><div class="node">Incoming Input</div><div class="arrow">→</div><div class="node">Matches a Defined Rule?</div></div>
+  <div class="grid"><div class="card answer center"><h3>YES</h3><p>Perform the rule's action</p></div><div class="card center"><h3>NO</h3><p>Use a different action / reject / continue checking</p></div></div>
+  <p class="mini">Real security systems can be much more complex, but this illustrates the accept/reject logic.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Limitation</div>
+  <h2>Regular languages are powerful — but not for everything</h2>
+  <p>They are especially useful for simple structural patterns such as:</p>
+  <div class="grid"><div class="card"><ul><li>Starts with A</li><li>Ends in 01</li><li>Contains ABC</li></ul></div><div class="card"><ul><li>Matches a fixed ID format</li><li>Uses only allowed commands</li><li>Follows a simple text pattern</li></ul></div></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Looking Ahead</div>
+  <h2>Regular Language vs Human Language</h2>
+  <p>Human language can contain nested and complex structures that require more powerful models.</p>
+  <div class="quote">Regular languages are ideal for many simple structural patterns, while more complex languages lead us toward topics such as <strong>Context-Free Languages</strong> and <strong>Pushdown Automata</strong>.</div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Logic Game</div>
+  <h2>Guess My Language — A</h2>
+  <div class="grid"><div class="card answer"><h3>Accepted</h3><pre>A1
+A2
+A9</pre></div><div class="card"><h3>Rejected</h3><pre>B1
+AA
+A10
+1A</pre></div></div>
+  <p class="big">What is the rule?</p>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Logic Game</div>
+  <h2>Guess My Language — B & C</h2>
+  <div class="grid"><div class="card"><h3>Language B</h3><p><strong>Accepted:</strong></p><pre>GAME1
+GAME2
+GAME999</pre><p><strong>Rejected:</strong></p><pre>GAME
+PLAYER1
+1GAME</pre></div><div class="card"><h3>Language C</h3><p><strong>Accepted:</strong></p><pre>WIN
+WINWIN
+WINWINWIN</pre><p><strong>Rejected:</strong></p><pre>WI
+WINS
+WINWI</pre></div></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Group Activity · 25 Minutes</div>
+  <h2>DESIGN YOUR OWN SMART VALIDATOR</h2>
+  <p>Form groups of <strong>4–5 students</strong>. Choose one system:</p>
+  <div class="grid3"><div class="card center"><h3>Online Game Registration</h3></div><div class="card center"><h3>University Enrollment</h3></div><div class="card center"><h3>Online Shopping</h3></div><div class="card center"><h3>Hospital Registration</h3></div><div class="card center"><h3>Social Media App</h3></div></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Group Activity</div>
+  <h2>Your Task</h2>
+  <ol><li>Create a <strong>system name</strong>.</li><li>Create <strong>4 input rules</strong>.</li><li>For each rule, provide <strong>3 accepted</strong> and <strong>3 rejected</strong> examples.</li><li>Draw a simple <strong>input → check → accept/reject</strong> logic flow.</li><li>Explain how the system demonstrates an <strong>application of regular languages</strong>.</li></ol>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Group Activity Example</div>
+  <h2>Perpetual Gaming Portal</h2>
+  <table><tr><th>Rule</th><th>Example</th><th>Result</th></tr><tr><td>Player ID: PL- + 4 digits</td><td>PL-1234</td><td class="good">ACCEPT</td></tr><tr><td>Player ID: PL- + 4 digits</td><td>PL-0001</td><td class="good">ACCEPT</td></tr><tr><td>Player ID: PL- + 4 digits</td><td>PLAYER-1</td><td class="bad">REJECT</td></tr><tr><td>Player ID: PL- + 4 digits</td><td>PL-ABC</td><td class="bad">REJECT</td></tr></table>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Group Activity</div>
+  <h2>Draw the Logic</h2>
+  <div class="flow"><div class="node">INPUT</div><div class="arrow">→</div><div class="node">CHECK PATTERN</div><div class="arrow">→</div><div class="node">MATCH?</div></div>
+  <div class="grid"><div class="card answer center"><h3>YES</h3><p>ACCEPT → Continue</p></div><div class="card center"><h3>NO</h3><p>REJECT → Show Error</p></div></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Group Presentation</div>
+  <h2>2–3 Minutes Per Group</h2>
+  <ol><li>What system did you choose?</li><li>What inputs does it check?</li><li>What rules did you create?</li><li>Give one accepted example.</li><li>Give one rejected example.</li><li>Why was it rejected?</li></ol>
+</section>
+
+<section class="slide">
+  <div class="kicker">Group Activity Rubric</div>
+  <h2>50 Points</h2>
+  <table><tr><th>Criteria</th><th>Points</th></tr><tr><td>Correct understanding of patterns</td><td>10</td></tr><tr><td>Quality of input rules</td><td>10</td></tr><tr><td>Accepted / Rejected examples</td><td>10</td></tr><tr><td>Logical system flow</td><td>10</td></tr><tr><td>Explanation & teamwork</td><td>10</td></tr><tr><th>Total</th><th>50</th></tr></table>
+</section>
+
+<section class="slide">
+  <div class="kicker">Big Picture</div>
+  <h2>How the concepts connect</h2>
+  <div class="flow"><div class="node">Regular Language</div><div class="arrow">↙</div><div class="node">Regex<br><span class="mini">describes</span></div><div class="arrow">+</div><div class="node">DFA / NFA<br><span class="mini">recognizes</span></div></div>
+  <div class="flow"><div class="arrow">↓</div></div>
+  <div class="flow"><div class="node">Validation</div><div class="node">Search</div><div class="node">Programming</div><div class="node">Games</div><div class="node">Data Cleaning</div><div class="node">Security</div></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">One Complete Example</div>
+  <h2>Student ID: CCS- + 3 Digits</h2>
+  <div class="grid">
+    <div class="card"><h3>Regular Language</h3><pre>CCS-001
+CCS-002
+CCS-003
+...</pre></div>
+    <div class="card"><h3>Regex</h3><pre>CCS-[0-9]{3}</pre></div>
+    <div class="card"><h3>Automaton</h3><p>A DFA or NFA can check each character and determine whether the final input is accepted.</p></div>
+    <div class="card"><h3>Application</h3><p>A registration system validates a student's code before allowing submission.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Why It Matters</div>
+  <h2>Why should Computer Science students learn this?</h2>
+  <div class="grid3"><div class="card"><h3>Web Development</h3><p>Form validation</p></div><div class="card"><h3>Programming</h3><p>Lexical analysis</p></div><div class="card"><h3>Data Science</h3><p>Data cleaning</p></div><div class="card"><h3>Networking</h3><p>Log analysis</p></div><div class="card"><h3>Game Development</h3><p>Commands & usernames</p></div><div class="card"><h3>Databases</h3><p>Input formatting</p></div></div>
+</section>
+
+<section class="slide activity">
+  <div class="kicker">Final Challenge</div>
+  <h2>You are the machine</h2>
+  <p>Rule: A valid access code must begin with <strong>UPH</strong>, followed by exactly <strong>3 digits</strong>, and end with either <strong>A</strong> or <strong>B</strong>.</p>
+  <pre>UPH123A
+UPH999B
+UPH12A
+UPH123C
+123UPHA
+UPH000A</pre>
+  <p class="big">Which inputs do you accept?</p>
+</section>
+
+<section class="slide answer">
+  <div class="kicker">Final Challenge — Answers</div>
+  <h2>Check Your Logic</h2>
+  <pre><span class="good">UPH123A → ACCEPT</span>
+<span class="good">UPH999B → ACCEPT</span>
+<span class="bad">UPH12A  → REJECT</span>
+<span class="bad">UPH123C → REJECT</span>
+<span class="bad">123UPHA → REJECT</span>
+<span class="good">UPH000A → ACCEPT</span></pre>
+  <div class="quote">What did your brain just do? <strong>Pattern recognition.</strong></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Summary</div>
+  <h2>Remember these four ideas</h2>
+  <div class="grid"><div class="card"><h3>1. Regular Language</h3><p>A collection of strings following a recognizable pattern.</p></div><div class="card"><h3>2. Regular Expression</h3><p>Describes the pattern.</p></div><div class="card"><h3>3. DFA / NFA</h3><p>Recognizes whether an input follows the pattern.</p></div><div class="card"><h3>4. Application</h3><p>Validation, search, programming, data cleaning, games, logs, and more.</p></div></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Exit Ticket</div>
+  <h2>Answer individually before leaving</h2>
+  <ol><li>In your own words, what is a regular language?</li><li>Give <strong>two</strong> real-world applications of regular languages.</li><li>What is the difference between a Regular Expression and a DFA/NFA?</li><li>Why are accepted and rejected inputs important?</li><li>Give one example from daily technology where a system needs to recognize a pattern.</li></ol>
+</section>
+
+<section class="slide hero center">
+  <div class="kicker">End of Lesson</div>
+  <h1>Application of Regular Languages</h1>
+  <p class="subtitle">Patterns are everywhere — forms, searches, code, games, data, networks, and security.</p>
+  <div class="quote">REGEX describes · AUTOMATA recognize · REGULAR LANGUAGE contains the accepted strings.</div>
+</section>
+
+</div>
+<div class="footer">
+  <div class="controls"><button onclick="prevSlide()">◀ Previous</button><button onclick="nextSlide()">Next ▶</button><button onclick="toggleFullscreen()">⛶ Fullscreen</button></div>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+  <div class="counter" id="counter"></div>
+</div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let index=0;
+  function showSlide(i){index=Math.max(0,Math.min(i,slides.length-1));slides.forEach((s,n)=>s.classList.toggle('active',n===index));document.getElementById('counter').textContent=`${index+1} / ${slides.length}`;document.getElementById('progress').style.width=`${((index+1)/slides.length)*100}%`;history.replaceState(null,'',`#${index+1}`)}
+  function nextSlide(){showSlide(index+1)}
+  function prevSlide(){showSlide(index-1)}
+  function toggleFullscreen(){if(!document.fullscreenElement){document.documentElement.requestFullscreen?.()}else{document.exitFullscreen?.()}}
+  document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();nextSlide()}if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();prevSlide()}if(e.key==='Home')showSlide(0);if(e.key==='End')showSlide(slides.length-1);if(e.key.toLowerCase()==='f')toggleFullscreen()});
+  const start=parseInt(location.hash.replace('#',''),10);if(start&&start>=1&&start<=slides.length)index=start-1;showSlide(index);
+</script>
+</body>
+</html>
