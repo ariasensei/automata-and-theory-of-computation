@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automata and Theory of Computation - Lesson 7: Context-Free Grammars</title>
+<style>
+:root{
+  --bg:#07111f; --card:#10233d; --accent:#63e6be; --accent2:#74c0fc;
+  --text:#f8fbff; --muted:#c9d6e8; --warn:#ffd43b; --pink:#ff87b2;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(135deg,#07111f,#10233d 55%,#0b1b31);
+  color:var(--text);
+}
+.deck{height:100vh;overflow:hidden}
+.slide{
+  display:none;
+  height:100vh;
+  padding:42px 58px 90px;
+  overflow:auto;
+}
+.slide.active{display:block;animation:fade .35s ease-in-out}
+@keyframes fade{
+  from{opacity:.15;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+h1{font-size:54px;margin:0 0 16px;line-height:1.05}
+h2{font-size:40px;margin:0 0 18px;color:var(--accent)}
+h3{font-size:27px;margin:12px 0;color:var(--accent2)}
+p,li{font-size:22px;line-height:1.45;color:var(--muted)}
+.big{font-size:29px;color:#fff}
+.center{text-align:center}
+.tag{
+  display:inline-block;
+  padding:8px 15px;
+  border-radius:999px;
+  background:rgba(99,230,190,.16);
+  color:var(--accent);
+  font-weight:bold;
+  margin:4px;
+}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 14px 35px rgba(0,0,0,.22)
+}
+.box{
+  background:#07182c;
+  border-left:8px solid var(--accent);
+  padding:20px;
+  border-radius:14px;
+  margin:14px 0
+}
+.example{background:rgba(116,192,252,.12);border-left-color:var(--accent2)}
+.activity{background:rgba(255,212,59,.12);border-left-color:var(--warn)}
+.grammar{
+  font-family:Consolas,monospace;
+  font-size:25px;
+  background:#06101e;
+  border-radius:14px;
+  padding:16px;
+  color:#fff;
+  white-space:pre-wrap;
+}
+.highlight{color:var(--warn);font-weight:bold}
+.pink{color:var(--pink)}
+button{
+  background:var(--accent);
+  color:#06101e;
+  border:0;
+  border-radius:999px;
+  padding:12px 20px;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  margin:6px;
+}
+button:hover{filter:brightness(1.1)}
+.nav{
+  position:fixed;
+  bottom:18px;
+  left:0;
+  right:0;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  z-index:10
+}
+.counter{
+  position:fixed;
+  right:22px;
+  bottom:25px;
+  color:#dbeafe;
+  font-size:16px;
+  z-index:11
+}
+.progress{
+  position:fixed;
+  top:0;
+  left:0;
+  height:7px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--pink));
+  z-index:12;
+  width:0%
+}
+.answer{
+  display:none;
+  margin-top:10px;
+  padding:14px;
+  border-radius:12px;
+  background:rgba(0,0,0,.25);
+  font-size:20px;
+  color:#fff
+}
+.table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px
+}
+.table td,.table th{
+  border:1px solid rgba(255,255,255,.18);
+  padding:14px;
+  font-size:20px;
+  color:var(--muted)
+}
+.table th{
+  color:#fff;
+  background:rgba(99,230,190,.13)
+}
+.miniTree{
+  font-family:Consolas,monospace;
+  font-size:22px;
+  background:#06101e;
+  border-radius:16px;
+  padding:18px;
+  color:#fff;
+  line-height:1.35;
+  white-space:pre
+}
+@media(max-width:900px){
+  .slide{padding:28px 24px 90px}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  h1{font-size:40px}
+  h2{font-size:32px}
+  p,li{font-size:19px}
+  .grammar{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck">
+
+<section class="slide active">
+  <div class="center" style="margin-top:7vh">
+    <span class="tag">Automata and Theory of Computation</span>
+    <h1>Lesson 7: Context-Free Grammars</h1>
+    <p class="big">How programming languages, expressions, and nested structures can be described using rules.</p>
+    <div class="card" style="max-width:850px;margin:35px auto">
+      <p><b>3-hour lesson flow:</b> Theory + guided examples + individual challenges + group grammar design activity + quick assessment.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Learning Outcomes</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>By the end, students can...</h3>
+      <ul>
+        <li>Explain what a Context-Free Grammar is.</li>
+        <li>Identify terminals, variables, start symbol, and productions.</li>
+        <li>Generate strings using grammar rules.</li>
+        <li>Create a simple parse tree.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Students can also...</h3>
+      <ul>
+        <li>Compare regular grammar and context-free grammar.</li>
+        <li>Design a grammar for simple languages.</li>
+        <li>Recognize ambiguity in a grammar.</li>
+        <li>Connect CFG to programming language syntax.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Lesson Timeline: 3 Hours</h2>
+  <table class="table">
+    <tr><th>Time</th><th>Activity</th></tr>
+    <tr><td>0–15 min</td><td>Motivation: why CFG matters in real life</td></tr>
+    <tr><td>15–50 min</td><td>Core theory: definition, symbols, productions</td></tr>
+    <tr><td>50–75 min</td><td>Guided derivation and parse tree examples</td></tr>
+    <tr><td>75–90 min</td><td>Individual Activity 1: Grammar Detective</td></tr>
+    <tr><td>90–120 min</td><td>More theory: ambiguity, leftmost/rightmost derivation</td></tr>
+    <tr><td>120–160 min</td><td>Group Activity: Create a Mini Language</td></tr>
+    <tr><td>160–180 min</td><td>Presentation, reflection, exit quiz</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>Warm-Up Question</h2>
+  <div class="box activity">
+    <p class="big">Which of these are “nested” structures?</p>
+    <div class="grid g2">
+      <div class="card">A. <span class="grammar">((()))</span></div>
+      <div class="card">B. <span class="grammar">if (x) { while(y) { } }</span></div>
+      <div class="card">C. <span class="grammar">abababab</span></div>
+      <div class="card">D. <span class="grammar">&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</span></div>
+    </div>
+    <button onclick="toggle('ans1')">Show answer</button>
+    <div id="ans1" class="answer">A, B, and D are nested. CFGs are good at describing nested structures.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>What is a Grammar?</h2>
+  <p>A grammar is a set of rules for building valid strings or sentences.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Human language</h3>
+      <p>Sentence → Subject + Verb + Object</p>
+      <p class="grammar">The student writes code.</p>
+    </div>
+    <div class="card">
+      <h3>Computer language</h3>
+      <p>Expression → Number + Operator + Number</p>
+      <p class="grammar">5 + 3</p>
+    </div>
+  </div>
+  <div class="box"><p><b>Simple idea:</b> Grammar tells us what is allowed and what is not allowed.</p></div>
+</section>
+
+<section class="slide">
+  <h2>Context-Free Grammar: Main Idea</h2>
+  <p>A <b>Context-Free Grammar</b> or <b>CFG</b> describes languages where one variable can be replaced by a pattern, regardless of where that variable appears.</p>
+  <div class="grammar">S → aSb
+S → ε</div>
+  <p>This grammar generates strings like:</p>
+  <div><span class="tag">ε</span><span class="tag">ab</span><span class="tag">aabb</span><span class="tag">aaabbb</span></div>
+</section>
+
+<section class="slide">
+  <h2>Formal Definition of CFG</h2>
+  <p>A CFG is usually written as a 4-tuple:</p>
+  <div class="grammar">G = (V, Σ, R, S)</div>
+  <div class="grid g4">
+    <div class="card"><h3>V</h3><p>Variables / non-terminals</p></div>
+    <div class="card"><h3>Σ</h3><p>Terminals / actual symbols</p></div>
+    <div class="card"><h3>R</h3><p>Rules / productions</p></div>
+    <div class="card"><h3>S</h3><p>Start symbol</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Parts of a CFG</h2>
+  <table class="table">
+    <tr><th>Part</th><th>Meaning</th><th>Example</th></tr>
+    <tr><td>Variable</td><td>A placeholder that can still be expanded</td><td>S, A, B, Expr</td></tr>
+    <tr><td>Terminal</td><td>Final symbol that appears in the output string</td><td>a, b, 0, 1, +, id</td></tr>
+    <tr><td>Production</td><td>A replacement rule</td><td>S → aSb</td></tr>
+    <tr><td>Start Symbol</td><td>Where generation begins</td><td>S</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>Example 1: Balanced a’s and b’s</h2>
+  <div class="grammar">S → aSb | ε</div>
+  <p>This means:</p>
+  <ul>
+    <li>Use <span class="highlight">S → aSb</span> to add one <b>a</b> at the front and one <b>b</b> at the end.</li>
+    <li>Use <span class="highlight">S → ε</span> to stop.</li>
+  </ul>
+  <div class="box example"><p>Language generated: <span class="grammar">L = { aⁿbⁿ | n ≥ 0 }</span></p></div>
+</section>
+
+<section class="slide">
+  <h2>Guided Derivation: Generate aabb</h2>
+  <p>A derivation shows the step-by-step use of grammar rules.</p>
+  <div class="grammar">S
+⇒ aSb
+⇒ aaSbb
+⇒ aaεbb
+⇒ aabb</div>
+  <button onclick="toggle('ans2')">Teacher note</button>
+  <div id="ans2" class="answer">Ask: How many times did we use S → aSb? Answer: 2 times, so we produced 2 a’s and 2 b’s.</div>
+</section>
+
+<section class="slide">
+  <h2>Parse Tree: Visual Form of Derivation</h2>
+  <p>A parse tree shows how a string is produced from the start symbol.</p>
+  <div class="miniTree">        S
+      / | \
+     a  S  b
+       /|\
+      a S b
+        |
+        ε</div>
+  <p>This parse tree produces: <span class="highlight">aabb</span></p>
+</section>
+
+<section class="slide">
+  <h2>Why CFG is More Powerful than Regular Grammar</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Regular Language</h3>
+      <p>Good for simple patterns.</p>
+      <p class="grammar">a*b*</p>
+      <p>Can accept aaabbb, but also aabbb and abb.</p>
+    </div>
+    <div class="card">
+      <h3>Context-Free Language</h3>
+      <p>Can enforce matching count and nesting.</p>
+      <p class="grammar">aⁿbⁿ</p>
+      <p>Requires the same number of a’s and b’s.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Real-World Uses of CFG</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Programming Languages</h3><p>Syntax for if-statements, loops, expressions, blocks.</p></div>
+    <div class="card"><h3>Compilers</h3><p>Parsers use grammar to check if code is structurally correct.</p></div>
+    <div class="card"><h3>Markup</h3><p>Nested tags in HTML/XML can be modeled with CFG ideas.</p></div>
+  </div>
+  <div class="box"><p><b>Real-life thought:</b> CFG is like the rulebook that checks whether code “looks grammatically correct.”</p></div>
+</section>
+
+<section class="slide">
+  <h2>Example 2: Simple Arithmetic Expressions</h2>
+  <div class="grammar">E → E + E
+E → E * E
+E → (E)
+E → id</div>
+  <p>This grammar can generate:</p>
+  <div><span class="tag">id</span><span class="tag">id + id</span><span class="tag">id * id</span><span class="tag">(id + id)</span></div>
+  <div class="box example"><p><b>id</b> means identifier, like x, y, total, score.</p></div>
+</section>
+
+<section class="slide">
+  <h2>Leftmost and Rightmost Derivation</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Leftmost Derivation</h3>
+      <p>Always replace the leftmost variable first.</p>
+      <div class="grammar">E ⇒ E+E ⇒ id+E ⇒ id+id</div>
+    </div>
+    <div class="card">
+      <h3>Rightmost Derivation</h3>
+      <p>Always replace the rightmost variable first.</p>
+      <div class="grammar">E ⇒ E+E ⇒ E+id ⇒ id+id</div>
+    </div>
+  </div>
+  <p>Both can generate the same string, but the replacement order is different.</p>
+</section>
+
+<section class="slide">
+  <h2>Ambiguity in CFG</h2>
+  <p>A grammar is <b>ambiguous</b> if one string can have more than one parse tree or meaning.</p>
+  <div class="grammar">E → E + E | E * E | id</div>
+  <p>String: <span class="highlight">id + id * id</span></p>
+  <div class="grid g2">
+    <div class="card"><h3>Meaning 1</h3><p>(id + id) * id</p></div>
+    <div class="card"><h3>Meaning 2</h3><p>id + (id * id)</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>How to Reduce Ambiguity</h2>
+  <p>We can separate grammar rules by priority or precedence.</p>
+  <div class="grammar">E → E + T | T
+T → T * F | F
+F → (E) | id</div>
+  <div class="box"><p><b>Idea:</b> Multiplication belongs to T, addition belongs to E. This helps force multiplication to be handled before addition.</p></div>
+</section>
+
+<section class="slide">
+  <h2>Example 3: Balanced Parentheses</h2>
+  <div class="grammar">S → SS
+S → (S)
+S → ε</div>
+  <p>This can generate:</p>
+  <div><span class="tag">()</span><span class="tag">(())</span><span class="tag">()()</span><span class="tag">(()())</span></div>
+  <button onclick="toggle('ans3')">Check invalid examples</button>
+  <div id="ans3" class="answer">Invalid examples: )(, (() , ())(. They are not properly balanced.</div>
+</section>
+
+<section class="slide">
+  <h2>Common Mistakes</h2>
+  <div class="grid g2">
+    <div class="card"><h3>1. Confusing terminals and variables</h3><p>Variables can be replaced. Terminals are final symbols.</p></div>
+    <div class="card"><h3>2. Forgetting the stop rule</h3><p>Without a stop rule like ε or terminal-only rule, derivation may never end.</p></div>
+    <div class="card"><h3>3. Producing extra symbols</h3><p>Check each rule carefully.</p></div>
+    <div class="card"><h3>4. Assuming one grammar only</h3><p>Many different CFGs can describe the same language.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Individual Activity 1: Grammar Detective</h2>
+  <div class="box activity">
+    <p><b>Time:</b> 15 minutes | <b>Output:</b> handwritten answer on clean paper</p>
+    <p>For each grammar, identify: variables, terminals, start symbol, and 3 possible strings.</p>
+    <div class="grammar">1) S → 0S1 | ε
+2) S → aS | b
+3) S → (S) | SS | ε</div>
+  </div>
+  <button onclick="toggle('ans4')">Show sample answer for #1</button>
+  <div id="ans4" class="answer">#1 Variables: {S}, Terminals: {0,1}, Start: S, Strings: ε, 01, 0011, 000111.</div>
+</section>
+
+<section class="slide">
+  <h2>Individual Activity 2: Derivation Race</h2>
+  <div class="box activity">
+    <p><b>Time:</b> 20 minutes</p>
+    <p>Using the grammar below, generate the target strings through step-by-step derivation.</p>
+    <div class="grammar">S → aSb | ab</div>
+    <p><b>Targets:</b> ab, aabb, aaabbb</p>
+  </div>
+  <p>Rule: Every arrow must show only one production used.</p>
+</section>
+
+<section class="slide">
+  <h2>Pair Activity: Parse Tree Partner Check</h2>
+  <div class="box activity">
+    <p><b>Time:</b> 20 minutes</p>
+    <p>Partner A writes a derivation. Partner B draws the parse tree. Then switch roles.</p>
+    <div class="grammar">S → aSb | ε
+Target strings: ab, aabb, aaabbb</div>
+  </div>
+  <p>Challenge: Explain the tree using simple English, not just symbols.</p>
+</section>
+
+<section class="slide">
+  <h2>Group Activity: Create a Mini Language</h2>
+  <div class="box activity">
+    <p><b>Time:</b> 40 minutes | <b>Group size:</b> 4–5 members</p>
+    <p>Create a CFG for one mini language:</p>
+    <ol>
+      <li>Simple calculator expressions</li>
+      <li>Balanced tags like &lt;b&gt;text&lt;/b&gt;</li>
+      <li>Nested parentheses</li>
+      <li>A mini command language for a game character</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Group Output Requirements</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Must include</h3>
+      <ul>
+        <li>Language description</li>
+        <li>Terminals and variables</li>
+        <li>Start symbol</li>
+        <li>Production rules</li>
+        <li>5 valid strings</li>
+        <li>2 invalid strings</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Presentation</h3>
+      <ul>
+        <li>Show one derivation</li>
+        <li>Show one parse tree</li>
+        <li>Explain why invalid examples are wrong</li>
+        <li>Keep explanation simple and clear</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Mini Language Example: Game Commands</h2>
+  <div class="grammar">C → move D | jump | attack | C ; C
+D → left | right | up | down</div>
+  <p>Valid strings:</p>
+  <div><span class="tag">jump</span><span class="tag">move left</span><span class="tag">attack ; jump</span><span class="tag">move up ; attack</span></div>
+  <p>Invalid strings: <span class="pink">move</span>, <span class="pink">left move</span>, <span class="pink">attack move</span></p>
+</section>
+
+<section class="slide">
+  <h2>Quick Quiz</h2>
+  <div class="box activity">
+    <ol>
+      <li>What does CFG stand for?</li>
+      <li>Which part of CFG contains final symbols?</li>
+      <li>What symbol means empty string?</li>
+      <li>Generate aabb using S → aSb | ε.</li>
+      <li>What makes a grammar ambiguous?</li>
+    </ol>
+  </div>
+  <button onclick="toggle('ans5')">Show answers</button>
+  <div id="ans5" class="answer">1. Context-Free Grammar. 2. Terminals. 3. ε. 4. S ⇒ aSb ⇒ aaSbb ⇒ aabb. 5. One string can have more than one parse tree/meaning.</div>
+</section>
+
+<section class="slide">
+  <h2>Assessment Rubric</h2>
+  <table class="table">
+    <tr><th>Criteria</th><th>Excellent</th><th>Developing</th></tr>
+    <tr><td>Grammar correctness</td><td>Rules correctly generate the intended language</td><td>Rules generate some incorrect or missing strings</td></tr>
+    <tr><td>Derivation</td><td>Steps are complete and logical</td><td>Some steps are skipped or unclear</td></tr>
+    <tr><td>Parse tree</td><td>Tree matches the derivation</td><td>Tree has missing or misplaced symbols</td></tr>
+    <tr><td>Explanation</td><td>Clear, simple, and accurate</td><td>Partly correct but needs clarity</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>Exit Reflection</h2>
+  <div class="box activity">
+    <p><b>Write on clean paper:</b></p>
+    <ol>
+      <li>In your own words, what is a Context-Free Grammar?</li>
+      <li>Why is CFG useful in programming languages?</li>
+      <li>What part of today’s lesson was easiest?</li>
+      <li>What part do you still need to practice?</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="center" style="margin-top:10vh">
+    <h1>End of Lesson 7</h1>
+    <p class="big">Context-Free Grammars help us describe structure, nesting, and syntax.</p>
+    <div class="card" style="max-width:750px;margin:30px auto">
+      <p>Remember: Start with S, apply rules, stop when only terminals remain.</p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="nav">
+  <button onclick="prevSlide()">◀ Previous</button>
+  <button onclick="nextSlide()">Next ▶</button>
+</div>
+
+<div class="counter" id="counter"></div>
+
+<script>
+let index = 0;
+const slides = [...document.querySelectorAll('.slide')];
+
+function showSlide(i){
+  slides[index].classList.remove('active');
+  index = (i + slides.length) % slides.length;
+  slides[index].classList.add('active');
+  document.getElementById('counter').textContent = (index + 1) + ' / ' + slides.length;
+  document.getElementById('progress').style.width = ((index + 1) / slides.length * 100) + '%';
+}
+
+function nextSlide(){ showSlide(index + 1); }
+function prevSlide(){ showSlide(index - 1); }
+
+function toggle(id){
+  const x = document.getElementById(id);
+  x.style.display = x.style.display === 'block' ? 'none' : 'block';
+}
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight') nextSlide();
+  if(e.key === 'ArrowLeft') prevSlide();
+});
+
+showSlide(0);
+</script>
+</body>
+</html>
